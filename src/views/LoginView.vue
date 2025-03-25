@@ -1,8 +1,13 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import cartImage from '@/assets/cartImage.jpg'
+import { ref } from 'vue'
+import { Icon } from '@iconify/vue'
 
 const router = useRouter()
+const isPasswordVisible = ref(false)
+const username = ref('')
+const password = ref('')
 
 function handleLogin() {
   console.log('Logged in')
@@ -32,13 +37,27 @@ function handleLogin() {
           @submit.prevent="handleLogin"
         >
           <input
+            type="text"
+            v-model="username"
             placeholder="Type username"
             class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
           />
-          <input
-            placeholder="Type password"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
-          />
+          <div class="relative w-full">
+            <input
+              :type="isPasswordVisible ? 'text' : 'password'"
+              v-model="password"
+              placeholder="Type password"
+              class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200 inset-0"
+            />
+            <Icon
+              :icon="isPasswordVisible ? 'mdi:eye' : 'mdi:eye-off'"
+              width="24"
+              height="24"
+              class="absolute top-1/2 -translate-y-1/2 right-4 cursor-pointer text-gray-500"
+              @click="isPasswordVisible = !isPasswordVisible"
+              v-if="password"
+            />
+          </div>
           <button
             class="w-full py-3 px-4 rounded-md cursor-pointer bg-teal-600 relative group overflow-hidden"
           >
