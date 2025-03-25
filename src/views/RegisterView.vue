@@ -1,11 +1,16 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import onlineShoping from '@/assets/onlineShoping.jpg'
+import { ref } from 'vue'
 
 const router = useRouter()
+const password = ref('')
+const confirmPassword = ref('')
 
 function handleRegister() {
-  console.log('User registered')
+  if (password.value !== confirmPassword.value) {
+    alert('Passwords do not match')
+  } else alert('User registered')
 }
 </script>
 
@@ -31,18 +36,24 @@ function handleRegister() {
           @submit.prevent="handleRegister"
         >
           <input
+            type="text"
             placeholder="Type username"
             class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
           />
           <input
+            type="email"
             placeholder="Type email"
             class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
           />
           <input
+            type="password"
             placeholder="Type password"
+            v-model="password"
             class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
           />
           <input
+            type="password"
+            v-model="confirmPassword"
             placeholder="Confirm password"
             class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
           />
