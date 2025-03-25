@@ -4,8 +4,8 @@ import cartImage from '@/assets/cartImage.jpg'
 
 const router = useRouter()
 
-function handleLogin() {
-  console.log('Logged in')
+function handleRegister() {
+  console.log('User registered')
 }
 </script>
 
@@ -17,26 +17,26 @@ function handleLogin() {
       class="max-w-2xl min-h-96 h-fit shadow-2xl p-8 rounded-xl w-full flex flex-col md:flex-row gap-6 bg-white/90"
     >
       <div class="flex flex-col justify-center items-center flex-1 space-y-6">
-        <h2 class="text-3xl font-semibold italic">Login</h2>
+        <h2 class="text-3xl font-semibold italic">Create an account</h2>
         <p class="text-gray-700 text-lg">
-          Don't have an account?
+          Already have an account?
           <span
             class="text-teal-600 hover:text-teal-500 transition duration-300 italic cursor-pointer"
-            @click="router.push('/register')"
-            >Register now</span
+            @click="router.push('/login')"
+            >Login now</span
           >
         </p>
         <form
           class="flex flex-col items-center justify-center gap-4 w-full"
-          @submit.prevent="handleLogin"
+          @submit.prevent="handleRegister"
         >
           <input
             placeholder="Type username"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
+            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500"
           />
           <input
             placeholder="Type password"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
+            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500"
           />
           <button
             class="w-full py-3 px-4 rounded-md cursor-pointer bg-teal-600 relative group overflow-hidden"
@@ -48,7 +48,7 @@ function handleLogin() {
               class="absolute inset-0 w-12 h-12 bg-teal-200 opacity-30 blur-lg rotate-45 transition-all duration-700 ease-out group-hover:w-[250%] group-hover:h-[250%]"
             ></span>
             <span class="relative text-xl text-white uppercase tracking-wider font-semibold z-10"
-              >Login</span
+              >Register</span
             >
           </button>
         </form>
