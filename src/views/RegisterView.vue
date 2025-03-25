@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import cartImage from '@/assets/cartImage.jpg'
+import onlineShoping from '@/assets/onlineShoping.jpg'
 
 const router = useRouter()
 
@@ -14,7 +14,7 @@ function handleRegister() {
     class="min-h-screen w-full relative bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 flex justify-center items-center"
   >
     <div
-      class="max-w-2xl min-h-96 h-fit shadow-2xl p-8 rounded-xl w-full flex flex-col md:flex-row gap-6 bg-white/90"
+      class="max-w-2xl min-h-96 h-fit shadow-2xl p-8 rounded-xl w-[95%] mx-auto flex flex-col md:flex-row gap-6 bg-white/90"
     >
       <div class="flex flex-col justify-center items-center flex-1 space-y-6">
         <h2 class="text-3xl font-semibold italic">Create an account</h2>
@@ -32,11 +32,19 @@ function handleRegister() {
         >
           <input
             placeholder="Type username"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500"
+            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
+          />
+          <input
+            placeholder="Type email"
+            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
           />
           <input
             placeholder="Type password"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500"
+            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
+          />
+          <input
+            placeholder="Confirm password"
+            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
           />
           <button
             class="w-full py-3 px-4 rounded-md cursor-pointer bg-teal-600 relative group overflow-hidden"
@@ -54,7 +62,7 @@ function handleRegister() {
         </form>
       </div>
       <div class="flex-1 hidden md:block">
-        <img :src="cartImage" class="object-cover rounded-xl w-full" />
+        <img :src="onlineShoping" class="object-cover rounded-xl w-full" />
       </div>
     </div>
   </div>

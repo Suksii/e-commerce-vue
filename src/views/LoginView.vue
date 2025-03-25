@@ -6,6 +6,7 @@ const router = useRouter()
 
 function handleLogin() {
   console.log('Logged in')
+  router.push('/')
 }
 </script>
 
@@ -14,7 +15,7 @@ function handleLogin() {
     class="min-h-screen w-full relative bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 flex justify-center items-center"
   >
     <div
-      class="max-w-2xl min-h-96 h-fit shadow-2xl p-8 rounded-xl w-full flex flex-col md:flex-row gap-6 bg-white/90"
+      class="max-w-2xl min-h-96 h-fit shadow-2xl p-8 rounded-xl w-[95%] mx-auto flex flex-col md:flex-row gap-6 bg-white/90"
     >
       <div class="flex flex-col justify-center items-center flex-1 space-y-6">
         <h2 class="text-3xl font-semibold italic">Login</h2>
