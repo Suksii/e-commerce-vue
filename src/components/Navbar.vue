@@ -2,6 +2,7 @@
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import Modal from './Modal.vue'
+import ProfileContent from './ProfileContent.vue'
 
 const showProfileModal = ref(false)
 const showCartModal = ref(false)
@@ -38,9 +39,9 @@ function toggleCartModal() {
           />
           <Modal
             v-if="showProfileModal"
-            :custom-class="'absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-1/2'"
-            >Profile</Modal
-          >
+            :custom-class="'fixed lg:absolute right-1/2 lg:right-0 translate-x-1/2 lg:translate-x-0'"
+            ><ProfileContent
+          /></Modal>
         </div>
         <div class="relative">
           <Icon
@@ -56,7 +57,7 @@ function toggleCartModal() {
           >
           <Modal
             v-if="showCartModal"
-            :custom-class="'absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-1/2'"
+            :custom-class="'fixed lg:absolute right-1/2 lg:right-0 translate-x-1/2 lg:translate-x-0'"
             >Cart</Modal
           >
         </div>
