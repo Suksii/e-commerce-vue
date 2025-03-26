@@ -1,6 +1,19 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
+import Modal from './Modal.vue'
+
+const showProfileModal = ref(false)
+const showCartModal = ref(false)
+
+function toggleProfileModal() {
+  showProfileModal.value = !showProfileModal.value
+  showCartModal.value = false
+}
+function toggleCartModal() {
+  showCartModal.value = !showCartModal.value
+  showProfileModal.value = false
+}
 </script>
 
 <template>
@@ -16,13 +29,35 @@ import { ref } from 'vue'
       </div>
       <div class="flex gap-8 items-center">
         <div class="relative">
-          <Icon icon="qlementine-icons:user-24" width="24" height="24" class="cursor-pointer" />
+          <Icon
+            icon="qlementine-icons:user-24"
+            width="24"
+            height="24"
+            class="cursor-pointer"
+            @click="toggleProfileModal"
+          />
+          <Modal
+            v-if="showProfileModal"
+            :custom-class="'absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-1/2'"
+            >Profile</Modal
+          >
         </div>
         <div class="relative">
-          <Icon icon="mdi:cart" width="24" height="24" class="cursor-pointer" />
+          <Icon
+            icon="mdi:cart"
+            width="24"
+            height="24"
+            class="cursor-pointer"
+            @click="toggleCartModal"
+          />
           <span
             class="absolute -top-2 -right-3 min-h-4.5 min-w-4.5 px-1 flex items-center justify-center bg-red-600 text-white text-[10px] font-semibold rounded-full"
             >2</span
+          >
+          <Modal
+            v-if="showCartModal"
+            :custom-class="'absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-1/2'"
+            >Cart</Modal
           >
         </div>
       </div>
