@@ -42,6 +42,20 @@ const orders = [
       count: 500,
     },
   },
+
+  {
+    id: 4,
+    title: 'Mens Cotton Jacket',
+    price: 55.99,
+    description:
+      'great outerwear jackets for Spring/Autumn/Winter, suitable for many occasions, such as working, hiking, camping, mountain/rock climbing, cycling, traveling or other outdoors. Good gift choice for you or your family member. A warm hearted love to Father, husband or son in this thanksgiving or Christmas Day.',
+    category: "men's clothing",
+    image: 'https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg',
+    rating: {
+      rate: 4.7,
+      count: 500,
+    },
+  },
 ]
 const numOfItems = reactive({})
 const totalPrice = (itemId, singlePrice) => {
@@ -59,21 +73,36 @@ const handlePlus = (itemId) => {
 </script>
 
 <template>
-  <div v-for="order in orders" :key="order.id" class="flex gap-4 w-full items-center">
-    <img :src="order.image" class="max-w-[80px] h-[140px] object-contain flex-2" />
-    <div class="flex flex-col gap-2 overflow-hidden">
-      <h2 class="text-nowrap font-medium">{{ order.title }}</h2>
-      <p class="line-clamp-2 text-sm text-gray-600">{{ order.description }}</p>
+  <div class="overflow-y-auto max-h-[500px]">
+    <div v-for="order in orders" :key="order.id" class="flex gap-4 w-full items-center">
+      <Icon
+        icon="streamline:delete-1-solid"
+        width="12"
+        height="12"
+        class="shrink-0 text-gray-600 cursor-pointer"
+      />
+      <img :src="order.image" class="max-w-[80px] h-[140px] object-contain flex-2" />
+      <div class="flex flex-col gap-2 overflow-hidden">
+        <h2 class="text-nowrap font-medium">{{ order.title }}</h2>
+        <p class="line-clamp-2 text-sm text-gray-600">{{ order.description }}</p>
+      </div>
+      <div class="flex items-center gap-2 mx-8">
+        <button :disabled="numOfItems[order.id] === 1" @click="handleMinus(order.id)">
+          <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
+        </button>
+        <span>{{ numOfItems[order.id] }}</span>
+        <button :disabled="numOfItems[order.id] === 10" @click="handlePlus(order.id)">
+          <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
+        </button>
+      </div>
+      <span class="font-medium">${{ totalPrice(order.id, order.price) }}</span>
     </div>
-    <div class="flex items-center gap-2 mx-8">
-      <button :disabled="numOfItems[order.id] === 1" @click="handleMinus(order.id)">
-        <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
-      </button>
-      <span>{{ numOfItems[order.id] }}</span>
-      <button :disabled="numOfItems[order.id] === 10" @click="handlePlus(order.id)">
-        <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
-      </button>
-    </div>
-    <span class="font-medium">${{ totalPrice(order.id, order.price) }}</span>
+  </div>
+  <div class="flex justify-end mt-8">
+    <button
+      class="min-w-48 bg-teal-600 px-4 py-2 rounded-md cursor-pointer text-white font-medium shadow-md transition-all duration-200 hover:bg-teal-700 hover:shadow-lg tracking-wider"
+    >
+      Checkout
+    </button>
   </div>
 </template>
