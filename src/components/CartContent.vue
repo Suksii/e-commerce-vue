@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { computed, reactive, watchEffect } from 'vue'
+import { computed, onMounted, reactive, watchEffect } from 'vue'
 
 const orders = [
   {
@@ -59,8 +59,9 @@ const orders = [
 ]
 defineProps({
   showCartModal: Boolean,
+  totalItems: Number,
 })
-const emit = defineEmits(['update:showCartModal'])
+const emit = defineEmits(['update:showCartModal', 'update:totalItems'])
 const numOfItems = reactive({})
 const totalPrice = (itemId, singlePrice) => {
   return ((numOfItems[itemId] || 1) * singlePrice).toFixed(2)
@@ -71,11 +72,16 @@ orders.forEach((order) => (numOfItems[order.id] = 1))
 const totalItems = computed(() => {
   return Object.values(numOfItems).reduce((acc, curr) => acc + curr, 0)
 })
+
+watchEffect(() => emit('update:totalItems', totalItems.value))
+
 const handleMinus = (itemId) => {
-  return (numOfItems[itemId] -= 1)
+  numOfItems[itemId] -= 1
+  emit('update:totalItems', totalItems.value)
 }
 const handlePlus = (itemId) => {
-  return (numOfItems[itemId] += 1)
+  numOfItems[itemId] += 1
+  emit('update:totalItems', totalItems.value)
 }
 </script>
 
