@@ -3,6 +3,7 @@ import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import Modal from './Modal.vue'
 import ProfileContent from './ProfileContent.vue'
+import CartContent from './CartContent.vue'
 
 const showProfileModal = ref(false)
 const showCartModal = ref(false)
@@ -44,22 +45,18 @@ function toggleCartModal() {
           /></Modal>
         </div>
         <div class="relative">
-          <Icon
-            icon="mdi:cart"
-            width="24"
-            height="24"
-            class="cursor-pointer"
-            @click="toggleCartModal"
-          />
-          <span
-            class="absolute -top-2 -right-3 min-h-4.5 min-w-4.5 px-1 flex items-center justify-center bg-red-600 text-white text-[10px] font-semibold rounded-full"
-            >2</span
-          >
+          <div class="cursor-pointer" @click="toggleCartModal">
+            <Icon icon="mdi:cart" width="24" height="24" />
+            <span
+              class="absolute -top-2 -right-3 min-h-4.5 min-w-4.5 px-1 flex items-center justify-center bg-red-600 text-white text-[10px] font-semibold rounded-full"
+              >2</span
+            >
+          </div>
           <Modal
             v-if="showCartModal"
             :custom-class="'fixed lg:absolute right-1/2 lg:right-0 translate-x-1/2 lg:translate-x-0'"
-            >Cart</Modal
-          >
+            ><CartContent
+          /></Modal>
         </div>
       </div>
     </div>
