@@ -41,7 +41,7 @@ function toggleCartModal() {
           <Modal
             v-if="showProfileModal"
             :custom-class="'fixed lg:absolute right-1/2 lg:right-0 translate-x-1/2 lg:translate-x-0'"
-            ><ProfileContent
+            ><ProfileContent v-model:showProfileModal="showProfileModal"
           /></Modal>
         </div>
         <div class="relative">
@@ -55,7 +55,7 @@ function toggleCartModal() {
           <Modal
             v-if="showCartModal"
             :custom-class="'fixed lg:absolute right-1/2 lg:right-0 translate-x-1/2 lg:translate-x-0'"
-            ><CartContent
+            ><CartContent v-model:showCartModal="showCartModal"
           /></Modal>
         </div>
       </div>

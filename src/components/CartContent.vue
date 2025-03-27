@@ -57,6 +57,8 @@ const orders = [
     },
   },
 ]
+
+const emit = defineEmits(['update:showCartModal'])
 const numOfItems = reactive({})
 const totalPrice = (itemId, singlePrice) => {
   return ((numOfItems[itemId] || 1) * singlePrice).toFixed(2)
@@ -98,7 +100,13 @@ const handlePlus = (itemId) => {
       <span class="font-medium">${{ totalPrice(order.id, order.price) }}</span>
     </div>
   </div>
-  <div class="flex justify-end mt-8">
+  <div class="flex justify-end mt-8 gap-2">
+    <button
+      @click="emit('update:showCartModal', false)"
+      class="min-w-24 border-2 border-gray-500 px-4 py-2 rounded-md cursor-pointer text-gray-700 font-medium shadow-md transition-all duration-200 hover:bg-gray-600 hover:text-white hover:border-gray-700"
+    >
+      Close
+    </button>
     <button
       class="min-w-48 bg-teal-600 px-4 py-2 rounded-md cursor-pointer text-white font-medium shadow-md transition-all duration-200 hover:bg-teal-700 hover:shadow-lg tracking-wider"
     >

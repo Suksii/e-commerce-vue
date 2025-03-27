@@ -3,6 +3,8 @@ import { Icon } from '@iconify/vue'
 
 const userMail = 'example@gmail.com'
 const userName = 'user'
+
+const emit = defineEmits(['update:showProfileModal'])
 </script>
 
 <template>
@@ -33,6 +35,7 @@ const userName = 'user'
         </button>
         <div class="flex gap-3">
           <button
+            @click="emit('update:showProfileModal', false)"
             class="min-w-24 border-2 border-gray-500 px-4 py-2 rounded-md cursor-pointer text-gray-700 font-medium shadow-md transition-all duration-200 hover:bg-gray-600 hover:text-white hover:border-gray-700"
           >
             Close
