@@ -1,15 +1,12 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
-
-const numOfItems = ref(1)
-const totalPrice = 50
+import { reactive } from 'vue'
 
 const orders = [
   {
     id: 1,
     title: 'Mens Casual Premium Slim Fit T-Shirts',
-    price: 109.95,
+    price: 22.3,
     description:
       'Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.',
     category: "men's clothing",
@@ -46,20 +43,37 @@ const orders = [
     },
   },
 ]
+const numOfItems = reactive({})
+const totalPrice = (itemId, singlePrice) => {
+  return ((numOfItems[itemId] || 1) * singlePrice).toFixed(2)
+}
+
+orders.forEach((order) => (numOfItems[order.id] = 1))
+
+const handleMinus = (itemId) => {
+  return (numOfItems[itemId] -= 1)
+}
+const handlePlus = (itemId) => {
+  return (numOfItems[itemId] += 1)
+}
 </script>
 
 <template>
   <div v-for="order in orders" :key="order.id" class="flex gap-4 w-full items-center">
     <img :src="order.image" class="max-w-[80px] h-[140px] object-contain flex-2" />
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 overflow-hidden">
       <h2 class="text-nowrap font-medium">{{ order.title }}</h2>
       <p class="line-clamp-2 text-sm text-gray-600">{{ order.description }}</p>
     </div>
-    <div class="flex items-center gap-2 px-8">
-      <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
-      <span>{{ numOfItems }}</span>
-      <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
+    <div class="flex items-center gap-2 mx-8">
+      <button :disabled="numOfItems[order.id] === 1" @click="handleMinus(order.id)">
+        <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
+      </button>
+      <span>{{ numOfItems[order.id] }}</span>
+      <button :disabled="numOfItems[order.id] === 10" @click="handlePlus(order.id)">
+        <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
+      </button>
     </div>
-    <span class="font-medium pr-8">${{ totalPrice }}</span>
+    <span class="font-medium">${{ totalPrice(order.id, order.price) }}</span>
   </div>
 </template>
