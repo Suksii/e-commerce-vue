@@ -4,6 +4,10 @@ import { Icon } from '@iconify/vue'
 const userMail = 'example@gmail.com'
 const userName = 'user'
 
+defineProps({
+  showProfileModal: Boolean,
+})
+
 const emit = defineEmits(['update:showProfileModal'])
 </script>
 

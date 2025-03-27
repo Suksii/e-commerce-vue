@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { reactive } from 'vue'
+import { computed, reactive, watchEffect } from 'vue'
 
 const orders = [
   {
@@ -57,7 +57,9 @@ const orders = [
     },
   },
 ]
-
+defineProps({
+  showCartModal: Boolean,
+})
 const emit = defineEmits(['update:showCartModal'])
 const numOfItems = reactive({})
 const totalPrice = (itemId, singlePrice) => {
