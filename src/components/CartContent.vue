@@ -68,6 +68,9 @@ const totalPrice = (itemId, singlePrice) => {
 
 orders.forEach((order) => (numOfItems[order.id] = 1))
 
+const totalItems = computed(() => {
+  return Object.values(numOfItems).reduce((acc, curr) => acc + curr, 0)
+})
 const handleMinus = (itemId) => {
   return (numOfItems[itemId] -= 1)
 }
