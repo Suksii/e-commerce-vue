@@ -1,1 +1,26 @@
 @import 'tailwindcss';
+
+.register-container {
+  @apply min-h-screen w-full relative bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 flex justify-center items-center;
+}
+.save-button {
+  @apply bg-teal-600 px-4 py-2 rounded-md cursor-pointer text-white font-medium shadow-md transition-all duration-200 hover:bg-teal-700 hover:shadow-lg;
+}
+.close-button {
+  @apply min-w-24 border-2 border-gray-500 px-4 py-2 rounded-md cursor-pointer text-gray-700 font-medium shadow-md transition-all duration-200 hover:bg-gray-600 hover:text-white hover:border-gray-700;
+}
+.register-button {
+  @apply w-full py-3 px-4 rounded-md cursor-pointer bg-teal-600 relative overflow-hidden;
+}
+.register-button span:nth-child(1) {
+  @apply absolute inset-0 w-16 h-16 bg-teal-400 opacity-50 blur-md rotate-45 transition-all duration-500 ease-out group-hover:w-[300%] group-hover:h-[300%];
+}
+.register-button span:nth-child(2) {
+  @apply absolute inset-0 w-12 h-12 bg-teal-200 opacity-30 blur-lg rotate-45 transition-all duration-700 ease-out group-hover:w-[250%] group-hover:h-[250%];
+}
+.register-button span:nth-child(3) {
+  @apply relative text-xl text-white uppercase tracking-wider font-semibold z-10;
+}
+.custom-input {
+  @apply bg-gray-200 rounded-md outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200;
+}

@@ -35,40 +35,24 @@ function handleRegister() {
           class="flex flex-col items-center justify-center gap-4 w-full"
           @submit.prevent="handleRegister"
         >
-          <input
-            type="text"
-            placeholder="Type username"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
-          />
-          <input
-            type="email"
-            placeholder="Type email"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
-          />
+          <input type="text" placeholder="Type username" class="py-3 px-4 w-full custom-input" />
+          <input type="email" placeholder="Type email" class="py-3 px-4 w-full custom-input" />
           <input
             type="password"
             placeholder="Type password"
             v-model="password"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
+            class="py-3 px-4 w-full custom-input"
           />
           <input
             type="password"
             v-model="confirmPassword"
             placeholder="Confirm password"
-            class="py-3 px-4 bg-gray-200 rounded-md w-full outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
+            class="py-3 px-4 w-full custom-input"
           />
-          <button
-            class="w-full py-3 px-4 rounded-md cursor-pointer bg-teal-600 relative group overflow-hidden"
-          >
-            <span
-              class="absolute inset-0 w-16 h-16 bg-teal-400 opacity-50 blur-md rotate-45 transition-all duration-500 ease-out group-hover:w-[300%] group-hover:h-[300%]"
-            ></span>
-            <span
-              class="absolute inset-0 w-12 h-12 bg-teal-200 opacity-30 blur-lg rotate-45 transition-all duration-700 ease-out group-hover:w-[250%] group-hover:h-[250%]"
-            ></span>
-            <span class="relative text-xl text-white uppercase tracking-wider font-semibold z-10"
-              >Register</span
-            >
+          <button class="register-button group">
+            <span class=""></span>
+            <span class=""></span>
+            <span class="">Register</span>
           </button>
         </form>
       </div>

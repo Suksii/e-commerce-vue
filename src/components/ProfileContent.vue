@@ -17,18 +17,11 @@ const emit = defineEmits(['update:showProfileModal'])
     <div class="flex flex-col gap-1">
       <div class="flex justify-between items-center">
         <label class="text-gray-600 font-medium">Email</label>
-        <input
-          disabled
-          :placeholder="userMail"
-          class="p-2 bg-gray-200 w-[220px] rounded-md outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
-        />
+        <input disabled :placeholder="userMail" class="p-2 bg-gray-200 custom-input w-[220px]" />
       </div>
       <div class="flex justify-between items-center">
         <label class="text-gray-600 font-medium">Username</label>
-        <input
-          :placeholder="userName"
-          class="p-2 bg-gray-200 w-[220px] rounded-md outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200"
-        />
+        <input :placeholder="userName" class="p-2 bg-gray-200 custom-input w-[220px]" />
       </div>
       <div class="flex justify-between items-center gap-1 pt-4">
         <button
@@ -38,17 +31,10 @@ const emit = defineEmits(['update:showProfileModal'])
           Delete user
         </button>
         <div class="flex gap-3">
-          <button
-            @click="emit('update:showProfileModal', false)"
-            class="min-w-24 border-2 border-gray-500 px-4 py-2 rounded-md cursor-pointer text-gray-700 font-medium shadow-md transition-all duration-200 hover:bg-gray-600 hover:text-white hover:border-gray-700"
-          >
+          <button @click="emit('update:showProfileModal', false)" class="close-button">
             Close
           </button>
-          <button
-            class="min-w-24 bg-teal-600 px-4 py-2 rounded-md cursor-pointer text-white font-medium shadow-md transition-all duration-200 hover:bg-teal-700 hover:shadow-lg"
-          >
-            Save changes
-          </button>
+          <button class="min-w-24 save-button">Save changes</button>
         </div>
       </div>
     </div>
