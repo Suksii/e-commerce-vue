@@ -1,12 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { Icon } from '@iconify/vue'
+import { computed, ref } from 'vue'
 
 const singleProduct = {
   id: 1,
   title: 'Mens Casual Premium Slim Fit T-Shirts',
+  category: 'T-Shirt',
   description:
     'Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.',
   price: 23.99,
+  discount: 10,
   images: [
     {
       id: 1,
@@ -31,11 +34,15 @@ const singleProduct = {
   ],
 }
 
-const selectedImage = ref({})
+const selectedImage = ref(singleProduct.images[0])
+const quantity = ref(1)
+const discountedPrice = (productPrice, productDiscount) => {
+  return (productPrice - productPrice * (productDiscount / 100)).toFixed(2)
+}
 </script>
 
 <template>
-  <div class="flex items-center w-[80%] mx-auto py-24">
+  <div class="flex flex-col md:flex-row gap-12 w-[90%] md:w-[70%] mx-auto py-24">
     <div class="flex-2">
       <div
         class="border border-teal-600/20 flex justify-center items-center group overflow-hidden rounded-md"
@@ -62,6 +69,31 @@ const selectedImage = ref({})
       </div>
     </div>
 
-    <div class="flex-3">2</div>
+    <div class="flex-3 flex-col">
+      <h2 class="text-3xl font-bold">{{ singleProduct.title }}</h2>
+      <p class="text-gray-700">{{ singleProduct.category }}</p>
+      <div class="border-t border-gray-200 my-4"></div>
+      <div class="flex gap-6">
+        <h3 v-if="singleProduct.discount" class="text-2xl font-medium">
+          {{ discountedPrice(singleProduct.price, singleProduct.discount) }}
+        </h3>
+        <h3
+          class="text-2xl font-medium"
+          :class="{ 'line-through text-gray-500': singleProduct.discount }"
+        >
+          ${{ singleProduct.price }}
+        </h3>
+      </div>
+      <div class="border-t border-gray-200 my-4"></div>
+      <p class="text-gray-800">{{ singleProduct.description }}</p>
+      <div class="py-4 flex flex-col items-center gap-2 w-fit">
+        <p class="font-medium">Choose a Quantity</p>
+        <div class="flex items-center gap-4 border border-gray-200 rounded-full px-4">
+          <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
+          <p class="border-l border-r border-gray-200 px-5 py-2">{{ quantity }}</p>
+          <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
