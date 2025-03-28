@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 const singleProduct = {
   id: 1,
@@ -38,6 +38,13 @@ const selectedImage = ref(singleProduct.images[0])
 const quantity = ref(1)
 const discountedPrice = (productPrice, productDiscount) => {
   return (productPrice - productPrice * (productDiscount / 100)).toFixed(2)
+}
+
+function handleMinus() {
+  if (quantity.value > 1) quantity.value--
+}
+function handlePlus() {
+  if (quantity.value < 10) quantity.value++
 }
 </script>
 
@@ -88,10 +95,24 @@ const discountedPrice = (productPrice, productDiscount) => {
       <p class="text-gray-800">{{ singleProduct.description }}</p>
       <div class="py-4 flex flex-col items-center gap-2 w-fit">
         <p class="font-medium">Choose a Quantity</p>
-        <div class="flex items-center gap-4 border border-gray-200 rounded-full px-4">
-          <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
-          <p class="border-l border-r border-gray-200 px-5 py-2">{{ quantity }}</p>
-          <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
+        <div class="flex items-center border border-gray-200 rounded-full h-12">
+          <div
+            class="cursor-pointer px-4 w-full h-full flex items-center justify-center"
+            @click="handleMinus"
+          >
+            <Icon icon="lucide:minus" class="text-lg" />
+          </div>
+          <p
+            class="border-l border-r border-gray-200 px-5 font-medium text-lg h-12 flex items-center justify-center"
+          >
+            {{ quantity }}
+          </p>
+          <div
+            class="cursor-pointer px-4 w-full h-full flex items-center justify-center"
+            @click="handlePlus"
+          >
+            <Icon icon="lucide:plus" class="text-lg" />
+          </div>
         </div>
       </div>
       <button class="min-w-74 my-4 save-button">Add to Cart</button>
