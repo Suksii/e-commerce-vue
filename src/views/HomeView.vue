@@ -1,9 +1,9 @@
 <script setup>
-import Card from '@/components/Card.vue'
+import CardList from '@/components/CardList.vue'
 </script>
 
 <template>
   <div class="flex justify-center items-center h-screen">
-    <Card />
+    <CardList />
   </div>
 </template>
