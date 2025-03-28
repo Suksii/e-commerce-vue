@@ -94,12 +94,15 @@ const handlePlus = (itemId) => {
         height="12"
         class="shrink-0 text-gray-600 cursor-pointer"
       />
-      <img :src="order.image" class="max-w-[80px] h-[140px] object-contain flex-2" />
+      <img
+        :src="order.image"
+        class="max-w-[60px] h-[110px] md:max-w-[80px] md:h-[140px] object-contain flex-2"
+      />
       <div class="flex flex-col gap-2 overflow-hidden">
         <h2 class="text-nowrap font-medium">{{ order.title }}</h2>
         <p class="line-clamp-2 text-sm text-gray-600">{{ order.description }}</p>
       </div>
-      <div class="flex items-center gap-2 mx-8">
+      <div class="flex items-center gap-2 mx-2 md:mx-8">
         <button :disabled="numOfItems[order.id] === 1" @click="handleMinus(order.id)">
           <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
         </button>
@@ -111,7 +114,7 @@ const handlePlus = (itemId) => {
       <span class="font-medium">${{ totalPrice(order.id, order.price) }}</span>
     </div>
   </div>
-  <div class="flex justify-end mt-8 gap-2">
+  <div class="flex justify-end mt-6 gap-2">
     <button
       @click="emit('update:showCartModal', false)"
       class="min-w-24 border-2 border-gray-500 px-4 py-2 rounded-md cursor-pointer text-gray-700 font-medium shadow-md transition-all duration-200 hover:bg-gray-600 hover:text-white hover:border-gray-700"
