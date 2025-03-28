@@ -15,9 +15,7 @@ function handleRegister() {
 </script>
 
 <template>
-  <div
-    class="min-h-screen w-full relative bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 flex justify-center items-center"
-  >
+  <div class="register-container">
     <div
       class="max-w-2xl min-h-96 h-fit shadow-2xl p-8 rounded-xl w-[95%] mx-auto flex flex-col md:flex-row gap-6 bg-white/90"
     >
