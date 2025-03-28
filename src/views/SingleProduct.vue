@@ -94,6 +94,7 @@ const discountedPrice = (productPrice, productDiscount) => {
           <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
         </div>
       </div>
+      <button class="min-w-74 my-4 save-button">Add to Cart</button>
     </div>
   </div>
 </template>
