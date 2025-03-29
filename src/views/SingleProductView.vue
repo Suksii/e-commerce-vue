@@ -54,11 +54,21 @@ function handlePlus() {
       <div
         class="border border-teal-600/20 flex justify-center items-center group overflow-hidden rounded-md"
       >
-        <img
-          :src="selectedImage.src"
-          :alt="selectedImage.alt"
-          class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
-        />
+        <Transition
+          enter-active-class="transition-opacity duration-100"
+          leave-active-class="transition-opacity duration-100"
+          enter-from-class="opacity-0"
+          enter-to-class="opacity-100"
+          mode="out-in"
+        >
+          <img
+            v-if="selectedImage"
+            :key="selectedImage.src"
+            :src="selectedImage.src"
+            :alt="selectedImage.alt"
+            class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
+          />
+        </Transition>
       </div>
       <div class="grid grid-cols-4 gap-2 pt-2">
         <div
@@ -119,3 +129,14 @@ function handlePlus() {
     </div>
   </div>
 </template>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
