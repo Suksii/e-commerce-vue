@@ -4,6 +4,8 @@ import onlineShoping from '@/assets/onlineShoping.jpg'
 import { ref } from 'vue'
 
 const router = useRouter()
+const username = ref('')
+const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
@@ -33,8 +35,18 @@ function handleRegister() {
           class="flex flex-col items-center justify-center gap-4 w-full"
           @submit.prevent="handleRegister"
         >
-          <input type="text" placeholder="Type username" class="py-3 px-4 w-full custom-input" />
-          <input type="email" placeholder="Type email" class="py-3 px-4 w-full custom-input" />
+          <input
+            type="text"
+            placeholder="Type username"
+            v-model="username"
+            class="py-3 px-4 w-full custom-input"
+          />
+          <input
+            type="email"
+            placeholder="Type email"
+            v-model="email"
+            class="py-3 px-4 w-full custom-input"
+          />
           <input
             type="password"
             placeholder="Type password"
