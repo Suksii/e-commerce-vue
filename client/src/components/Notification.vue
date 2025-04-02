@@ -1,7 +1,9 @@
 <script setup>
 import { useNotificationStore } from '@/stores/notification'
+import { Icon } from '@iconify/vue'
 defineProps({
   message: String,
+  positionClass: String,
 })
 const store = useNotificationStore()
 </script>
@@ -18,9 +20,18 @@ const store = useNotificationStore()
   >
     <div
       v-if="store.isNotificationShown"
-      class="fixed bottom-0 right-0 m-6 bg-white px-12 py-4 rounded-md shadow-[0px_10px_20px_rgba(0,0,0,0.3)]"
+      class="fixed flex justify-center items-center m-6 bg-white px-12 py-4 min-h-20 min-w-82 rounded-md shadow-[0px_10px_20px_rgba(0,0,0,0.3)] border-b-8"
+      :class="[positionClass, store.isError ? 'border-red-700' : 'border-green-700']"
     >
-      <p>{{ message }}</p>
+      <div class="flex items-center gap-2">
+        <Icon
+          :icon="store.isError ? 'ix:error-filled' : 'ix:success-filled'"
+          width="32"
+          height="32"
+          :class="store.isError ? 'text-red-700' : 'text-green-700'"
+        />
+        <p class="text-xl">{{ message }}</p>
+      </div>
     </div>
   </Transition>
 </template>

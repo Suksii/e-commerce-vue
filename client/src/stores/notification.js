@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useNotificationStore = defineStore('notification', () => {
   const isNotificationShown = ref(false)
+  const isError = ref(true)
   function showNotification() {
     isNotificationShown.value = true
     setTimeout(() => {
@@ -10,5 +11,5 @@ export const useNotificationStore = defineStore('notification', () => {
     }, 2000)
   }
 
-  return { showNotification, isNotificationShown }
+  return { showNotification, isNotificationShown, isError }
 })
