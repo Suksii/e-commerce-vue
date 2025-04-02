@@ -3,12 +3,15 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import onlineShoping from '@/assets/onlineShoping.jpg'
 import { ref } from 'vue'
+import Notification from '@/components/Notification.vue'
+import { useNotificationStore } from '@/stores/notification'
 
 const router = useRouter()
 const username = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
+const store = useNotificationStore()
 
 async function handleRegister() {
   try {
@@ -18,9 +21,11 @@ async function handleRegister() {
       password: password.value,
       confirmPassword: confirmPassword.value,
     })
-    alert('User registered successfully!')
+    store.showNotification(response.data.message || 'User created successfully')
     router.push('/login')
   } catch (error) {
+    store.showNotification(error.response.data.message || 'Registration failed')
+    store.isError = true
     console.error('Registration error:', error.response.data.message)
   }
 }

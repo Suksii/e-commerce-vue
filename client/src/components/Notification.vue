@@ -20,7 +20,7 @@ const store = useNotificationStore()
   >
     <div
       v-if="store.isNotificationShown"
-      class="fixed flex justify-center items-center m-6 bg-white px-12 py-4 min-h-20 min-w-82 rounded-md shadow-[0px_10px_20px_rgba(0,0,0,0.3)] border-b-8"
+      class="fixed flex justify-center items-center m-6 bg-white px-12 py-4 min-h-20 min-w-82 rounded-md shadow-[0px_10px_20px_rgba(0,0,0,0.3)] border-b-8 z-50"
       :class="[positionClass, store.isError ? 'border-red-700' : 'border-green-700']"
     >
       <div class="flex items-center gap-2">

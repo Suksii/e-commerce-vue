@@ -18,8 +18,9 @@ export const registerUser = async (req, res) => {
       username,
       email,
       password,
+      confirmPassword,
     });
-    res.status(201).send(newUser);
+    res.status(201).send({ newUser, message: "User created successfully" });
   } catch (error) {
     res.status(422).json(error);
   }
