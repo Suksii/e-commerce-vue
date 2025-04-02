@@ -25,3 +25,20 @@ export const registerUser = async (req, res) => {
     res.status(422).json(error);
   }
 };
+
+export const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: "Username does not exist" });
+    }
+    if (user.password !== password) {
+      return res.status(406).json({ message: "Password is not valid" });
+    }
+    res.status(201).send({ user });
+  } catch (error) {
+    res.status(422).json(error);
+  }
+};
