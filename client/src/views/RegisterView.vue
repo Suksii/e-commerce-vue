@@ -1,9 +1,9 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import axios from 'axios'
 import onlineShoping from '@/assets/onlineShoping.jpg'
 import { ref } from 'vue'
 import { useNotificationStore } from '@/stores/notification'
+import { request } from '@/api'
 
 const router = useRouter()
 const username = ref('')
@@ -14,7 +14,7 @@ const store = useNotificationStore()
 
 async function handleRegister() {
   try {
-    const response = await axios.post('http://localhost:3000/api/users/register', {
+    const response = await request.post('/api/users/register', {
       username: username.value,
       email: email.value,
       password: password.value,

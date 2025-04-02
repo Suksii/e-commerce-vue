@@ -1,4 +1,5 @@
 import { User } from "../modules/User.js";
+import bycrypt from "bcryptjs";
 
 export const registerUser = async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
@@ -14,11 +15,13 @@ export const registerUser = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
+    const salt = bycrypt.genSaltSync(10);
+    const hashedPassword = bycrypt.hashSync(password, salt);
+
     const newUser = await User.create({
       username,
       email,
-      password,
-      confirmPassword,
+      password: hashedPassword,
     });
     res.status(201).send({ newUser, message: "User created successfully" });
   } catch (error) {

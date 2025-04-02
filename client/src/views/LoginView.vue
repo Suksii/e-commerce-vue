@@ -3,8 +3,8 @@ import { useRouter } from 'vue-router'
 import cartImage from '@/assets/cartImage.jpg'
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
-import axios from 'axios'
 import { useNotificationStore } from '@/stores/notification'
+import { request } from '@/api'
 
 const router = useRouter()
 const isPasswordVisible = ref(false)
@@ -14,7 +14,7 @@ const store = useNotificationStore()
 
 async function handleLogin() {
   try {
-    const response = await axios.post('http://localhost:3000/api/users/login', {
+    const response = await request.post('/api/users/login', {
       username: username.value,
       password: password.value,
     })
@@ -24,7 +24,7 @@ async function handleLogin() {
   } catch (error) {
     store.isError = true
     store.showNotification(error.response.data.message || 'Login failed')
-    console.error(error.response.data.message)
+    console.error('Login error', error.response.data.message)
   }
 }
 </script>
