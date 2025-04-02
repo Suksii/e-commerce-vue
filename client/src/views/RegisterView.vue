@@ -1,5 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 import onlineShoping from '@/assets/onlineShoping.jpg'
 import { ref } from 'vue'
 
@@ -9,10 +10,19 @@ const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
-function handleRegister() {
-  if (password.value !== confirmPassword.value) {
-    alert('Passwords do not match')
-  } else alert('User registered')
+async function handleRegister() {
+  try {
+    const response = await axios.post('http://localhost:3000/api/users/register', {
+      username: username.value,
+      email: email.value,
+      password: password.value,
+      confirmPassword: confirmPassword.value,
+    })
+    alert('User registered successfully!')
+    router.push('/login')
+  } catch (error) {
+    console.error('Registration error:', error.response.data.message)
+  }
 }
 </script>
 
