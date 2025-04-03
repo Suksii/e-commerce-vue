@@ -1,11 +1,22 @@
 <script setup>
-import { RouterView, useRoute, useRouter } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Notification from './components/Notification.vue'
 import { useNotificationStore } from './stores/notification'
+import { onMounted } from 'vue'
+import { request } from './api'
 
 const route = useRoute()
 const store = useNotificationStore()
+
+onMounted(async () => {
+  try {
+    const response = await request.get('/api/users/profile', { withCredentials: true })
+    console.log(response)
+  } catch (error) {
+    console.error(error)
+  }
+})
 </script>
 
 <template>

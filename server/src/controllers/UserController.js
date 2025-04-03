@@ -52,6 +52,8 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+    console.log(user.email);
+
     res.cookie("token", token).json({ user, message: "Login successful" });
   } catch (error) {
     res.status(422).json(error);

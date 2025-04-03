@@ -14,10 +14,15 @@ const store = useNotificationStore()
 
 async function handleLogin() {
   try {
-    const response = await request.post('/api/users/login', {
-      username: username.value,
-      password: password.value,
-    })
+    const response = await request.post(
+      '/api/users/login',
+      {
+        username: username.value,
+        password: password.value,
+      },
+      { withCredentials: true },
+    )
+
     store.isError = false
     store.showNotification(response.data.message || 'Logged in successfully')
     router.push('/')
