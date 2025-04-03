@@ -44,23 +44,15 @@ export const loginUser = async (req, res) => {
       return res.status(406).json({ message: "Password is not valid" });
     }
 
-    jwt.sign(
+    const token = jwt.sign(
       {
         email: user.email,
         id: user._id,
       },
       process.env.JWT_SECRET,
-      {},
-      (err, token) => {
-        if (err) {
-          res.status(422).json(err);
-        } else {
-          res
-            .cookie("token", token)
-            .json({ user, message: "Login successful" });
-        }
-      }
+      { expiresIn: "1h" }
     );
+    res.cookie("token", token).json({ user, message: "Login successful" });
   } catch (error) {
     res.status(422).json(error);
   }
