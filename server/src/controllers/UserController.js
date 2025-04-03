@@ -65,3 +65,7 @@ export const loginUser = async (req, res) => {
     res.status(422).json(error);
   }
 };
+
+export const logoutUser = (req, res) => {
+  res.cookie("token", "").json(true);
+};
