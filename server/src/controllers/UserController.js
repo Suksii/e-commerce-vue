@@ -67,5 +67,7 @@ export const loginUser = async (req, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  res.cookie("token", "").json(true);
+  res.cookie("token", "").json({ message: "Logged out" });
 };
+
+export const profileUser = async () => {};

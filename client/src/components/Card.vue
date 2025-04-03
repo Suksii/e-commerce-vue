@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="w-[320px] bg-white rounded-md overflow-hidden shadow-lg">
+  <div class="min-w-[250px] w-[320px] bg-white rounded-md overflow-hidden shadow-lg">
     <div class="flex justify-center w-full">
       <img
         :src="image"
@@ -27,9 +27,9 @@ defineProps({
         <p class="text-gray-700 text-sm line-clamp-2">{{ description }}</p>
       </div>
       <div class="mt-3 flex items-center justify-between">
-        <div>
+        <div class="flex items-end gap-1">
           <span class="text-lg font-bold text-gray-900">${{ price }}</span>
-          <span v-if="discount" class="text-sm text-red-500 ml-2">-{{ discount }}%</span>
+          <span v-if="discount" class="text-sm text-red-500">-{{ discount }}%</span>
         </div>
         <button class="save-button">Add to Cart</button>
       </div>
