@@ -8,7 +8,6 @@ export const useProfile = defineStore('profile', () => {
   async function userProfile() {
     try {
       const { data } = await request.get('/api/users/profile')
-      console.log(data)
       currentUser.value = data
     } catch (error) {
       console.error('Failed to fetch user profile:', error)

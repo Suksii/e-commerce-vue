@@ -4,6 +4,7 @@ import router from '@/router'
 import { useNotificationStore } from '@/stores/notification'
 import { useProfile } from '@/stores/profile'
 import { Icon } from '@iconify/vue'
+import { watchEffect } from 'vue'
 
 const notificationStore = useNotificationStore()
 const profileStore = useProfile()
@@ -14,7 +15,11 @@ defineProps({
 
 const emit = defineEmits(['update:showProfileModal'])
 
-console.log(profileStore.currentUser)
+watchEffect(async () => {
+  if (!profileStore.currentUser) {
+    await profileStore.userProfile()
+  }
+})
 
 async function handleLogout() {
   try {
@@ -34,7 +39,7 @@ async function handleLogout() {
 </script>
 
 <template>
-  <div class="w-full lg:w-[420px]">
+  <div v-if="profileStore.currentUser" class="w-full lg:w-[420px]">
     <h3 class="text-2xl font-semibold pb-6">Hello, {{ profileStore?.currentUser?.username }}</h3>
     <div class="flex flex-col gap-1">
       <div class="flex justify-between items-center">
@@ -68,5 +73,8 @@ async function handleLogout() {
         </div>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <button class="min-w-24 save-button" @click="router.push('/login')">Login</button>
   </div>
 </template>
