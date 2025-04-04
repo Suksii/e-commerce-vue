@@ -32,7 +32,7 @@ const isExtended = ref(false)
 <template>
   <div
     v-if="profileStore.currentUser && profileStore.currentUser.isAdmin"
-    class="min-h-screen flex flex-col gap-2 bg-teal-600 shadow-[0px_10px_20px_rgba(0,0,0,0.5)] p-4 transition-all ease-in-out duration-300"
+    class="min-h-screen flex flex-col gap-2 bg-teal-600 shadow-md shadow-black p-4 transition-all ease-in-out duration-300"
     :class="{ 'w-96': isExtended, 'w-32': !isExtended }"
   >
     <div class="flex justify-between items-center" :class="{ 'justify-center': !isExtended }">
