@@ -1,6 +1,7 @@
 <script setup>
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
+import { onMounted } from 'vue'
 
 const notificationStore = useNotificationStore()
 
@@ -22,6 +23,15 @@ async function addProduct() {
     console.error(error)
   }
 }
+
+onMounted(async () => {
+  try {
+    const response = await request.get('/api/products/get-products')
+    console.log(response)
+  } catch (error) {
+    console.error('Failed to fetch products:', error)
+  }
+})
 </script>
 
 <template>
