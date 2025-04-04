@@ -20,7 +20,7 @@ function toggleCartModal() {
 </script>
 
 <template>
-  <nav class="flex items-center h-14 shadow-md shadow-black/60 bg-teal-600">
+  <nav class="flex items-center h-14 shadow-md shadow-black/60 bg-teal-700">
     <div class="w-[80%] mx-auto flex items-center justify-between">
       <div class="relative ">
         <Icon icon="mdi:storm-outline" width="62" height="62" class="text-yellow-400" />

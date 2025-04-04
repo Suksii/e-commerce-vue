@@ -20,7 +20,7 @@ const sidebarMenu = [
     id: 3,
     name: 'Products',
     icon: 'ant-design:product-filled',
-    link: '',
+    link: 'products',
   },
 ]
 
@@ -53,13 +53,14 @@ const isExtended = ref(false)
         />
       </div>
     </div>
-    <div
+    <RouterLink
+      :to="item.link"
       v-for="item of sidebarMenu"
       class="flex items-center gap-4 py-4 px-4 bg-teal-700 hover:bg-teal-800 text-white rounded-md cursor-pointer transition-all duration-300"
       :class="{ 'justify-center': !isExtended }"
     >
       <Icon :icon="item.icon" width="46" height="46" />
       <p v-if="isExtended" class="text-2xl">{{ item.name }}</p>
-    </div>
+    </RouterLink>
   </div>
 </template>

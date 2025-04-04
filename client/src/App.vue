@@ -3,7 +3,7 @@ import { RouterView, useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Notification from './components/Notification.vue'
 import { useNotificationStore } from './stores/notification'
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useProfile } from './stores/profile'
 import AdminSidebar from './components/AdminSidebar.vue'
 
@@ -11,9 +11,13 @@ const route = useRoute()
 const notificationStore = useNotificationStore()
 const profileStore = useProfile()
 
-onMounted(async () => {
-  await profileStore.userProfile()
-})
+watch(
+  () => route.path,
+  async () => {
+    await profileStore.userProfile()
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
