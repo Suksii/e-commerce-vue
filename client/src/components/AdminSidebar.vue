@@ -25,23 +25,41 @@ const sidebarMenu = [
 ]
 
 const profileStore = useProfile()
+
+const isExtended = ref(false)
 </script>
 
 <template>
   <div
     v-if="profileStore.currentUser && profileStore.currentUser.isAdmin"
-    class="w-96 min-w-64 min-h-screen flex flex-col gap-2 shadow-[0px_10px_20px_rgba(0,0,0,0.5)] p-4"
+    class="min-h-screen flex flex-col gap-2 bg-teal-600 shadow-[0px_10px_20px_rgba(0,0,0,0.5)] p-4 transition-all ease-in-out duration-300"
+    :class="{ 'w-96': isExtended, 'w-32': !isExtended }"
   >
-    <div>
-      <h2 class="text-2xl">{{ profileStore.currentUser.username }}</h2>
-      <p class="text-lg text-gray-600">Admin</p>
+    <div class="flex justify-between items-center" :class="{ 'justify-center': !isExtended }">
+      <div v-if="isExtended" class="flex flex-col">
+        <h2 class="text-2xl text-white font-medium">{{ profileStore.currentUser.username }}</h2>
+        <p class="text-lg text-gray-100">Admin</p>
+      </div>
+      <div
+        class="p-3 hover:bg-teal-800 text-white rounded-full cursor-pointer transition-colors duration-500"
+        @click="isExtended = !isExtended"
+      >
+        <Icon
+          icon="simple-line-icons:arrow-left"
+          width="34"
+          height="34"
+          class="p-1"
+          :class="{ 'rotate-180': !isExtended }"
+        />
+      </div>
     </div>
     <div
       v-for="item of sidebarMenu"
-      class="flex items-center gap-4 py-4 bg-gray-100 cursor-pointer"
+      class="flex items-center gap-4 py-4 px-4 bg-teal-700 hover:bg-teal-800 text-white rounded-md cursor-pointer transition-all duration-300"
+      :class="{ 'justify-center': !isExtended }"
     >
       <Icon :icon="item.icon" width="46" height="46" />
-      <p class="text-2xl">{{ item.name }}</p>
+      <p v-if="isExtended" class="text-2xl">{{ item.name }}</p>
     </div>
   </div>
 </template>
