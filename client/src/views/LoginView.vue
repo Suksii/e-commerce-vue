@@ -10,25 +10,21 @@ const router = useRouter()
 const isPasswordVisible = ref(false)
 const username = ref('')
 const password = ref('')
-const store = useNotificationStore()
+const notificationStore = useNotificationStore()
 
 async function handleLogin() {
   try {
-    const response = await request.post(
-      '/api/users/login',
-      {
-        username: username.value,
-        password: password.value,
-      },
-      { withCredentials: true },
-    )
+    const response = await request.post('/api/users/login', {
+      username: username.value,
+      password: password.value,
+    })
 
-    store.isError = false
-    store.showNotification(response.data.message || 'Logged in successfully')
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data.message || 'Logged in successfully')
     router.push('/')
   } catch (error) {
-    store.isError = true
-    store.showNotification(error.response.data.message || 'Login failed')
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response.data.message || 'Login failed')
     console.error('Login error', error.response.data.message)
   }
 }

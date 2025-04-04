@@ -10,7 +10,7 @@ const username = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-const store = useNotificationStore()
+const notificationStore = useNotificationStore()
 
 async function handleRegister() {
   try {
@@ -20,12 +20,12 @@ async function handleRegister() {
       password: password.value,
       confirmPassword: confirmPassword.value,
     })
-    store.showNotification(response.data.message || 'User created successfully')
-    store.isError = false
+    notificationStore.showNotification(response.data.message || 'User created successfully')
+    notificationStore.isError = false
     router.push('/login')
   } catch (error) {
-    store.showNotification(error.response.data.message || 'Registration failed')
-    store.isError = true
+    notificationStore.showNotification(error.response.data.message || 'Registration failed')
+    notificationStore.isError = true
     console.error('Registration error:', error.response.data.message)
   }
 }

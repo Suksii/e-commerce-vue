@@ -5,7 +5,7 @@ import { useNotificationStore } from '@/stores/notification'
 import { useProfile } from '@/stores/profile'
 import { Icon } from '@iconify/vue'
 
-const store = useNotificationStore()
+const notificationStore = useNotificationStore()
 const profileStore = useProfile()
 
 defineProps({
@@ -19,14 +19,14 @@ console.log(profileStore.currentUser)
 async function handleLogout() {
   try {
     const response = await request.post('api/users/logout')
-    store.isError = false
+    notificationStore.isError = false
     emit('update:showProfileModal', false)
-    store.showNotification(response.data.message)
+    notificationStore.showNotification(response.data.message)
     profileStore.currentUser = null
     router.push('/login')
   } catch (error) {
-    store.isError = true
-    store.showNotification('Failed to logout')
+    notificationStore.isError = true
+    notificationStore.showNotification('Failed to logout')
 
     console.error('Failed to logout', error)
   }
@@ -35,20 +35,20 @@ async function handleLogout() {
 
 <template>
   <div class="w-full lg:w-[420px]">
-    <h3 class="text-2xl font-semibold pb-6">Hello, {{ profileStore.currentUser.username }}</h3>
+    <h3 class="text-2xl font-semibold pb-6">Hello, {{ profileStore?.currentUser?.username }}</h3>
     <div class="flex flex-col gap-1">
       <div class="flex justify-between items-center">
         <label class="text-gray-600 font-medium">Email</label>
         <input
           disabled
-          :placeholder="profileStore.currentUser.email"
+          :placeholder="profileStore?.currentUser?.email"
           class="p-2 bg-gray-200 custom-input w-[220px]"
         />
       </div>
       <div class="flex justify-between items-center">
         <label class="text-gray-600 font-medium">Username</label>
         <input
-          :placeholder="profileStore.currentUser.username"
+          :placeholder="profileStore?.currentUser?.username"
           class="p-2 bg-gray-200 custom-input w-[220px]"
         />
       </div>

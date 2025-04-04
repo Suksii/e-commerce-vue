@@ -5,7 +5,7 @@ defineProps({
   message: String,
   positionClass: String,
 })
-const store = useNotificationStore()
+const notificationStore = useNotificationStore()
 </script>
 
 <template>
@@ -19,16 +19,16 @@ const store = useNotificationStore()
     mode="out-in"
   >
     <div
-      v-if="store.isNotificationShown"
+      v-if="notificationStore.isNotificationShown"
       class="fixed flex justify-center items-center m-6 bg-white px-12 py-4 min-h-20 min-w-82 rounded-md shadow-[0px_10px_20px_rgba(0,0,0,0.3)] border-b-8 z-50"
-      :class="[positionClass, store.isError ? 'border-red-700' : 'border-green-700']"
+      :class="[positionClass, notificationStore.isError ? 'border-red-700' : 'border-green-700']"
     >
       <div class="flex items-center gap-2">
         <Icon
-          :icon="store.isError ? 'ix:error-filled' : 'ix:success-filled'"
+          :icon="notificationStore.isError ? 'ix:error-filled' : 'ix:success-filled'"
           width="32"
           height="32"
-          :class="store.isError ? 'text-red-700' : 'text-green-700'"
+          :class="notificationStore.isError ? 'text-red-700' : 'text-green-700'"
         />
         <p class="text-xl">{{ message }}</p>
       </div>
