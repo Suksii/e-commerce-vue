@@ -1,5 +1,8 @@
 <script setup>
 import { request } from '@/api'
+import { useNotificationStore } from '@/stores/notification'
+
+const notificationStore = useNotificationStore()
 
 async function addProduct() {
   try {
@@ -8,10 +11,14 @@ async function addProduct() {
       description: 'Very good T-shirt',
       price: 32,
       category: 'Men',
-      image: 'Image'
+      image: 'Image',
     })
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data.message)
     console.log(response)
   } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response.data.message)
     console.error(error)
   }
 }
