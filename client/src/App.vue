@@ -5,6 +5,7 @@ import Notification from './components/Notification.vue'
 import { useNotificationStore } from './stores/notification'
 import { onMounted } from 'vue'
 import { useProfile } from './stores/profile'
+import AdminSidebar from './components/AdminSidebar.vue'
 
 const route = useRoute()
 const notificationStore = useNotificationStore()
@@ -20,6 +21,13 @@ onMounted(async () => {
     positionClass="top-0 left-1/2 -translate-x-1/2"
     :message="notificationStore.message || 'No messages to display'"
   />
-  <Navbar v-if="route.name !== 'login' && route.name !== 'register'" />
-  <RouterView />
+  <div class="flex flex-col">
+    <Navbar v-if="route.name !== 'login' && route.name !== 'register'" />
+    <div class="flex">
+      <AdminSidebar />
+      <div class="flex justify-center w-full">
+        <RouterView />
+      </div>
+    </div>
+  </div>
 </template>

@@ -47,7 +47,7 @@ const products = [
 </script>
 
 <template>
-  <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-[90%] lg:w-[80%] mx-auto gap-4 py-12">
+  <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-[90%] lg:w-[80%] mx-auto gap-4 py-12">
     <div v-for="product of products" :key="product.id" class="flex justify-center gap-4">
       <Card
         :image="product.image"

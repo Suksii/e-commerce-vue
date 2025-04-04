@@ -9,4 +9,4 @@ const ProductSchema = new mongoose.Schema({
   image: { type: String, required: true },
 });
 
-export const Product = mongoose.model("product", ProductSchema);
+export const Product = mongoose.model("Product", ProductSchema);
