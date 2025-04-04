@@ -11,7 +11,6 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
 
     const userProfile = await User.findById(decoded.id).select("-password");
     if (!userProfile) {

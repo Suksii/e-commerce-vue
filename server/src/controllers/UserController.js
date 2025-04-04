@@ -17,7 +17,6 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: "Passwords do not match" });
     }
     const salt = bcrypt.genSaltSync(10);
-    // const hashedPassword = bcrypt.hashSync(password, salt);
 
     const newUser = await User.create({
       username,
@@ -52,7 +51,6 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    console.log(user.email);
 
     res.cookie("token", token).json({ user, message: "Login successful" });
   } catch (error) {
@@ -61,7 +59,9 @@ export const loginUser = async (req, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  res.cookie("token", "").json({ message: "Logged out" });
+  try {
+    res.clearCookie("token").json({ message: "Logged out" });
+  } catch (error) {
+    console.error("Error while logout: ", error);
+  }
 };
-
-export const profileUser = async () => {};

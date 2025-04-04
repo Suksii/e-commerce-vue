@@ -5,17 +5,14 @@ import Notification from './components/Notification.vue'
 import { useNotificationStore } from './stores/notification'
 import { onMounted } from 'vue'
 import { request } from './api'
+import { useProfile } from './stores/profile'
 
 const route = useRoute()
 const store = useNotificationStore()
+const profileStore = useProfile()
 
-onMounted(async () => {
-  try {
-    const response = await request.get('/api/users/profile', { withCredentials: true })
-    console.log(response)
-  } catch (error) {
-    console.error(error)
-  }
+onMounted(() => {
+  profileStore.userProfile()
 })
 </script>
 

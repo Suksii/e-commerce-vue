@@ -2,11 +2,11 @@
 import { request } from '@/api'
 import router from '@/router'
 import { useNotificationStore } from '@/stores/notification'
+import { useProfile } from '@/stores/profile'
 import { Icon } from '@iconify/vue'
 
-const userMail = 'example@gmail.com'
-const userName = 'user'
 const store = useNotificationStore()
+const profileStore = useProfile()
 
 defineProps({
   showProfileModal: Boolean,
@@ -14,12 +14,15 @@ defineProps({
 
 const emit = defineEmits(['update:showProfileModal'])
 
+console.log(profileStore.currentUser)
+
 async function handleLogout() {
   try {
     const response = await request.post('api/users/logout')
     store.isError = false
     emit('update:showProfileModal', false)
     store.showNotification(response.data.message)
+    profileStore.currentUser = null
     router.push('/login')
   } catch (error) {
     store.isError = true
@@ -32,15 +35,22 @@ async function handleLogout() {
 
 <template>
   <div class="w-full lg:w-[420px]">
-    <h3 class="text-2xl font-semibold pb-6">Hello, {{ userName }}</h3>
+    <h3 class="text-2xl font-semibold pb-6">Hello, {{ profileStore.currentUser.username }}</h3>
     <div class="flex flex-col gap-1">
       <div class="flex justify-between items-center">
         <label class="text-gray-600 font-medium">Email</label>
-        <input disabled :placeholder="userMail" class="p-2 bg-gray-200 custom-input w-[220px]" />
+        <input
+          disabled
+          :placeholder="profileStore.currentUser.email"
+          class="p-2 bg-gray-200 custom-input w-[220px]"
+        />
       </div>
       <div class="flex justify-between items-center">
         <label class="text-gray-600 font-medium">Username</label>
-        <input :placeholder="userName" class="p-2 bg-gray-200 custom-input w-[220px]" />
+        <input
+          :placeholder="profileStore.currentUser.username"
+          class="p-2 bg-gray-200 custom-input w-[220px]"
+        />
       </div>
       <div class="flex justify-between items-center gap-1 pt-4">
         <button
