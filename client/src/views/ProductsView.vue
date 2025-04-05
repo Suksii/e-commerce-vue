@@ -1,9 +1,11 @@
 <script setup>
 import { request } from '@/api'
+import CardList from '@/components/CardList.vue'
 import { useNotificationStore } from '@/stores/notification'
-import { onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 const notificationStore = useNotificationStore()
+const productsData = ref([])
 
 async function addProduct() {
   try {
@@ -26,8 +28,9 @@ async function addProduct() {
 
 onMounted(async () => {
   try {
-    const response = await request.get('/api/products/get-products')
-    console.log(response)
+    const { data } = await request.get('/api/products/get-products')
+    console.log(data)
+    productsData.value = data
   } catch (error) {
     console.error('Failed to fetch products:', error)
   }
@@ -37,5 +40,6 @@ onMounted(async () => {
 <template>
   <div class="py-20">
     <button class="save-button" @click.prevent="addProduct">Add product</button>
+    <CardList :data="productsData" />
   </div>
 </template>
