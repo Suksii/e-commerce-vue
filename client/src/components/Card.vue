@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-  title: String,
+  name: String,
   image: String,
   price: Number,
   discount: Number,
@@ -21,7 +21,7 @@ defineProps({
     <div class="px-4 pb-4 flex flex-col h-[160px] justify-between">
       <div>
         <h2 class="text-lg font-semibold text-gray-800 line-clamp-2 leading-4">
-          {{ title }}
+          {{ name }}
         </h2>
         <p class="text-sm text-gray-600 mt-1">{{ category }}</p>
         <p class="text-gray-700 text-sm line-clamp-2">{{ description }}</p>

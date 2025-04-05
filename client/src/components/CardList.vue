@@ -15,7 +15,7 @@ defineProps({
     <div v-for="item of data" :key="data._id" class="flex justify-center gap-4">
       <Card
         :image="item.image"
-        :title="item.title"
+        :name="item.name"
         :price="item.price"
         :category="item.category"
         :description="item.description"
