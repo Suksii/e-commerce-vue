@@ -5,6 +5,7 @@ import RegisterView from '@/views/RegisterView.vue'
 import SingleProductView from '@/views/SingleProductView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import { useProfile } from '@/stores/profile'
+import AddProductForm from '@/components/AddProductForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,11 @@ const router = createRouter({
       path: '/products',
       name: 'products',
       component: ProductsView,
+    },
+    {
+      path: '/add-product',
+      name: 'addProduct',
+      component: AddProductForm,
     },
     {
       path: '/product',

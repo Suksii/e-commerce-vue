@@ -20,7 +20,7 @@ const sidebarMenu = [
     id: 3,
     name: 'Products',
     icon: 'ant-design:product-filled',
-    link: 'products',
+    link: '/products',
   },
 ]
 
@@ -32,7 +32,7 @@ const isExtended = ref(false)
 <template>
   <div
     v-if="profileStore.currentUser && profileStore.currentUser.isAdmin"
-    class="min-h-screen flex flex-col gap-2 bg-teal-600 shadow-md shadow-black p-4 transition-all ease-in-out duration-300"
+    class="min-h-[calc(100vh-56px)] flex flex-col gap-2 bg-teal-600 shadow-md shadow-black p-4 transition-all ease-in-out duration-300"
     :class="{ 'w-96': isExtended, 'w-32': !isExtended }"
   >
     <div class="flex justify-between items-center" :class="{ 'justify-center': !isExtended }">
