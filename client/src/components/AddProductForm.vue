@@ -29,9 +29,18 @@ async function addProduct() {
   }
 }
 function uploadImage(event) {
-  const file = event.target.files[0]
-  selectedImages.value.push(URL.createObjectURL(file))
-  productData.image = file
+  if (selectedImages.value.length < 5) {
+    const file = event.target.files[0]
+    selectedImages.value.push(URL.createObjectURL(file))
+    productData.image = file
+  } else {
+    notificationStore.isError = true
+    notificationStore.showNotification('You cannot add more than 5 images...')
+    return
+  }
+}
+function removeImage(imageIndex) {
+  selectedImages.value = selectedImages.value.filter((_, index) => index !== imageIndex)
 }
 </script>
 
@@ -45,8 +54,21 @@ function uploadImage(event) {
       <div class="flex flex-col gap-2 w-full">
         <p class="text-xl font-medium">Upload images<span class="text-red-600 px-0.5">*</span></p>
         <div class="flex gap-2 flex-wrap items-center w-full">
-          <div class="w-42 md:w-64 aspect-square" v-for="selectedImage of selectedImages">
-            <img :src="selectedImage" class="w-full h-full border border-gray-300 rounded-md object-cover" />
+          <div
+            class="w-42 md:w-64 aspect-square relative"
+            v-for="(selectedImage, index) of selectedImages"
+          >
+            <img
+              :src="selectedImage"
+              :key="index"
+              class="w-full h-full border border-gray-300 rounded-md object-cover"
+            />
+            <div
+              class="absolute top-0 right-0 bg-white/70 p-2 m-2 rounded-full cursor-pointer"
+              @click="removeImage(index)"
+            >
+              <Icon icon="nimbus:close" width="24" height="24" class="text-red-600" />
+            </div>
           </div>
           <div class="w-42 md:w-64 aspect-square shrink-0 relative" @click="inputRef.click()">
             <input
