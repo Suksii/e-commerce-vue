@@ -1,12 +1,13 @@
 <script setup>
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
-import { onMounted, reactive, ref, useTemplateRef } from 'vue'
+import { Icon } from '@iconify/vue'
+import { reactive, ref, useTemplateRef } from 'vue'
 
 const notificationStore = useNotificationStore()
 const productData = reactive({})
 const inputRef = useTemplateRef('image-ref')
-const selectedImage = ref(null)
+const selectedImages = reactive([])
 
 async function addProduct() {
   try {
@@ -14,6 +15,7 @@ async function addProduct() {
       name: productData.name,
       description: productData.description,
       price: productData.price,
+      discount: productData.discount,
       category: productData.category,
       image: productData.image,
     })
@@ -28,7 +30,7 @@ async function addProduct() {
 }
 function uploadImage(event) {
   const file = event.target.files[0]
-  selectedImage.value = URL.createObjectURL(file)
+  selectedImages.push(URL.createObjectURL(file))
   productData.image = file
 }
 </script>
@@ -40,36 +42,51 @@ function uploadImage(event) {
       @submit.prevent="addProduct"
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
     >
-      <div class="flex flex-col gap-2 w-64">
-        <img :src="selectedImage" class="w-full h-96 bg-gray-300 rounded-md" />
-        <div class="w-full relative" @click="inputRef.click()">
-          <p class="w-full bg-gray-300 rounded-md p-4 text-center">Upload Image</p>
-          <input
-            type="file"
-            ref="image-ref"
-            class="absolute inset-0 hidden"
-            accept="image/*"
-            @change="uploadImage"
-          />
+      <div class="flex flex-col gap-2 w-full">
+        <p class="text-xl font-medium">Upload images</p>
+        <div class="flex gap-2 flex-wrap items-center w-full">
+          <div class="w-42 md:w-64 aspect-square" v-for="selectedImage of selectedImages">
+            <img :src="selectedImage" class="w-full h-full bg-gray-300 rounded-md object-cover" />
+          </div>
+          <div class="w-42 md:w-64 aspect-square shrink-0 relative" @click="inputRef.click()">
+            <input
+              type="file"
+              ref="image-ref"
+              class="absolute inset-0 hidden"
+              accept="image/*"
+              @change="uploadImage"
+            />
+            <div
+              class="w-full h-full flex justify-center items-center bg-gray-200 rounded-md cursor-pointer"
+            >
+              <Icon icon="fluent:add-24-filled" width="64" height="64" class="text-white" />
+            </div>
+          </div>
         </div>
       </div>
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium">Name</label>
-        <input class="custom-input w-full py-3 px-4" v-model="productData.name" />
+        <input class="custom-input w-full p-4" v-model="productData.name" />
+      </div>
+      <div class="w-full flex gap-2 items-center">
+        <div class="flex flex-col w-full">
+          <label class="text-xl font-medium">Price</label>
+          <input type="number" class="custom-input w-full p-4" v-model="productData.price" />
+        </div>
+        <div class="flex flex-col w-full">
+          <label class="text-xl font-medium">Discount</label>
+          <input type="number" class="custom-input w-full p-4" v-model="productData.discount" />
+        </div>
       </div>
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium">Description</label>
-        <input class="custom-input w-full py-3 px-4" v-model="productData.description" />
-      </div>
-      <div class="flex flex-col w-full">
-        <label class="text-xl font-medium">Price</label>
-        <input class="custom-input w-full py-3 px-4" v-model="productData.price" />
+        <textarea class="custom-input w-full p-4 min-h-52" v-model="productData.description" />
       </div>
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium">Category</label>
-        <input class="custom-input w-full py-3 px-4" v-model="productData.category" />
+        <input class="custom-input w-full p-4" v-model="productData.category" />
       </div>
-      <button class="min-w-42 w-full my-4 h-12 save-button">Add Product</button>
+      <button class="min-w-42 w-full my-4 h-14 save-button">Add Product</button>
     </form>
   </div>
 </template>
