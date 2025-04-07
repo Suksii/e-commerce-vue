@@ -36,7 +36,6 @@ export const uploadImage = async (req, res) => {
     const { path, originalname } = req.files[0];
     const extension = originalname.split(".").pop();
     const newPath = path + "." + extension;
-    console.log(newPath.split("\\").slice(1));
 
     fs.renameSync(path, newPath);
     res.status(200).send(newPath.split("\\").slice(1));
