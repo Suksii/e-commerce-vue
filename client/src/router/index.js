@@ -6,6 +6,7 @@ import SingleProductView from '@/views/SingleProductView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import { useProfile } from '@/stores/profile'
 import AddProductForm from '@/components/AddProductForm.vue'
+import UsersTable from '@/views/UsersTable.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/product',
       name: 'singleProduct',
       component: SingleProductView,
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: UsersTable,
     },
   ],
 })

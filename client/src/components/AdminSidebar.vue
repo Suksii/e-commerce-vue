@@ -14,7 +14,7 @@ const sidebarMenu = [
     id: 2,
     name: 'Users',
     icon: 'qlementine-icons:user-24',
-    link: '',
+    link: '/users',
   },
   {
     id: 3,
