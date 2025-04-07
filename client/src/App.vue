@@ -18,7 +18,7 @@ const notificationStore = useNotificationStore()
     <Navbar v-if="route.name !== 'login' && route.name !== 'register'" />
     <div class="flex">
       <AdminSidebar />
-      <div class="flex justify-center w-full">
+      <div class="flex justify-center w-full overflow-x-hidden">
         <RouterView />
       </div>
     </div>

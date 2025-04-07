@@ -17,12 +17,14 @@ onMounted(async () => {
 
 <template>
   <div class="overflow-x-auto w-[95%] md:w-[80%] h-fit mx-auto my-12">
-    <table class="overflow-x-hidden w-full table-auto border-collapse border border-gray-200">
+    <table class="w-full table-auto border-collapse border border-gray-200 min-w-[600px]">
       <thead class="w-full bg-teal-600 text-white">
-        <th>#</th>
-        <th>User ID</th>
-        <th>Username</th>
-        <th>Email</th>
+        <tr>
+          <th>#</th>
+          <th>User ID</th>
+          <th>Username</th>
+          <th>Email</th>
+        </tr>
       </thead>
       <tbody class="w-full">
         <tr v-for="(user, index) of usersData" class="text-center even:bg-teal-100">
