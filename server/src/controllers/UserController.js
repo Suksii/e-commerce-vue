@@ -62,6 +62,15 @@ export const logoutUser = (req, res) => {
   try {
     res.clearCookie("token").json({ message: "Logged out" });
   } catch (error) {
-    console.error("Error while logout: ", error);
+    res.json(error);
+  }
+};
+
+export const getUsers = (req, res) => {
+  try {
+    const users = User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(404).json(error);
   }
 };
