@@ -14,7 +14,7 @@ defineProps({
     <div class="flex justify-center w-full">
       <img
         :src="image"
-        :alt="title"
+        :alt="name"
         class="h-60 object-cover scale-90 transition ease-in-out duration-300"
       />
     </div>

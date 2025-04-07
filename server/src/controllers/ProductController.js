@@ -1,7 +1,8 @@
+import fs from "fs";
 import { Product } from "../models/Product.js";
 
 export const addProduct = async (req, res) => {
-  const { name, description, category, image, price, discount } = req.body;
+  const { name, description, category, images, price, discount } = req.body;
   try {
     const newProduct = await Product.create({
       name,
@@ -9,7 +10,7 @@ export const addProduct = async (req, res) => {
       category,
       price,
       discount,
-      image,
+      images,
     });
 
     res.status(200).json({ newProduct, message: "Product added successfully" });
@@ -24,5 +25,22 @@ export const getProducts = async (req, res) => {
     res.status(200).json(products);
   } catch (error) {
     res.status(404).json({ message: "No products found" });
+  }
+};
+
+export const uploadImage = async (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No files uploaded" });
+    }
+    const { path, originalname } = req.files[0];
+    const extension = originalname.split(".").pop();
+    const newPath = path + "." + extension;
+    console.log(newPath.split("\\").slice(1));
+
+    fs.renameSync(path, newPath);
+    res.status(200).send(newPath.split("\\").slice(1));
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

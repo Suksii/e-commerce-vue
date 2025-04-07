@@ -5,7 +5,14 @@ import { Icon } from '@iconify/vue'
 import { reactive, ref } from 'vue'
 
 const notificationStore = useNotificationStore()
-const productData = reactive({})
+const productData = reactive({
+  name: '',
+  description: '',
+  price: '',
+  discount: '',
+  category: '',
+  images: [],
+})
 const inputRef = ref(null)
 const selectedImages = ref([])
 
@@ -17,7 +24,7 @@ async function addProduct() {
       price: productData.price,
       discount: productData.discount,
       category: productData.category,
-      image: productData.image,
+      images: productData.images,
     })
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message)
@@ -28,19 +35,9 @@ async function addProduct() {
     console.error(error)
   }
 }
-function uploadImage(event) {
-  if (selectedImages.value.length < 5) {
-    const file = event.target.files[0]
-    selectedImages.value.push(URL.createObjectURL(file))
-    productData.image = file
-  } else {
-    notificationStore.isError = true
-    notificationStore.showNotification('You cannot add more than 5 images...')
-    return
-  }
-}
 function removeImage(imageIndex) {
   selectedImages.value = selectedImages.value.filter((_, index) => index !== imageIndex)
+  productData.images = productData.images.filter((_, index) => index !== imageIndex)
 }
 </script>
 
