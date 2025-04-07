@@ -6,6 +6,7 @@ import { userRoute } from "./src/routes/UserRoute.js";
 import { productRoute } from "./src/routes/ProductRoute.js";
 import cookieParser from "cookie-parser";
 import path from "path";
+import { cartRoute } from "./src/routes/CartRoute.js";
 
 dotenv.config();
 
@@ -35,4 +36,5 @@ app.use(
   express.static(path.join(import.meta.dirname, "./uploads"))
 );
 app.use("/api/users", userRoute);
+app.use("/api/cart", cartRoute);
 app.use("/api/products", productRoute);
