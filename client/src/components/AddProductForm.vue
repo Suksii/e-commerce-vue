@@ -14,7 +14,6 @@ const productData = reactive({
   images: [],
 })
 const inputRef = ref(null)
-const selectedImages = ref([])
 
 async function addProduct() {
   try {
@@ -36,9 +35,8 @@ async function addProduct() {
   }
 }
 async function uploadImage(event) {
-  if (selectedImages.value.length < 5) {
+  if (productData.images.length < 2) {
     const file = event.target.files[0]
-    selectedImages.value.push(URL.createObjectURL(file))
     const formData = new FormData()
     formData.append('photos', file)
     try {
@@ -61,7 +59,6 @@ async function uploadImage(event) {
   }
 }
 function removeImage(imageIndex) {
-  selectedImages.value = selectedImages.value.filter((_, index) => index !== imageIndex)
   productData.images = productData.images.filter((_, index) => index !== imageIndex)
 }
 </script>
@@ -78,10 +75,10 @@ function removeImage(imageIndex) {
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div
             class="w-42 md:w-64 aspect-square relative"
-            v-for="(selectedImage, index) of selectedImages"
+            v-for="(image, index) of productData.images"
           >
             <img
-              :src="selectedImage"
+              :src="'http://localhost:3000/uploads/' + image"
               :key="index"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />

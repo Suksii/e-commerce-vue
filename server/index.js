@@ -32,7 +32,7 @@ app.use(cookieParser());
 
 app.use(
   "/uploads",
-  express.static(path.join(import.meta.dirname, "../uploads"))
+  express.static(path.join(import.meta.dirname, "./uploads"))
 );
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);

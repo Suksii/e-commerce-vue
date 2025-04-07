@@ -1,8 +1,6 @@
 <script setup>
 import Card from './Card.vue'
 
-
-
 defineProps({
   data: Array,
 })
@@ -14,7 +12,7 @@ defineProps({
   >
     <div v-for="item of data" :key="data._id" class="flex justify-center gap-4">
       <Card
-        :image="item.image"
+        :images="'http://localhost:3000/uploads/' + item.images[0]"
         :name="item.name"
         :price="item.price"
         :category="item.category"

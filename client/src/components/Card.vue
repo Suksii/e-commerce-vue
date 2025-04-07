@@ -1,7 +1,7 @@
 <script setup>
 defineProps({
   name: String,
-  image: String,
+  images: String,
   price: Number,
   discount: Number,
   category: String,
@@ -13,7 +13,7 @@ defineProps({
   <div class="min-w-[250px] w-[320px] bg-white rounded-md overflow-hidden shadow-lg">
     <div class="flex justify-center w-full">
       <img
-        :src="image"
+        :src="images"
         :alt="name"
         class="h-60 object-cover scale-90 transition ease-in-out duration-300"
       />
