@@ -35,6 +35,31 @@ async function addProduct() {
     console.error(error)
   }
 }
+async function uploadImage(event) {
+  if (selectedImages.value.length < 5) {
+    const file = event.target.files[0]
+    selectedImages.value.push(URL.createObjectURL(file))
+    const formData = new FormData()
+    formData.append('photos', file)
+    try {
+      const { data } = await request.post('/api/products/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      productData.images.push(data[0])
+      console.log(productData.images)
+    } catch (error) {
+      notificationStore.isError = true
+      notificationStore.showNotification('Image upload failed')
+      console.error('Image upload failed', error)
+    }
+  } else {
+    notificationStore.isError = true
+    notificationStore.showNotification('You cannot add more than 5 images...')
+    return
+  }
+}
 function removeImage(imageIndex) {
   selectedImages.value = selectedImages.value.filter((_, index) => index !== imageIndex)
   productData.images = productData.images.filter((_, index) => index !== imageIndex)
