@@ -19,13 +19,9 @@ export const addCart = async (req, res) => {
       : productData.price;
     const newCart = await Cart.create({
       user: userData,
-      products: [
-        {
-          product: productData,
-          quantity: 1,
-          price: discountedPrice,
-        },
-      ],
+      product: productData,
+      quantity: 1,
+      price: discountedPrice,
     });
     res.json({
       cart: newCart,
@@ -38,7 +34,7 @@ export const addCart = async (req, res) => {
 
 export const getCarts = async (req, res) => {
   try {
-    const carts = await Cart.find().populate("products.product");
+    const carts = await Cart.find().populate("product");
     res.status(200).json(carts);
   } catch (error) {
     req.json(error);

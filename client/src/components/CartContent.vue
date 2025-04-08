@@ -7,40 +7,44 @@ defineProps({
 })
 
 const cartStore = useCartStore()
+const carts = cartStore.carts
 const emit = defineEmits(['update:showCartModal'])
 
 watchEffect(() => {
   cartStore.getCarts()
 })
+
+console.log(carts)
 </script>
 
 <template>
   <div class="overflow-y-auto max-h-[500px]">
-    <div v-for="cart in cartStore.carts" :key="cart._id" class="flex gap-4 w-full items-center">
+    <div v-for="cart in carts" :key="cart._id" class="flex gap-4 w-full items-center">
       <Icon
         icon="streamline:delete-1-solid"
         width="12"
         height="12"
         class="shrink-0 text-gray-600 cursor-pointer"
       />
+
       <img
-        :src="cart.products.product.images[0]"
+        :src="'http://localhost:3000/uploads/' + cart.product.images[0]"
         class="max-w-[60px] h-[110px] md:max-w-[80px] md:h-[140px] object-contain flex-2"
       />
       <div class="flex flex-col gap-2 overflow-hidden">
-        <h2 class="text-nowrap font-medium">{{ order.title }}</h2>
-        <p class="line-clamp-2 text-sm text-gray-600">{{ order.description }}</p>
+        <h2 class="text-nowrap font-medium">{{ cart.product.name }}</h2>
+        <p class="line-clamp-2 text-sm text-gray-600">{{ cart.product.description }}</p>
       </div>
       <div class="flex items-center gap-2 mx-2 md:mx-8">
-        <button :disabled="numOfItems[order.id] === 1" @click="handleMinus(order.id)">
+        <button>
           <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
         </button>
-        <span>{{ numOfItems[order.id] }}</span>
-        <button :disabled="numOfItems[order.id] === 10" @click="handlePlus(order.id)">
+        <span>{{ cart.quantity }}</span>
+        <button>
           <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
         </button>
       </div>
-      <span class="font-medium">${{ totalPrice(order.id, order.price) }}</span>
+      <span class="font-medium">${{ cart.totalPrice }}</span>
     </div>
   </div>
   <div class="flex justify-end mt-6 gap-2">
