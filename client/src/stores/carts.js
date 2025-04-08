@@ -1,14 +1,22 @@
 import { request } from '@/api'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useNotificationStore } from './notification'
 
 export const useCartStore = defineStore('carts', () => {
   const carts = ref([])
+  const notificationStore = useNotificationStore()
 
   async function addCart(id) {
     try {
-      await request.post('/api/cart/add-cart/' + id)
+      const response = await request.post('/api/cart/add-cart/' + id)
+      notificationStore.isError = false
+      notificationStore.showNotification(
+        response.data.message || 'Product successfully added to cart..',
+      )
     } catch (error) {
+      notificationStore.isError = false
+      notificationStore.showNotification(error.response.data.message)
       console.error('Error while adding product to cart:', error)
     }
   }
