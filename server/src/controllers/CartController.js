@@ -29,3 +29,12 @@ export const addCart = async (req, res) => {
     res.json({ message: "Internal Server Error" });
   }
 };
+
+export const getCarts = async (req, res) => {
+  try {
+    const carts = await Cart.find();
+    res.status(200).json(carts);
+  } catch (error) {
+    req.json(error);
+  }
+};
