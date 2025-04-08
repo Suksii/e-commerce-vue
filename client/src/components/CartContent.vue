@@ -1,4 +1,5 @@
 <script setup>
+import { useCartStore } from '@/stores/carts'
 import { Icon } from '@iconify/vue'
 import { computed, reactive, watchEffect } from 'vue'
 const orders = [
@@ -48,6 +49,8 @@ defineProps({
   showCartModal: Boolean,
   totalItems: Number,
 })
+
+const store = useCartStore()
 const emit = defineEmits(['update:showCartModal', 'update:totalItems'])
 const numOfItems = reactive({})
 const totalPrice = (itemId, singlePrice) => {
@@ -70,6 +73,10 @@ const handlePlus = (itemId) => {
   numOfItems[itemId] += 1
   emit('update:totalItems', totalItems.value)
 }
+
+watchEffect(() => {
+  store.getCarts()
+})
 </script>
 
 <template>
