@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 import { Product } from "../models/Product.js";
+import { Cart } from "../models/Cart.js";
 
 export const addCart = async (req, res) => {
   try {
@@ -12,8 +13,18 @@ export const addCart = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userData = await User.findById(decoded.id);
     const productData = await Product.findById(req.params.id);
-    console.log(userData, productData);
-    res.json(decoded);
+    const discountedPrice = productData.discount
+      ? productData.price - (productData.price * productData.discount) / 100
+      : productData.price;
+    const newCart = await Cart.create({
+      user: userData,
+      products: {
+        product: productData,
+        quantity: 1,
+        price: discountedPrice,
+      },
+    });
+    res.json({ cart: newCart, message: "Product successfully added to cart" });
   } catch (error) {
     res.json({ message: "Internal Server Error" });
   }

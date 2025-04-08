@@ -1,3 +1,4 @@
+import { request } from '@/api'
 import { defineStore } from 'pinia'
 
 export const useCartStore = defineStore('carts', () => {
