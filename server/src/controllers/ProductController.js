@@ -45,7 +45,7 @@ export const uploadImage = async (req, res) => {
 };
 
 export const deleteProduct = async (req, res) => {
-  const id = req.params;
+  const id = req.params.id;
   try {
     await Product.findByIdAndDelete(id);
     res.json({ message: "Product successfully deleted" });

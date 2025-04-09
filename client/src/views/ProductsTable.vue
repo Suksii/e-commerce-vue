@@ -1,9 +1,12 @@
 <script setup>
+import { request } from '@/api'
+import { useNotificationStore } from '@/stores/notification'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
 import { onMounted } from 'vue'
 
 const productStore = useProductsStore()
+const notificationStore = useNotificationStore()
 
 onMounted(() => {
   productStore.getProducts()
@@ -11,6 +14,19 @@ onMounted(() => {
 
 const discountedPrice = (product) => {
   return product.price - ((product.price * product.discount) / 100).toFixed(2)
+}
+
+async function deleteProduct(id) {
+  try {
+    const response = await request.delete('/api/products/delete-product/' + id)
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data.message || 'Product successfully deleted')
+    productStore.getProducts()
+  } catch (error) {
+    console.error('Failed to delete product:', error)
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response.message || 'Failed to delete product')
+  }
 }
 </script>
 
@@ -49,8 +65,15 @@ const discountedPrice = (product) => {
           <td v-else>${{ product.price }}</td>
           <td>{{ product.discount ? product.discount : 0 }}%</td>
           <td class="flex gap-6 justify-center items-center">
-            <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-red-600 cursor-pointer" />
-            <Icon icon="lucide:edit" width="24" height="24" class="text-teal-600 cursor-pointer"/>
+            <button @click="deleteProduct(product._id)">
+              <Icon
+                icon="fluent:delete-28-filled"
+                width="28"
+                height="28"
+                class="text-red-600 cursor-pointer"
+              />
+            </button>
+            <Icon icon="lucide:edit" width="24" height="24" class="text-teal-600 cursor-pointer" />
           </td>
         </tr>
       </tbody>

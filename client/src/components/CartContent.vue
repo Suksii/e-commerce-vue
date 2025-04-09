@@ -19,7 +19,7 @@ onMounted(() => {
 
 async function deleteCart(id) {
   try {
-    const response = await request.delete('api/cart/delete-cart/' + id)
+    const response = await request.delete('/api/cart/delete-cart/' + id)
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message)
     await cartStore.getCarts()
