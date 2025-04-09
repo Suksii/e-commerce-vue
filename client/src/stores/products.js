@@ -1,13 +1,13 @@
 import { request } from '@/api'
 import { defineStore } from 'pinia'
-import { reactive } from 'vue'
+import { ref } from 'vue'
 
-export const useProducts = defineStore('products', () => {
-  const productsData = reactive([])
+export const useProductsStore = defineStore('products', () => {
+  const productsData = ref([])
   async function getProducts() {
     try {
       const { data } = await request.get('/api/products/get-products')
-      productsData = data
+      productsData.value = data
     } catch (error) {
       console.error('Failed to fetch products:', error)
     }

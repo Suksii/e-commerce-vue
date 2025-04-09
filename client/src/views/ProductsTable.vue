@@ -1,7 +1,16 @@
 <script setup>
-import { ref } from 'vue'
+import { useProductsStore } from '@/stores/products'
+import { onMounted } from 'vue'
 
-const productsData = ref([])
+const productStore = useProductsStore()
+
+onMounted(() => {
+  productStore.getProducts()
+})
+
+const discountedPrice = (product) => {
+  return product.price - ((product.price * product.discount) / 100).toFixed(2)
+}
 </script>
 
 <template>
@@ -14,18 +23,32 @@ const productsData = ref([])
           <th>Name</th>
           <th>Category</th>
           <th>Description</th>
-          <th>Discount</th>
           <th>Price</th>
-          <th>Discounted Price</th>
+          <th>Discount</th>
         </tr>
       </thead>
       <tbody class="w-full">
-        <!-- <tr v-for="(product, index) of productsData" class="text-center even:bg-teal-100">
+        <tr
+          v-for="(product, index) of productStore.productsData"
+          :key="product._id"
+          class="text-center even:bg-teal-100"
+        >
           <td>{{ index + 1 }}.</td>
           <td>{{ product._id }}</td>
-          <td>{{ product.username }}</td>
-          <td>{{ product.email }}</td>
-        </tr> -->
+          <td>{{ product.name }}</td>
+          <td>{{ product.category }}</td>
+          <td>{{ product.description }}</td>
+          <td v-if="product.discount" class="flex gap-2 items-center justify-center">
+            <span class="relative"
+              ><span class="text-gray-500 line-through decoration-red-600">${{
+                product.price
+              }}</span></span
+            >
+            <span class="text-teal-600 font-medium">${{ discountedPrice(product) }}</span>
+          </td>
+          <td v-else>${{ product.price }}</td>
+          <td>{{ product.discount ? product.discount : 0 }}%</td>
+        </tr>
       </tbody>
     </table>
   </div>
