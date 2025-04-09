@@ -40,3 +40,12 @@ export const getCarts = async (req, res) => {
     req.json(error);
   }
 };
+
+export const deleteCart = async (req, res) => {
+  try {
+    await Cart.findByIdAndDelete(req.params.id);
+    res.json({ message: "Product successfully removed from cart" });
+  } catch (error) {
+    res.status(422).json({ message: "Error while removing the cart:", error });
+  }
+};
