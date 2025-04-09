@@ -53,3 +53,13 @@ export const deleteProduct = async (req, res) => {
     res.json({ message: "Failed to delete product" });
   }
 };
+
+export const getSingleProduct = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const product = await Product.findOne(id);
+    res.json(product);
+  } catch (error) {
+    res.json({ message: "Cannot find specific product:", error });
+  }
+};
