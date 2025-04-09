@@ -1,18 +1,34 @@
 <script setup>
+import { request } from '@/api'
 import { useCartStore } from '@/stores/carts'
+import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
-import { onMounted, watchEffect } from 'vue'
+import { onMounted } from 'vue'
 defineProps({
   showCartModal: Boolean,
 })
 
 const cartStore = useCartStore()
+const notificationStore = useNotificationStore()
 const carts = cartStore.carts
 const emit = defineEmits(['update:showCartModal'])
 
 onMounted(() => {
   cartStore.getCarts()
 })
+
+async function deleteCart(id) {
+  try {
+    const response = await request.delete('api/cart/delete-cart/' + id)
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data.message)
+    await cartStore.getCarts()
+  } catch (error) {
+    console.error('Error while removing the cart:', error)
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response.message || 'Error while removing the cart')
+  }
+}
 </script>
 
 <template>
@@ -23,6 +39,7 @@ onMounted(() => {
         width="12"
         height="12"
         class="shrink-0 text-gray-600 cursor-pointer"
+        @click="deleteCart(cart._id)"
       />
 
       <img
