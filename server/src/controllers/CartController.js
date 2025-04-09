@@ -49,3 +49,29 @@ export const deleteCart = async (req, res) => {
     res.status(422).json({ message: "Error while removing the cart:", error });
   }
 };
+
+export const updateCartQuantity = async (req, res) => {
+  try {
+    const cart = await Cart.findById(req.params.id).populate("product");
+    if (!cart) {
+      res.status(404).json({ message: "Cart product not found" });
+    }
+    const updatedQuantity =
+      type === "increase" ? cart.quantity + 1 : cart.quantity - 1;
+    const discountedPrice = cart.product.discount
+      ? cart.product.price - (cart.product.price * cart.product.discount) / 100
+      : cart.product.price;
+    const updatedTotalPrice = updatedQuantity * discountedPrice;
+    const updatedCart = await Cart.findByIdAndUpdate(
+      id,
+      {
+        $inc: { quantity: type === "increase" ? 1 : -1 },
+        $set: { totalPrice: updatedTotalPrice },
+      },
+      { new: true }
+    );
+    res.json({ message: "Cart quantity updated", cart: updatedCart });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating cart quantity:", error });
+  }
+};
