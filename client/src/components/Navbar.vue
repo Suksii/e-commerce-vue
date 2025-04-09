@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Modal from './Modal.vue'
 import ProfileContent from './ProfileContent.vue'
 import CartContent from './CartContent.vue'
@@ -18,6 +18,9 @@ function toggleCartModal() {
   showCartModal.value = !showCartModal.value
   showProfileModal.value = false
 }
+onMounted(() => {
+  cartStore.getCarts()
+})
 </script>
 
 <template>

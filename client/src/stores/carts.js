@@ -1,10 +1,10 @@
 import { request } from '@/api'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import { useNotificationStore } from './notification'
 
 export const useCartStore = defineStore('carts', () => {
-  const carts = ref([])
+  const carts = reactive([])
   const notificationStore = useNotificationStore()
 
   async function addCart(id) {
@@ -14,6 +14,7 @@ export const useCartStore = defineStore('carts', () => {
       notificationStore.showNotification(
         response.data.message || 'Product successfully added to cart..',
       )
+      await getCarts()
     } catch (error) {
       notificationStore.isError = false
       notificationStore.showNotification(error.response.data.message)
@@ -23,8 +24,8 @@ export const useCartStore = defineStore('carts', () => {
   async function getCarts() {
     try {
       const { data } = await request.get('api/cart/carts')
-      carts.value = data
-      console.log('Carts', carts.value)
+
+      carts.splice(0, carts.length, ...data)
     } catch (error) {
       console.error('Error while fetching carts:', error)
     }

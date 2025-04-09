@@ -1,7 +1,7 @@
 <script setup>
 import { useCartStore } from '@/stores/carts'
 import { Icon } from '@iconify/vue'
-import { watchEffect } from 'vue'
+import { onMounted, watchEffect } from 'vue'
 defineProps({
   showCartModal: Boolean,
 })
@@ -10,11 +10,9 @@ const cartStore = useCartStore()
 const carts = cartStore.carts
 const emit = defineEmits(['update:showCartModal'])
 
-watchEffect(() => {
+onMounted(() => {
   cartStore.getCarts()
 })
-
-console.log(carts)
 </script>
 
 <template>

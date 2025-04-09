@@ -8,7 +8,6 @@ const productsData = ref([])
 onMounted(async () => {
   try {
     const { data } = await request.get('/api/products/get-products')
-    console.log(data)
     productsData.value = data
   } catch (error) {
     console.error('Failed to fetch products:', error)
