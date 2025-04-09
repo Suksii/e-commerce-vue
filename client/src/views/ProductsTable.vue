@@ -1,5 +1,6 @@
 <script setup>
 import { useProductsStore } from '@/stores/products'
+import { Icon } from '@iconify/vue'
 import { onMounted } from 'vue'
 
 const productStore = useProductsStore()
@@ -22,9 +23,9 @@ const discountedPrice = (product) => {
           <th>Product ID</th>
           <th>Name</th>
           <th>Category</th>
-          <th>Description</th>
           <th>Price</th>
           <th>Discount</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody class="w-full">
@@ -37,17 +38,20 @@ const discountedPrice = (product) => {
           <td>{{ product._id }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.category }}</td>
-          <td>{{ product.description }}</td>
           <td v-if="product.discount" class="flex gap-2 items-center justify-center">
             <span class="relative"
-              ><span class="text-gray-500 line-through decoration-red-600">${{
-                product.price
-              }}</span></span
+              ><span class="text-gray-500 line-through decoration-red-600"
+                >${{ product.price }}</span
+              ></span
             >
             <span class="text-teal-600 font-medium">${{ discountedPrice(product) }}</span>
           </td>
           <td v-else>${{ product.price }}</td>
           <td>{{ product.discount ? product.discount : 0 }}%</td>
+          <td class="flex gap-6 justify-center items-center">
+            <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-red-600 cursor-pointer" />
+            <Icon icon="lucide:edit" width="24" height="24" class="text-teal-600 cursor-pointer"/>
+          </td>
         </tr>
       </tbody>
     </table>

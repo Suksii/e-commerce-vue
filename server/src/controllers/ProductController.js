@@ -43,3 +43,13 @@ export const uploadImage = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const deleteProduct = async (req, res) => {
+  const id = req.params;
+  try {
+    await Product.findByIdAndDelete(id);
+    res.json({ message: "Product successfully deleted" });
+  } catch (error) {
+    res.json({ message: "Failed to delete product" });
+  }
+};
