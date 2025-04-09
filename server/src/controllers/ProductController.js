@@ -1,5 +1,6 @@
 import fs from "fs";
 import { Product } from "../models/Product.js";
+import { log } from "console";
 
 export const addProduct = async (req, res) => {
   const { name, description, category, images, price, discount } = req.body;
@@ -57,8 +58,9 @@ export const deleteProduct = async (req, res) => {
 export const getSingleProduct = async (req, res) => {
   const id = req.params.id;
   try {
-    const product = await Product.findOne(id);
-    res.json(product);
+    const product = await Product.findById(id);
+    console.log(product);
+    res.status(200).json(product);
   } catch (error) {
     res.json({ message: "Cannot find specific product:", error });
   }

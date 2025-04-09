@@ -1,56 +1,41 @@
 <script setup>
+import { request } from '@/api'
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-const singleProduct = {
-  id: 1,
-  title: 'Mens Casual Premium Slim Fit T-Shirts',
-  category: 'T-Shirt',
-  description:
-    'Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.',
-  price: 23.99,
-  discount: 10,
-  images: [
-    {
-      id: 1,
-      src: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
-      alt: '',
-    },
-    {
-      id: 2,
-      src: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-      alt: '',
-    },
-    {
-      id: 3,
-      src: 'https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg',
-      alt: '',
-    },
-    {
-      id: 4,
-      src: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
-      alt: '',
-    },
-  ],
-}
-
-const selectedImage = ref(singleProduct.images[0])
-const quantity = ref(1)
+const route = useRoute()
+const singleProduct = ref({})
+const baseImgUrl = 'http://localhost:3000/uploads/'
+const selectedImage = ref('')
 const discountedPrice = (productPrice, productDiscount) => {
   return (productPrice - productPrice * (productDiscount / 100)).toFixed(2)
 }
 
-function handleMinus() {
-  if (quantity.value > 1) quantity.value--
+async function getProduct(id) {
+  try {
+    const { data } = await request('api/products/product/' + id)
+    console.log(data.images)
+
+    if (data.images && data.images.length > 0) {
+      selectedImage.value = data.images[0]
+    }
+    singleProduct.value = data
+  } catch (error) {
+    console.error('Error fetching specific product', error)
+  }
 }
-function handlePlus() {
-  if (quantity.value < 10) quantity.value++
-}
+onMounted(() => {
+  if (route.params.id) {
+    getProduct(route.params.id)
+  }
+})
 </script>
 
 <template>
   <div class="flex flex-col md:flex-row gap-12 w-[90%] md:w-[70%] mx-auto py-24">
     <div class="flex-2">
+      Proba
       <div
         class="border border-teal-600/20 flex justify-center items-center group overflow-hidden rounded-md"
       >
@@ -63,9 +48,9 @@ function handlePlus() {
         >
           <img
             v-if="selectedImage"
-            :key="selectedImage.src"
-            :src="selectedImage.src"
-            :alt="selectedImage.alt"
+            :key="selectedImage"
+            :src="baseImgUrl + selectedImage"
+            :alt="selectedImage"
             class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
           />
         </Transition>
@@ -73,12 +58,12 @@ function handlePlus() {
       <div class="grid grid-cols-4 gap-2 pt-2">
         <div
           v-for="image of singleProduct.images"
-          :key="image.id"
+          :key="image"
           class="w-full border border-teal-600/20 rounded-md group cursor-pointer"
         >
           <img
-            :src="image.src"
-            :alt="image.alt"
+            :src="baseImgUrl + image"
+            :alt="image"
             @click="selectedImage = image"
             class="w-full object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
           />
@@ -87,7 +72,7 @@ function handlePlus() {
     </div>
 
     <div class="flex-3 flex-col">
-      <h2 class="text-3xl font-bold">{{ singleProduct.title }}</h2>
+      <h2 class="text-3xl font-bold">{{ singleProduct.name }}</h2>
       <p class="text-gray-700">{{ singleProduct.category }}</p>
       <div class="border-t border-gray-200 my-4"></div>
       <div class="flex gap-6">
@@ -106,21 +91,15 @@ function handlePlus() {
       <div class="py-4 flex flex-col items-center gap-2 w-fit">
         <p class="font-medium">Choose a Quantity</p>
         <div class="flex items-center border border-gray-200 rounded-full h-12">
-          <div
-            class="cursor-pointer px-4 w-full h-full flex items-center justify-center"
-            @click="handleMinus"
-          >
+          <div class="cursor-pointer px-4 w-full h-full flex items-center justify-center">
             <Icon icon="lucide:minus" class="text-lg" />
           </div>
           <p
             class="border-l border-r border-gray-200 px-5 font-medium text-lg h-12 flex items-center justify-center"
           >
-            {{ quantity }}
+            1
           </p>
-          <div
-            class="cursor-pointer px-4 w-full h-full flex items-center justify-center"
-            @click="handlePlus"
-          >
+          <div class="cursor-pointer px-4 w-full h-full flex items-center justify-center">
             <Icon icon="lucide:plus" class="text-lg" />
           </div>
         </div>

@@ -33,7 +33,7 @@ const router = createRouter({
       component: AddProductForm,
     },
     {
-      path: '/product',
+      path: '/product/:id',
       name: 'singleProduct',
       component: SingleProductView,
     },

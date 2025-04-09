@@ -4,9 +4,11 @@ import { useNotificationStore } from '@/stores/notification'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const productStore = useProductsStore()
 const notificationStore = useNotificationStore()
+const router = useRouter()
 
 onMounted(() => {
   productStore.getProducts()
@@ -41,6 +43,7 @@ async function deleteProduct(id) {
           <th>Category</th>
           <th>Price</th>
           <th>Discount</th>
+          <th>Images</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -49,11 +52,13 @@ async function deleteProduct(id) {
           v-for="(product, index) of productStore.productsData"
           :key="product._id"
           class="text-center even:bg-teal-100"
+          @click.stop="router.push(`/product/${product._id}`)"
         >
           <td>{{ index + 1 }}.</td>
           <td>{{ product._id }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.category }}</td>
+          <td><img :src="'http://localhost:3000/uploads/' + product.images[0]"/></td>
           <td v-if="product.discount" class="flex gap-2 items-center justify-center">
             <span class="relative"
               ><span class="text-gray-500 line-through decoration-red-600"
