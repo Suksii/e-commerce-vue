@@ -51,13 +51,15 @@ export const deleteCart = async (req, res) => {
 };
 
 export const updateCartQuantity = async (req, res) => {
+  const id = req.params.id;
+  const type = req.body.type;
   try {
-    const cart = await Cart.findById(req.params.id).populate("product");
+    const cart = await Cart.findById(id).populate("product");
     if (!cart) {
       res.status(404).json({ message: "Cart product not found" });
     }
     const updatedQuantity =
-      type === "increase" ? cart.quantity + 1 : cart.quantity - 1;
+      type === "increase" ? cart.quantity + 1 : Math.max(1, cart.quantity - 1);
     const discountedPrice = cart.product.discount
       ? cart.product.price - (cart.product.price * cart.product.discount) / 100
       : cart.product.price;
@@ -65,11 +67,11 @@ export const updateCartQuantity = async (req, res) => {
     const updatedCart = await Cart.findByIdAndUpdate(
       id,
       {
-        $inc: { quantity: type === "increase" ? 1 : -1 },
-        $set: { totalPrice: updatedTotalPrice },
+        $set: { quantity: updatedQuantity, totalPrice: updatedTotalPrice },
       },
       { new: true }
     );
+
     res.json({ message: "Cart quantity updated", cart: updatedCart });
   } catch (error) {
     res.status(500).json({ message: "Error updating cart quantity:", error });
