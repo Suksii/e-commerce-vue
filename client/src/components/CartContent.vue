@@ -29,14 +29,14 @@ async function deleteCart(id) {
     notificationStore.showNotification(error.response.message || 'Error while removing the cart')
   }
 }
-async function updateQuantity(id, type) {
-  try {
-    await request.patch('/api/cart/update-cart/' + id, { type })
-    await cartStore.getCarts()
-  } catch (error) {
-    console.error('Error updating cart quantity:', error)
-  }
-}
+// async function updateQuantity(id, type) {
+//   try {
+//     await request.patch('/api/cart/update-cart/' + id, { type })
+//     await cartStore.getCarts()
+//   } catch (error) {
+//     console.error('Error updating cart quantity:', error)
+//   }
+// }
 </script>
 
 <template>
@@ -59,15 +59,15 @@ async function updateQuantity(id, type) {
         <p class="line-clamp-2 text-sm text-gray-600">{{ cart.product.description }}</p>
       </div>
       <div class="flex items-center gap-2 mx-2 md:mx-8">
-        <button @click="updateQuantity(cart._id, 'decrease')">
+        <button @click="cartStore.updateQuantity(cart._id, 'decrease')">
           <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
         </button>
         <span>{{ cart.quantity }}</span>
-        <button @click="updateQuantity(cart._id, 'increase')">
+        <button @click="cartStore.updateQuantity(cart._id, 'increase')">
           <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
         </button>
       </div>
-      <span class="font-medium">${{ cart.totalPrice }}</span>
+      <span class="font-medium">${{ Number(cart.totalPrice).toFixed(2) }}</span>
     </div>
   </div>
   <div class="flex justify-end mt-6 gap-2">

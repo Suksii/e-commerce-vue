@@ -1,5 +1,6 @@
 <script setup>
 import { request } from '@/api'
+import { useCartStore } from '@/stores/carts'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -8,6 +9,8 @@ const route = useRoute()
 const singleProduct = ref({})
 const baseImgUrl = 'http://localhost:3000/uploads/'
 const selectedImage = ref('')
+const quantity = ref(1)
+const cartStore = useCartStore()
 const discountedPrice = (productPrice, productDiscount) => {
   return (productPrice - productPrice * (productDiscount / 100)).toFixed(2)
 }
@@ -30,12 +33,21 @@ onMounted(() => {
     getProduct(route.params.id)
   }
 })
+function increaseQuantity() {
+  if (quantity.value < 5) {
+    quantity.value += 1
+  }
+}
+function decreaseQuantity() {
+  if (quantity.value > 1) {
+    quantity.value -= 1
+  }
+}
 </script>
 
 <template>
   <div class="flex flex-col md:flex-row gap-12 w-[90%] md:w-[70%] mx-auto py-24">
     <div class="flex-2">
-      Proba
       <div
         class="border border-teal-600/20 flex justify-center items-center group overflow-hidden rounded-md"
       >
@@ -76,14 +88,19 @@ onMounted(() => {
       <p class="text-gray-700">{{ singleProduct.category }}</p>
       <div class="border-t border-gray-200 my-4"></div>
       <div class="flex gap-6">
-        <h3 v-if="singleProduct.discount" class="text-2xl font-medium">
+        <div class="flex items-end">
+          <h3
+            class="text-2xl font-medium"
+            :class="{ 'line-through decoration-red-600 text-gray-500': singleProduct.discount }"
+          >
+            ${{ singleProduct.price }}
+          </h3>
+          <p v-if="singleProduct.discount" class="text-red-600 translate-y-2">
+            -{{ singleProduct.discount }}%
+          </p>
+        </div>
+        <h3 v-if="singleProduct.discount" class="text-2xl font-medium text-teal-600">
           {{ discountedPrice(singleProduct.price, singleProduct.discount) }}
-        </h3>
-        <h3
-          class="text-2xl font-medium"
-          :class="{ 'line-through text-gray-500': singleProduct.discount }"
-        >
-          ${{ singleProduct.price }}
         </h3>
       </div>
       <div class="border-t border-gray-200 my-4"></div>
@@ -92,19 +109,24 @@ onMounted(() => {
         <p class="font-medium">Choose a Quantity</p>
         <div class="flex items-center border border-gray-200 rounded-full h-12">
           <div class="cursor-pointer px-4 w-full h-full flex items-center justify-center">
-            <Icon icon="lucide:minus" class="text-lg" />
+            <Icon icon="lucide:minus" class="text-lg" @click="decreaseQuantity" />
           </div>
           <p
             class="border-l border-r border-gray-200 px-5 font-medium text-lg h-12 flex items-center justify-center"
           >
-            1
+            {{ quantity }}
           </p>
           <div class="cursor-pointer px-4 w-full h-full flex items-center justify-center">
-            <Icon icon="lucide:plus" class="text-lg" />
+            <Icon icon="lucide:plus" class="text-lg" @click="increaseQuantity" />
           </div>
         </div>
       </div>
-      <button class="min-w-74 my-4 save-button">Add to Cart</button>
+      <button
+        class="min-w-74 my-4 save-button"
+        @click="cartStore.addCart(singleProduct._id, quantity)"
+      >
+        Add to Cart
+      </button>
     </div>
   </div>
 </template>

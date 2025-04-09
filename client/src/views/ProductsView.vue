@@ -1,23 +1,18 @@
 <script setup>
-import { request } from '@/api'
 import CardList from '@/components/CardList.vue'
-import { onMounted, ref } from 'vue'
+import { useProductsStore } from '@/stores/products'
+import { onMounted } from 'vue'
 
-const productsData = ref([])
+const productsStore = useProductsStore()
 
-onMounted(async () => {
-  try {
-    const { data } = await request.get('/api/products/get-products')
-    productsData.value = data
-  } catch (error) {
-    console.error('Failed to fetch products:', error)
-  }
+onMounted(() => {
+  productsStore.getProducts()
 })
 </script>
 
 <template>
   <div class="py-20">
     <RouterLink to="/add-product" class="save-button">Add product</RouterLink>
-    <CardList :data="productsData" />
+    <CardList :data="productsStore.productsData" />
   </div>
 </template>

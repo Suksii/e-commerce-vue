@@ -11,7 +11,7 @@ defineProps({
   description: String,
 })
 
-const store = useCartStore()
+const cartStore = useCartStore()
 </script>
 
 <template>
@@ -36,7 +36,7 @@ const store = useCartStore()
           <span class="text-lg font-bold text-gray-900">${{ price }}</span>
           <span v-if="discount" class="text-sm text-red-500">-{{ discount }}%</span>
         </div>
-        <button class="save-button" @click="store.addCart(id)">Add to Cart</button>
+        <button class="save-button" @click="cartStore.addCart(id, 1)">Add to Cart</button>
       </div>
     </div>
   </div>

@@ -6,6 +6,7 @@ import { Cart } from "../models/Cart.js";
 export const addCart = async (req, res) => {
   try {
     const { token } = req.cookies;
+    const { quantity } = req.body;
 
     if (!token) {
       return res.status(401).json({ message: "Unauthorized - No token" });
@@ -17,18 +18,22 @@ export const addCart = async (req, res) => {
     const discountedPrice = productData.discount
       ? productData.price - (productData.price * productData.discount) / 100
       : productData.price;
+    const totalPrice = (discountedPrice * quantity).toFixed(2);
     const newCart = await Cart.create({
       user: userData,
       product: productData,
-      quantity: 1,
+      quantity: quantity || 1,
       price: discountedPrice,
+      totalPrice: totalPrice,
     });
     res.json({
       cart: newCart,
       message: "Product successfully added to cart",
     });
   } catch (error) {
-    res.json({ message: "Internal Server Error" });
+    console.error(error);
+
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 

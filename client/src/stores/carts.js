@@ -7,17 +7,17 @@ export const useCartStore = defineStore('carts', () => {
   const carts = reactive([])
   const notificationStore = useNotificationStore()
 
-  async function addCart(id) {
+  async function addCart(id, quantity) {
     try {
-      const response = await request.post('/api/cart/add-cart/' + id)
+      const response = await request.post('/api/cart/add-cart/' + id, { quantity })
       notificationStore.isError = false
       notificationStore.showNotification(
-        response.data.message || 'Product successfully added to cart..',
+        response.data?.message || 'Product successfully added to cart..',
       )
       await getCarts()
     } catch (error) {
-      notificationStore.isError = false
-      notificationStore.showNotification(error.response.data.message)
+      notificationStore.isError = true
+      notificationStore.showNotification(error.response?.data?.message)
       console.error('Error while adding product to cart:', error)
     }
   }
@@ -30,5 +30,13 @@ export const useCartStore = defineStore('carts', () => {
       console.error('Error while fetching carts:', error)
     }
   }
-  return { addCart, getCarts, carts }
+  async function updateQuantity(id, type) {
+    try {
+      await request.patch('/api/cart/update-cart/' + id, { type })
+      await getCarts()
+    } catch (error) {
+      console.error('Error updating cart quantity:', error)
+    }
+  }
+  return { addCart, getCarts, carts, updateQuantity }
 })

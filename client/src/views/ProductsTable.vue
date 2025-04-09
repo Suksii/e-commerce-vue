@@ -43,7 +43,6 @@ async function deleteProduct(id) {
           <th>Category</th>
           <th>Price</th>
           <th>Discount</th>
-          <th>Images</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -52,13 +51,16 @@ async function deleteProduct(id) {
           v-for="(product, index) of productStore.productsData"
           :key="product._id"
           class="text-center even:bg-teal-100"
-          @click.stop="router.push(`/product/${product._id}`)"
         >
-          <td>{{ index + 1 }}.</td>
+          <td
+            @click="router.push(`/product/${product._id}`)"
+            class="hover:bg-teal-600 transition-all cursor-pointer"
+          >
+            {{ index + 1 }}.
+          </td>
           <td>{{ product._id }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.category }}</td>
-          <td><img :src="'http://localhost:3000/uploads/' + product.images[0]"/></td>
           <td v-if="product.discount" class="flex gap-2 items-center justify-center">
             <span class="relative"
               ><span class="text-gray-500 line-through decoration-red-600"
@@ -70,15 +72,14 @@ async function deleteProduct(id) {
           <td v-else>${{ product.price }}</td>
           <td>{{ product.discount ? product.discount : 0 }}%</td>
           <td class="flex gap-6 justify-center items-center">
-            <button @click="deleteProduct(product._id)">
-              <Icon
-                icon="fluent:delete-28-filled"
-                width="28"
-                height="28"
-                class="text-red-600 cursor-pointer"
-              />
-            </button>
-            <Icon icon="lucide:edit" width="24" height="24" class="text-teal-600 cursor-pointer" />
+            <Icon
+              icon="fluent:delete-28-filled"
+              width="28"
+              height="28"
+              class="text-red-600 cursor-pointer"
+              @click="deleteProduct(product._id)"
+            />
+            <Icon icon="lucide:edit" width="28" height="28" class="text-teal-600 cursor-pointer" />
           </td>
         </tr>
       </tbody>
