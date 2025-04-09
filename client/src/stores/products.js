@@ -6,7 +6,7 @@ export const useProductsStore = defineStore('products', () => {
   const productsData = ref([])
   async function getProducts() {
     try {
-      const { data } = await request.get('/api/products/get-products')
+      const { data } = await request.get('/api/products')
       productsData.value = data
     } catch (error) {
       console.error('Failed to fetch products:', error)
