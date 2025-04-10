@@ -8,7 +8,16 @@ const sidebarMenu = [
     id: 1,
     name: 'Dashboard',
     icon: 'garden:dashboard-26',
-    link: '',
+    options: [
+      {
+        name: 'Add Product',
+        link: '/add-product',
+      },
+      {
+        name: 'See products',
+        link: '/products',
+      },
+    ],
   },
   {
     id: 2,
@@ -20,11 +29,27 @@ const sidebarMenu = [
     id: 3,
     name: 'Products',
     icon: 'ant-design:product-filled',
-    link: '/products',
+    options: [
+      {
+        name: 'Add Product',
+        link: '/add-product',
+      },
+      {
+        name: 'See products',
+        link: '/products',
+      },
+    ],
   },
 ]
 
 const profileStore = useProfile()
+const expandedItem = ref(null)
+
+const handleExpand = (item) => {
+  if (item.options) {
+    expandedItem.value = expandedItem.value === item.id ? null : item.id
+  }
+}
 </script>
 
 <template>
@@ -38,13 +63,25 @@ const profileStore = useProfile()
         <p class="text-lg text-gray-100">Admin</p>
       </div>
     </div>
-    <RouterLink
-      :to="item.link"
-      v-for="item of sidebarMenu"
-      class="flex items-center justify-center md:justify-start md:gap-4 py-4 px-4 bg-teal-700 hover:bg-teal-800 text-white rounded-md cursor-pointer transition-all duration-300"
-    >
-      <Icon :icon="item.icon" width="46" height="46" class="shrink-0" />
-      <p class="text-2xl hidden md:block">{{ item.name }}</p>
-    </RouterLink>
+
+    <div v-for="item of sidebarMenu" class="flex flex-col gap-1" @click="handleExpand(item)">
+      <div
+        class="flex items-center justify-center md:justify-start md:gap-4 p-4 bg-teal-700 hover:bg-teal-800 text-white rounded-md cursor-pointer transition-all duration-300"
+      >
+        <Icon :icon="item.icon" width="46" height="46" class="shrink-0" />
+        <p class="text-2xl hidden md:block">{{ item.name }}</p>
+      </div>
+      <div
+        v-if="item.options && expandedItem === item.id"
+        class="bg-teal-700 rounded-md flex flex-col duration-300"
+      >
+        <RouterLink
+          v-for="option of item.options"
+          :to="option.link"
+          class="rounded-md text-white p-4 hover:bg-teal-800 font-medium text-lg tracking-wider"
+          >{{ option.name }}</RouterLink
+        >
+      </div>
+    </div>
   </div>
 </template>
