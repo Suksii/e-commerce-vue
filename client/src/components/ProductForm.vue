@@ -3,7 +3,9 @@ import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
 import { reactive, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const notificationStore = useNotificationStore()
 const productData = reactive({
   name: '',
@@ -14,17 +16,27 @@ const productData = reactive({
   images: [],
 })
 const inputRef = ref(null)
+const { id } = route.params
 
 async function addProduct() {
   try {
-    const response = await request.post('/api/products/add-product', {
-      name: productData.name,
-      description: productData.description,
-      price: productData.price,
-      discount: productData.discount,
-      category: productData.category,
-      images: productData.images,
-    })
+    const response = id
+      ? await request.put('/api/products/update-product/' + id, {
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          discount: productData.discount,
+          category: productData.category,
+          images: productData.images,
+        })
+      : await request.post('/api/products/add-product', {
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          discount: productData.discount,
+          category: productData.category,
+          images: productData.images,
+        })
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message)
     console.log(response)
@@ -35,7 +47,7 @@ async function addProduct() {
   }
 }
 async function uploadImage(event) {
-  if (productData.images.length < 2) {
+  if (productData.images.length < 5) {
     const file = event.target.files[0]
     const formData = new FormData()
     formData.append('photos', file)
@@ -46,7 +58,6 @@ async function uploadImage(event) {
         },
       })
       productData.images.push(data[0])
-      console.log(productData.images)
     } catch (error) {
       notificationStore.isError = true
       notificationStore.showNotification('Image upload failed')
@@ -65,7 +76,9 @@ function removeImage(imageIndex) {
 
 <template>
   <div class="w-[95%] lg:w-[50%] mx-auto py-24">
-    <h2 class="text-center text-4xl font-medium">Add new product</h2>
+    <h2 class="text-center text-4xl font-medium">
+      {{ id ? 'Edit this product' : 'Add new product' }}
+    </h2>
     <form
       @submit.prevent="addProduct"
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
@@ -76,10 +89,10 @@ function removeImage(imageIndex) {
           <div
             class="w-42 md:w-64 aspect-square relative"
             v-for="(image, index) of productData.images"
+            :key="index"
           >
             <img
               :src="'http://localhost:3000/uploads/' + image"
-              :key="index"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
             <div
@@ -89,7 +102,7 @@ function removeImage(imageIndex) {
               <Icon icon="nimbus:close" width="24" height="24" class="text-red-600" />
             </div>
           </div>
-          <div class="w-42 md:w-64 aspect-square shrink-0 relative" @click="inputRef.click()">
+          <div class="w-42 md:w-64 aspect-square shrink-0 relative" @click="inputRef?.click()">
             <input
               type="file"
               ref="inputRef"
@@ -133,7 +146,7 @@ function removeImage(imageIndex) {
         >
         <input class="custom-input w-full p-4" v-model="productData.category" />
       </div>
-      <button class="min-w-42 w-full my-4 h-14 save-button">Add Product</button>
+      <button class="min-w-42 w-full my-4 h-14 save-button">{{ id ? 'Save Changes' : 'Add Product' }}</button>
     </form>
   </div>
 </template>

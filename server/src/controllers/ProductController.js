@@ -66,7 +66,7 @@ export const getSingleProduct = async (req, res) => {
   }
 };
 
-const updateProduct = async (req, res) => {
+export const updateProduct = async (req, res) => {
   const id = req.params.id;
   const { name, description, category, images, price, discount } = req.body;
   try {

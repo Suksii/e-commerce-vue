@@ -58,7 +58,7 @@ const handleExpand = (item) => {
     <div v-for="item of sidebarMenu" class="flex flex-col gap-1" @click="handleExpand(item)">
       <component
         :is="item.options ? 'div' : RouterLink"
-        :to="item.link"
+        :to="item.options ? undefined : item.link"
         class="flex items-center justify-center md:justify-start md:gap-4 p-4 bg-teal-700 hover:bg-teal-800 text-white rounded-md cursor-pointer transition-all duration-300"
       >
         <Icon :icon="item.icon" width="46" height="46" class="shrink-0" />

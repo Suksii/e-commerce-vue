@@ -5,6 +5,7 @@ import {
   deleteProduct,
   getProducts,
   getSingleProduct,
+  updateProduct,
   uploadImage,
 } from "../controllers/ProductController.js";
 
@@ -17,6 +18,6 @@ router.post("/add-product", addProduct);
 router.get("/", getProducts);
 router.delete("/delete-product/:id", deleteProduct);
 router.get("/product/:id", getSingleProduct);
-router.put("/update-product/:id");
+router.put("/update-product/:id", updateProduct);
 
 export const productRoute = router;

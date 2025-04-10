@@ -79,7 +79,13 @@ async function deleteProduct(id) {
               class="text-red-600 cursor-pointer"
               @click="deleteProduct(product._id)"
             />
-            <Icon icon="lucide:edit" width="28" height="28" class="text-teal-600 cursor-pointer" />
+            <Icon
+              icon="lucide:edit"
+              width="28"
+              height="28"
+              class="text-teal-600 cursor-pointer"
+              @click="router.push('/update-product/' + product._id)"
+            />
           </td>
         </tr>
       </tbody>
