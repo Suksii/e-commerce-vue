@@ -38,6 +38,21 @@ async function handleLogout() {
     console.error('Failed to logout', error)
   }
 }
+async function updateUser(id) {
+  try {
+    const response = await request.patch('/api/users/update-user/' + id, {
+      username: username.value,
+    })
+    notificationStore.isError = response.data?.message === 'Username has already been taken'
+    notificationStore.showNotification(response.data?.message || 'Username successfully changed')
+    await profileStore.userProfile()
+    emit('update:showProfileModal', false)
+  } catch (error) {
+    console.error('Failed to update username:', error)
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response?.data?.message || 'Failed to update username')
+  }
+}
 </script>
 
 <template>
@@ -68,7 +83,7 @@ async function handleLogout() {
           <button @click="emit('update:showProfileModal', false)" class="close-button">
             Close
           </button>
-          <button class="min-w-24 save-button">
+          <button class="min-w-24 save-button" @click="updateUser(profileStore.currentUser._id)">
             Save changes
           </button>
         </div>
