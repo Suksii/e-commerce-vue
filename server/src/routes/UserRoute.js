@@ -15,5 +15,6 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.get("/profile", authenticateUser, getCurrentUser);
 router.get("/get-users", getUsers);
+router.patch("/update-user/:id", updateUser);
 
 export const userRoute = router;
