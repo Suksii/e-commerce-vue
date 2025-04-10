@@ -65,3 +65,21 @@ export const getSingleProduct = async (req, res) => {
     res.json({ message: "Cannot find specific product:", error });
   }
 };
+
+const updateProduct = async (req, res) => {
+  const id = req.params.id;
+  const { name, description, category, images, price, discount } = req.body;
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(id, {
+      name,
+      description,
+      category,
+      images,
+      price,
+      discount,
+    });
+    res.json(updatedProduct);
+  } catch (error) {
+    res.json({ message: "Internal Server Error", error });
+  }
+};
