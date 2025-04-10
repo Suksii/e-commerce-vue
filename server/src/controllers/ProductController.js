@@ -78,7 +78,7 @@ export const updateProduct = async (req, res) => {
       price,
       discount,
     });
-    res.json(updatedProduct);
+    res.json({ message: "Product edited successfuly", updatedProduct });
   } catch (error) {
     res.json({ message: "Internal Server Error", error });
   }

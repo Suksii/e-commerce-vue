@@ -1,8 +1,9 @@
 <script setup>
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
+import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -17,6 +18,7 @@ const productData = reactive({
 })
 const inputRef = ref(null)
 const { id } = route.params
+const productStore = useProductsStore()
 
 async function addProduct() {
   try {
@@ -39,7 +41,6 @@ async function addProduct() {
         })
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message)
-    console.log(response)
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message)
@@ -72,6 +73,21 @@ async function uploadImage(event) {
 function removeImage(imageIndex) {
   productData.images = productData.images.filter((_, index) => index !== imageIndex)
 }
+onMounted(async () => {
+  if (id) {
+    await productStore.getProduct(id)
+    const product = productStore.singleProduct
+
+    if (product) {
+      productData.name = product.name
+      productData.description = product.description
+      productData.price = product.price
+      productData.discount = product.discount
+      productData.category = product.category
+      productData.images = product.images
+    }
+  }
+})
 </script>
 
 <template>
@@ -138,7 +154,10 @@ function removeImage(imageIndex) {
         <label class="text-xl font-medium"
           >Description<span class="text-red-600 px-0.5">*</span></label
         >
-        <textarea class="custom-input w-full p-4 min-h-52" v-model="productData.description" />
+        <textarea
+          class="custom-input w-full p-4 min-h-52"
+          v-model="productData.description"
+        ></textarea>
       </div>
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium"
@@ -146,7 +165,9 @@ function removeImage(imageIndex) {
         >
         <input class="custom-input w-full p-4" v-model="productData.category" />
       </div>
-      <button class="min-w-42 w-full my-4 h-14 save-button">{{ id ? 'Save Changes' : 'Add Product' }}</button>
+      <button class="min-w-42 w-full my-4 h-14 save-button">
+        {{ id ? 'Save Changes' : 'Add Product' }}
+      </button>
     </form>
   </div>
 </template>

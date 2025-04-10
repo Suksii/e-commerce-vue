@@ -11,9 +11,6 @@ const quantity = ref(1)
 const cartStore = useCartStore()
 const productStore = useProductsStore()
 
-const singleProduct = productStore.singleProduct
-const selectedImage = productStore.selectedImage
-
 const discountedPrice = (productPrice, productDiscount) => {
   return (productPrice - productPrice * (productDiscount / 100)).toFixed(2)
 }
@@ -49,24 +46,24 @@ function decreaseQuantity() {
           mode="out-in"
         >
           <img
-            v-if="selectedImage"
-            :key="selectedImage"
-            :src="baseImgUrl + selectedImage"
-            :alt="selectedImage"
+            v-if="productStore.selectedImage"
+            :key="productStore.selectedImage"
+            :src="baseImgUrl + productStore.selectedImage"
+            :alt="productStore.selectedImage"
             class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
           />
         </Transition>
       </div>
       <div class="grid grid-cols-4 gap-2 pt-2">
         <div
-          v-for="image of singleProduct.images"
+          v-for="image of productStore.singleProduct.images"
           :key="image"
           class="w-full border border-teal-600/20 rounded-md group cursor-pointer"
         >
           <img
             :src="baseImgUrl + image"
             :alt="image"
-            @click="selectedImage = image"
+            @click="productStore.selectedImage = image"
             class="w-full object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
           />
         </div>
@@ -74,27 +71,31 @@ function decreaseQuantity() {
     </div>
 
     <div class="flex-3 flex-col">
-      <h2 class="text-3xl font-bold">{{ singleProduct.name }}</h2>
-      <p class="text-gray-700">{{ singleProduct.category }}</p>
+      <h2 class="text-3xl font-bold">{{ productStore.singleProduct.name }}</h2>
+      <p class="text-gray-700">{{ productStore.singleProduct.category }}</p>
       <div class="border-t border-gray-200 my-4"></div>
       <div class="flex gap-6">
         <div class="flex items-end">
           <h3
             class="text-2xl font-medium"
-            :class="{ 'line-through decoration-red-600 text-gray-500': singleProduct.discount }"
+            :class="{
+              'line-through decoration-red-600 text-gray-500': productStore.singleProduct.discount,
+            }"
           >
-            ${{ singleProduct.price }}
+            ${{ productStore.singleProduct.price }}
           </h3>
-          <p v-if="singleProduct.discount" class="text-red-600 translate-y-2">
-            -{{ singleProduct.discount }}%
+          <p v-if="productStore.singleProduct.discount" class="text-red-600 translate-y-2">
+            -{{ productStore.singleProduct.discount }}%
           </p>
         </div>
-        <h3 v-if="singleProduct.discount" class="text-2xl font-medium text-teal-600">
-          {{ discountedPrice(singleProduct.price, singleProduct.discount) }}
+        <h3 v-if="productStore.singleProduct.discount" class="text-2xl font-medium text-teal-600">
+          {{
+            discountedPrice(productStore.singleProduct.price, productStore.singleProduct.discount)
+          }}
         </h3>
       </div>
       <div class="border-t border-gray-200 my-4"></div>
-      <p class="text-gray-800">{{ singleProduct.description }}</p>
+      <p class="text-gray-800">{{ productStore.singleProduct.description }}</p>
       <div class="py-4 flex flex-col items-center gap-2 w-fit">
         <p class="font-medium">Choose a Quantity</p>
         <div class="flex items-center border border-gray-200 rounded-full h-12">
@@ -113,7 +114,7 @@ function decreaseQuantity() {
       </div>
       <button
         class="min-w-74 my-4 save-button"
-        @click="cartStore.addCart(singleProduct._id, quantity)"
+        @click="cartStore.addCart(productStore.singleProduct._id, quantity)"
       >
         Add to Cart
       </button>
