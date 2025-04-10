@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  updateUser,
 } from "../controllers/UserController.js";
 import { authenticateUser, getCurrentUser } from "../middleware/userProfile.js";
 

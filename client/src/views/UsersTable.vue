@@ -8,7 +8,6 @@ onMounted(async () => {
   try {
     const { data } = await request.get('/api/users/get-users')
     usersData.value = data
-    console.log(data)
   } catch (error) {
     console.error(error)
   }

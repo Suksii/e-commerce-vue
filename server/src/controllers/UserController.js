@@ -74,3 +74,25 @@ export const getUsers = async (req, res) => {
     res.status(404).json(error);
   }
 };
+
+export const updateUser = async (req, res) => {
+  const { username } = req.body;
+  const { id } = req.params;
+
+  try {
+    const usernameExists = await User.findOne({ username, _id: { $ne: id } });
+    if (usernameExists) {
+      return res.json({ message: "Username has already been taken" });
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: { username },
+      },
+      { new: true }
+    );
+    res.json({ message: "Username successfully changed", user: updatedUser });
+  } catch (error) {
+    res.json({ message: "Internal server error", error });
+  }
+};
