@@ -3,7 +3,7 @@ import { request } from '@/api'
 import { useCartStore } from '@/stores/carts'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 defineProps({
   showCartModal: Boolean,
 })
@@ -37,11 +37,14 @@ async function updateQuantity(id, type) {
     console.error('Error updating cart quantity:', error)
   }
 }
+const totalCartPrice = computed(() => {
+  return carts.reduce((curr, prev) => curr + prev.totalPrice, 0)
+})
 </script>
 
 <template>
-  <div class="overflow-y-auto max-h-[500px]">
-    <div v-for="cart in carts" :key="cart._id" class="flex gap-4 w-full items-center">
+  <div class="overflow-y-auto max-h-[500px] flex flex-col gap-2">
+    <div v-for="cart in carts" :key="cart._id" class="flex gap-4 w-full items-center rounded-xl border border-gray-200 shadow-sm p-4">
       <Icon
         icon="streamline:delete-1-solid"
         width="12"
@@ -70,8 +73,14 @@ async function updateQuantity(id, type) {
       <span class="font-medium">${{ Number(cart.totalPrice).toFixed(2) }}</span>
     </div>
   </div>
-  <div class="flex justify-end mt-6 gap-2">
-    <button @click="emit('update:showCartModal', false)" class="close-button">Close</button>
-    <button class="min-w-48 tracking-wider save-button">Checkout</button>
+  <div class="flex items-center justify-between mt-4 p-4 bg-gray-100 shadow-sm rounded-lg gap-8">
+    <div class="flex items-center gap-2">
+      <p class="text-sm text-gray-500 uppercase tracking-wide">Total</p>
+      <p class="text-teal-600 font-bold text-2xl">${{ totalCartPrice }}</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button @click="emit('update:showCartModal', false)" class="close-button">Close</button>
+      <button class="min-w-48 tracking-wider save-button">Checkout</button>
+    </div>
   </div>
 </template>
