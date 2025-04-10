@@ -17,7 +17,7 @@ router.post("/upload", photoUpload.array("photos", 100), uploadImage);
 router.post("/add-product", addProduct);
 router.get("/", getProducts);
 router.delete("/delete-product/:id", deleteProduct);
-router.get("/product/:id", getSingleProduct);
+router.get("/:id", getSingleProduct);
 router.put("/update-product/:id", updateProduct);
 
 export const productRoute = router;

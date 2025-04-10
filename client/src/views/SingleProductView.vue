@@ -1,36 +1,26 @@
 <script setup>
-import { request } from '@/api'
 import { useCartStore } from '@/stores/carts'
+import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const singleProduct = ref({})
 const baseImgUrl = 'http://localhost:3000/uploads/'
-const selectedImage = ref('')
 const quantity = ref(1)
 const cartStore = useCartStore()
+const productStore = useProductsStore()
+
+const singleProduct = productStore.singleProduct
+const selectedImage = productStore.selectedImage
+
 const discountedPrice = (productPrice, productDiscount) => {
   return (productPrice - productPrice * (productDiscount / 100)).toFixed(2)
 }
 
-async function getProduct(id) {
-  try {
-    const { data } = await request('api/products/product/' + id)
-    console.log(data.images)
-
-    if (data.images && data.images.length > 0) {
-      selectedImage.value = data.images[0]
-    }
-    singleProduct.value = data
-  } catch (error) {
-    console.error('Error fetching specific product', error)
-  }
-}
 onMounted(() => {
   if (route.params.id) {
-    getProduct(route.params.id)
+    productStore.getProduct(route.params.id)
   }
 })
 function increaseQuantity() {
