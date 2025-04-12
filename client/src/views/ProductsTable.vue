@@ -64,12 +64,12 @@ async function deleteProduct(id) {
           <td v-if="product.discount" class="flex gap-2 items-center justify-center">
             <span class="relative"
               ><span class="text-gray-500 line-through decoration-red-600"
-                >${{ product.price }}</span
+                >€{{ product.price }}</span
               ></span
             >
-            <span class="text-teal-600 font-medium">${{ discountedPrice(product) }}</span>
+            <span class="text-teal-600 font-medium">€{{ discountedPrice(product) }}</span>
           </td>
-          <td v-else>${{ product.price }}</td>
+          <td v-else>€{{ product.price }}</td>
           <td>{{ product.discount ? product.discount : 0 }}%</td>
           <td class="flex gap-6 justify-center items-center">
             <Icon

@@ -33,7 +33,7 @@ const cartStore = useCartStore()
       </div>
       <div class="mt-3 flex items-center justify-between">
         <div class="flex items-end gap-1">
-          <span class="text-lg font-bold text-gray-900">${{ price }}</span>
+          <span class="text-lg font-bold text-gray-900">€{{ price }}</span>
           <span v-if="discount" class="text-sm text-red-500">-{{ discount }}%</span>
         </div>
         <button class="save-button" @click="cartStore.addCart(id, 1)">Add to Cart</button>

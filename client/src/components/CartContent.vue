@@ -70,13 +70,13 @@ const totalCartPrice = computed(() => {
           <Icon icon="lucide:plus" width="20" height="20" class="cursor-pointer" />
         </button>
       </div>
-      <span class="font-medium">${{ Number(cart.totalPrice).toFixed(2) }}</span>
+      <span class="font-medium">€{{ Number(cart.totalPrice).toFixed(2) }}</span>
     </div>
   </div>
   <div class="flex items-center justify-between mt-4 p-4 bg-gray-100 shadow-sm rounded-lg gap-8">
     <div class="flex items-center gap-2">
       <p class="text-sm text-gray-500 uppercase tracking-wide">Total</p>
-      <p class="text-teal-600 font-bold text-2xl">${{ totalCartPrice }}</p>
+      <p class="text-teal-600 font-bold text-2xl">€{{ totalCartPrice }}</p>
     </div>
     <div class="flex items-center gap-2">
       <button @click="emit('update:showCartModal', false)" class="close-button">Close</button>

@@ -82,7 +82,7 @@ function decreaseQuantity() {
               'line-through decoration-red-600 text-gray-500': productStore.singleProduct.discount,
             }"
           >
-            ${{ productStore.singleProduct.price }}
+            €{{ productStore.singleProduct.price }}
           </h3>
           <p v-if="productStore.singleProduct.discount" class="text-red-600 translate-y-2">
             -{{ productStore.singleProduct.discount }}%

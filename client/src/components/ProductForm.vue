@@ -103,7 +103,7 @@ onMounted(async () => {
         <p class="text-xl font-medium">Upload images<span class="text-red-600 px-0.5">*</span></p>
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div
-            class="w-42 md:w-64 aspect-square relative"
+            class="w-42 md:w-40 aspect-square relative"
             v-for="(image, index) of productData.images"
             :key="index"
           >
@@ -112,13 +112,13 @@ onMounted(async () => {
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
             <div
-              class="absolute top-0 right-0 bg-white/70 p-2 m-2 rounded-full cursor-pointer"
+              class="absolute top-0 right-0 bg-white/70 p-1.5 m-2 rounded-full cursor-pointer"
               @click="removeImage(index)"
             >
-              <Icon icon="nimbus:close" width="24" height="24" class="text-red-600" />
+              <Icon icon="nimbus:close" width="20" height="20" class="text-red-600" />
             </div>
           </div>
-          <div class="w-42 md:w-64 aspect-square shrink-0 relative" @click="inputRef?.click()">
+          <div class="w-42 md:w-40 aspect-square shrink-0 relative" @click="inputRef?.click()">
             <input
               type="file"
               ref="inputRef"
@@ -127,9 +127,9 @@ onMounted(async () => {
               @change="uploadImage"
             />
             <div
-              class="w-full h-full flex justify-center items-center bg-gray-200 border border-dashed border-gray-400 rounded-md cursor-pointer"
+              class="w-full h-full flex justify-center items-center bg-gray-100 border border-dashed border-gray-400 rounded-md cursor-pointer hover:bg-gray-200 transition"
             >
-              <Icon icon="fluent:add-24-filled" width="64" height="64" class="text-white" />
+              <Icon icon="fluent:add-24-filled" width="40" height="40" class="text-gray-500" />
             </div>
           </div>
         </div>
@@ -141,13 +141,13 @@ onMounted(async () => {
       <div class="w-full flex gap-2 items-center">
         <div class="flex flex-col w-full">
           <label class="text-xl font-medium">Price<span class="text-red-600 px-0.5">*</span></label>
-          <input type="number" class="custom-input w-full p-4" v-model="productData.price" />
+          <input type="number" min="1" class="custom-input w-full p-4" v-model="productData.price" />
         </div>
         <div class="flex flex-col w-full">
           <label class="text-xl font-medium"
             >Discount<span class="text-gray-700 px-0.5">(optional)</span></label
           >
-          <input type="number" class="custom-input w-full p-4" v-model="productData.discount" />
+          <input type="number" min="0" class="custom-input w-full p-4" v-model="productData.discount" />
         </div>
       </div>
       <div class="flex flex-col w-full">
@@ -155,7 +155,7 @@ onMounted(async () => {
           >Description<span class="text-red-600 px-0.5">*</span></label
         >
         <textarea
-          class="custom-input w-full p-4 min-h-52"
+          class="custom-input w-full p-4 min-h-52 max-h-[500px]"
           v-model="productData.description"
         ></textarea>
       </div>
