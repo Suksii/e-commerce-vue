@@ -1,8 +1,4 @@
-import mongoose from "mongoose";
-
-const subCategorySchema = new mongoose.Schema({
-  name: { type: String },
-});
+import mongoose, { Schema } from "mongoose";
 
 const CategorySchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -13,6 +9,12 @@ const CategorySchema = new mongoose.Schema({
   },
   season: { type: String, enum: ["Summer", "Winter", "Autumn", "Spring"] },
   image: String,
+  subCategories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "SubCategory",
+    },
+  ],
 });
 
 export const Category = mongoose.model("Category", CategorySchema);
