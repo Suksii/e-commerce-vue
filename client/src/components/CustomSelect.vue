@@ -11,11 +11,11 @@ const selectOptions = {
 </script>
 
 <template>
-  <div class="w-full max-w-sm mx-auto my-6">
+  <div class="w-full mx-auto">
     <div class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-300">
       <div
         @click="showOptions = !showOptions"
-        class="flex justify-between items-center px-4 py-3 cursor-pointer bg-gray-100"
+        class="flex justify-between items-center p-4 cursor-pointer bg-gray-100 z-50"
       >
         <span class="text-gray-800 font-medium">{{ selectOptions.title }}</span>
         <Icon
@@ -26,8 +26,7 @@ const selectOptions = {
           class="transition"
         />
       </div>
-
-      <div v-if="showOptions" class="bg-white divide-gray-200">
+      <div v-if="showOptions" class="w-full bg-white divide-y divide-gray-200 duration-300">
         <div
           v-for="(option, index) in selectOptions.options"
           :key="index"
