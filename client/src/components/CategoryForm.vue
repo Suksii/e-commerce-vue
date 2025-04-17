@@ -1,15 +1,22 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import CustomSelect from './CustomSelect.vue'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+import { request } from '@/api'
 
 const imageRef = ref(null)
+const categoryData = reactive({})
+
+
 </script>
 
 <template>
   <div class="w-[95%] lg:w-[50%] mx-auto py-24">
     <h2 class="text-center text-4xl font-medium">Add new category</h2>
-    <form class="flex flex-col items-center justify-center w-full gap-4 py-12">
+    <form
+      class="flex flex-col items-center justify-center w-full gap-4 py-12"
+      @submit.prevent="addCategory"
+    >
       <div class="flex flex-col gap-2 w-full">
         <p class="text-xl font-medium">Upload image<span class="text-red-600 px-0.5"></span></p>
         <div class="flex gap-2 flex-wrap items-center w-full">
@@ -37,7 +44,7 @@ const imageRef = ref(null)
       </div>
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium">Name<span class="text-red-600 px-0.5">*</span></label>
-        <input class="custom-input w-full p-4" />
+        <input v-model="categoryData.name" class="custom-input w-full p-4" />
       </div>
       <div class="w-full flex gap-2 items-center">
         <div class="flex flex-col w-full">

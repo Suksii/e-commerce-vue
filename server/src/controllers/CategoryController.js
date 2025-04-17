@@ -1,4 +1,4 @@
-import { Category } from "../models/Category.js";
+import { Category, seasonOptions, genderOptions } from "../models/Category.js";
 
 export const addCategory = async (req, res) => {
   try {
@@ -17,4 +17,8 @@ export const addCategory = async (req, res) => {
   } catch (error) {
     res.json({ message: "Internal Server Error" });
   }
+};
+
+export const getCategoryOptions = async (req, res) => {
+  res.status(200).json({ genderOptions, seasonOptions });
 };

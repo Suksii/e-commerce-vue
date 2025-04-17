@@ -1,13 +1,15 @@
 import mongoose, { Schema } from "mongoose";
+export const genderOptions = ["Male", "Female", "Unisex"];
+export const seasonOptions = ["Summer", "Winter", "Autumn", "Spring"];
 
 const CategorySchema = new mongoose.Schema({
   name: { type: String, required: true, unique: true },
   slug: { type: String, required: true, unique: true },
   gender: {
     type: String,
-    enum: ["Male", "Female", "Unisex"],
+    enum: genderOptions,
   },
-  season: { type: String, enum: ["Summer", "Winter", "Autumn", "Spring"] },
+  season: { type: String, enum: seasonOptions },
   image: String,
   parentCategory: {
     type: Schema.Types.ObjectId,
