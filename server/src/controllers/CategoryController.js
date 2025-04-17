@@ -2,11 +2,11 @@ import { Category } from "../models/Category.js";
 
 export const addCategory = async (req, res) => {
   try {
-    const { name, image, subCategories, slug, gender, season } = req.body;
+    const { name, image, parentCategory, slug, gender, season } = req.body;
     const newCategory = await Category.create({
       name,
       image,
-      subCategories,
+      parentCategory,
       slug,
       gender,
       season,
