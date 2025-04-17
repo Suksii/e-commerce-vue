@@ -2,11 +2,22 @@
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
+const props = defineProps({
+  options: Array,
+  selectedOption: String,
+})
+const emit = defineEmits(['update:selectedOption'])
 const showOptions = ref(false)
 
-const selectOptions = {
-  title: 'Odaberi opciju',
-  options: ['Opcija 1', 'Opcija 2', 'Opcija 3'],
+function toggleOptions() {
+  if (props.options.length > 0) {
+    showOptions.value = !showOptions.value
+  } else return
+}
+
+function selectOption(option) {
+  emit('update:selectedOption', option)
+  showOptions.value = false
 }
 </script>
 
@@ -14,10 +25,10 @@ const selectOptions = {
   <div class="w-full mx-auto relative">
     <div class="relative bg-white shadow-md rounded-lg border border-gray-300">
       <div
-        @click="showOptions = !showOptions"
+        @click="toggleOptions"
         class="flex justify-between items-center p-4 cursor-pointer bg-gray-100"
       >
-        <span class="text-gray-800 font-medium">{{ selectOptions.title }}</span>
+        <span class="text-gray-800 font-medium">{{ selectedOption || 'Select option' }}</span>
         <Icon
           icon="simple-line-icons:arrow-down"
           width="18"
@@ -31,8 +42,9 @@ const selectOptions = {
         class="absolute top-full w-full bg-white divide-y divide-gray-200 border border-gray-300 rounded-md duration-300 z-20"
       >
         <div
-          v-for="(option, index) in selectOptions.options"
+          v-for="(option, index) in props.options"
           :key="index"
+          @click="selectOption(option)"
           class="px-4 py-3 text-gray-700 hover:bg-teal-600 hover:text-white cursor-pointer transition-all"
         >
           {{ option }}

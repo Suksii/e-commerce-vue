@@ -15,10 +15,10 @@ export const addCategory = async (req, res) => {
       .status(200)
       .json({ message: "Category Successfully added", category: newCategory });
   } catch (error) {
-    res.json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 
 export const getCategoryOptions = async (req, res) => {
-  res.status(200).json({ genderOptions, seasonOptions });
+  res.status(200).json({ gender: genderOptions, season: seasonOptions });
 };

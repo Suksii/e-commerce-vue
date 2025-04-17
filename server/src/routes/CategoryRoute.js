@@ -6,7 +6,7 @@ import {
 
 const router = Router();
 
-router.post("/add-category", addCategory);
+router.post("/add", addCategory);
 router.get("/options", getCategoryOptions);
 
 export const categoryRoute = router;

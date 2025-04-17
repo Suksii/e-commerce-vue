@@ -1,13 +1,41 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import CustomSelect from './CustomSelect.vue'
-import { reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { request } from '@/api'
 
 const imageRef = ref(null)
-const categoryData = reactive({})
+const categoryData = reactive({
+  name: '',
+  slug: '',
+  image: '',
+  gender: [],
+  season: [],
+  selectedGenre: '',
+  selectedSeason: '',
+})
 
+onMounted(async () => {
+  const { data } = await request.get('/api/category/options')
+  categoryData.gender = data.gender
+  categoryData.season = data.season
+})
 
+async function addCategory() {
+  try {
+    const response = await request.post('/api/category/add', {
+      name: categoryData.name,
+      image: '',
+      slug: categoryData.name.toLowerCase().replaceAll(' ', '-'),
+      gender: categoryData.selectedGenre,
+      season: categoryData.selectedSeason,
+      parentCategory: null,
+    })
+    console.log(response)
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
@@ -51,18 +79,22 @@ const categoryData = reactive({})
           <label class="text-xl font-medium"
             >Gender<span class="text-red-600 px-0.5">*</span></label
           >
-          <CustomSelect />
+          <CustomSelect
+            v-model:selectedOption="categoryData.selectedGenre"
+            :options="categoryData.gender"
+          />
         </div>
         <div class="flex flex-col w-full">
           <label class="text-xl font-medium">Season</label>
-          <CustomSelect />
+          <CustomSelect
+            v-model:selectedOption="categoryData.selectedSeason"
+            :options="categoryData.season"
+          />
         </div>
       </div>
       <div class="flex flex-col w-full">
-        <label class="text-xl font-medium"
-          >Main Category<span class="text-red-600 px-0.5">*</span></label
-        >
-        <CustomSelect />
+        <label class="text-xl font-medium">Main Category</label>
+        <!-- <CustomSelect /> -->
       </div>
       <button class="min-w-42 w-full my-4 h-14 save-button">Add Category</button>
     </form>
