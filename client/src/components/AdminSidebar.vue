@@ -2,7 +2,7 @@
 import { useProfile } from '@/stores/profile'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
 const sidebarMenu = [
   {
@@ -50,6 +50,7 @@ const sidebarMenu = [
 
 const profileStore = useProfile()
 const expandedItem = ref(null)
+const router = useRouter()
 
 const handleExpand = (item) => {
   if (item.options) {
@@ -71,14 +72,13 @@ const handleExpand = (item) => {
     </div>
 
     <div v-for="item of sidebarMenu" class="flex flex-col gap-1" @click="handleExpand(item)">
-      <component
-        :is="item.options ? 'div' : RouterLink"
-        :to="item.options ? undefined : item.link"
+      <div
+        @click="!item.options && router.push(item.link)"
         class="flex items-center justify-center md:justify-start md:gap-4 p-4 bg-teal-700 hover:bg-teal-800 text-white rounded-md cursor-pointer transition-all duration-300"
       >
         <Icon :icon="item.icon" width="46" height="46" class="shrink-0" />
         <p class="text-2xl hidden md:block">{{ item.name }}</p>
-      </component>
+      </div>
       <div
         v-if="item.options && expandedItem === item.id"
         class="bg-teal-700 rounded-md flex flex-col duration-300"

@@ -34,7 +34,6 @@ async function uploadImage(event) {
         'Content-Type': 'multipart/form-data',
       },
     })
-    console.log(data)
 
     categoryData.image = data
   } catch (error) {
@@ -74,14 +73,14 @@ async function addCategory() {
       <div class="flex flex-col gap-2 w-full">
         <p class="text-xl font-medium">Upload image<span class="text-red-600 px-0.5"></span></p>
         <div class="flex gap-2 flex-wrap items-center w-full">
-          <div v-if="categoryData.image && categoryData.image.length" class="w-42 md:w-40 aspect-square relative">
+          <div
+            v-if="categoryData.image && categoryData.image.length"
+            class="w-42 md:w-40 aspect-square relative"
+          >
             <img
               :src="'http://localhost:3000/uploads/' + categoryData.image.join('/')"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
-            <div class="absolute top-0 right-0 bg-white/70 p-1.5 m-2 rounded-full cursor-pointer">
-              <Icon icon="nimbus:close" width="20" height="20" class="text-red-600" />
-            </div>
           </div>
           <div class="w-42 md:w-40 aspect-square shrink-0 relative" @click="imageRef?.click()">
             <input
