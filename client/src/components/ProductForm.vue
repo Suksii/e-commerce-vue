@@ -58,7 +58,7 @@ async function uploadImage(event) {
           'Content-Type': 'multipart/form-data',
         },
       })
-      productData.images.push(data)
+      productData.images.push(data[1])
     } catch (error) {
       notificationStore.isError = true
       notificationStore.showNotification('Image upload failed')
@@ -108,7 +108,7 @@ onMounted(async () => {
             :key="index"
           >
             <img
-              :src="'http://localhost:3000/uploads/' + image.join('/')"
+              :src="'http://localhost:3000/uploads/products/' + image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
             <div

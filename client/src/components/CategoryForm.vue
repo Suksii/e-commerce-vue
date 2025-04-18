@@ -35,7 +35,7 @@ async function uploadImage(event) {
       },
     })
 
-    categoryData.image = data
+    categoryData.image = data[1]
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification('Image upload failed')
@@ -78,7 +78,7 @@ async function addCategory() {
             class="w-42 md:w-40 aspect-square relative"
           >
             <img
-              :src="'http://localhost:3000/uploads/' + categoryData.image.join('/')"
+              :src="'http://localhost:3000/uploads/categories/' + categoryData.image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
           </div>
