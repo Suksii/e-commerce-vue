@@ -28,7 +28,7 @@ export const getProducts = async (req, res) => {
   }
 };
 
-export const uploadImage = async (req, res) => {
+export const uploadImages = async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: "No files uploaded" });
@@ -40,7 +40,7 @@ export const uploadImage = async (req, res) => {
     fs.renameSync(path, newPath);
     res.status(200).send(newPath.split("\\").slice(1));
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error", error });
   }
 };
 

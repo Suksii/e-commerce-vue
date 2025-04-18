@@ -6,14 +6,14 @@ import {
   getProducts,
   getSingleProduct,
   updateProduct,
-  uploadImage,
+  uploadImages,
 } from "../controllers/ProductController.js";
 
 const router = Router();
 
 const photoUpload = multer({ dest: "uploads/products" });
 
-router.post("/upload", photoUpload.array("photos", 5), uploadImage);
+router.post("/upload", photoUpload.array("photos", 5), uploadImages);
 router.post("/add-product", addProduct);
 router.get("/", getProducts);
 router.delete("/delete-product/:id", deleteProduct);

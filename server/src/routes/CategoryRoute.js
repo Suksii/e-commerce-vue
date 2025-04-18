@@ -3,15 +3,15 @@ import { Router } from "express";
 import {
   addCategory,
   getCategoryOptions,
+  uploadImage
 } from "../controllers/CategoryController.js";
-import { uploadImage } from "../controllers/ProductController.js";
 
 const router = Router();
 
 const photoUpload = multer({ dest: "uploads/categories" });
 
+router.post("/upload", photoUpload.single("photo"), uploadImage);
 router.post("/add", addCategory);
 router.get("/options", getCategoryOptions);
-router.post("/upload", photoUpload.single("photo"), uploadImage);
 
 export const categoryRoute = router;
