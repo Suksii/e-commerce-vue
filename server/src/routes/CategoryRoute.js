@@ -4,6 +4,7 @@ import {
   addCategory,
   getAllCategories,
   getCategoryOptions,
+  getParentCategories,
   uploadImage,
 } from "../controllers/CategoryController.js";
 
@@ -15,5 +16,6 @@ router.post("/upload", photoUpload.single("photo"), uploadImage);
 router.post("/add", addCategory);
 router.get("/options", getCategoryOptions);
 router.get("/", getAllCategories);
+router.get("/parent", getParentCategories);
 
 export const categoryRoute = router;
