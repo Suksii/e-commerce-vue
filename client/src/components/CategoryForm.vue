@@ -81,7 +81,7 @@ async function addCategory() {
               class="absolute top-0 right-0 bg-white/70 p-1.5 m-2 rounded-full cursor-pointer"
             >
               <img
-                :src="'http://localhost:3000/uploads/categories/' + categoryData.image"
+                :src="'http://localhost:3000/uploads/' + categoryData.image.join('/')"
                 class="inset-0 object-cover"
               />
               <Icon icon="nimbus:close" width="20" height="20" class="text-red-600" />
