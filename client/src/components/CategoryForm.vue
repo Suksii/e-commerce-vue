@@ -10,7 +10,7 @@ const imageRef = ref(null)
 const categoryData = reactive({
   name: '',
   slug: '',
-  image: '',
+  image: [],
   gender: [],
   season: [],
   parentCategory: [],
@@ -36,7 +36,7 @@ async function uploadImage(event) {
     })
     console.log(data)
 
-    // categoryData.image = data[0]
+    categoryData.image = data
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification('Image upload failed')
@@ -74,16 +74,12 @@ async function addCategory() {
       <div class="flex flex-col gap-2 w-full">
         <p class="text-xl font-medium">Upload image<span class="text-red-600 px-0.5"></span></p>
         <div class="flex gap-2 flex-wrap items-center w-full">
-          <div class="w-42 md:w-40 aspect-square relative">
-            <div class="w-full h-full border border-gray-300 rounded-md"></div>
-            <div
-              v-if="categoryData.image"
-              class="absolute top-0 right-0 bg-white/70 p-1.5 m-2 rounded-full cursor-pointer"
-            >
-              <img
-                :src="'http://localhost:3000/uploads/' + categoryData.image.join('/')"
-                class="inset-0 object-cover"
-              />
+          <div v-if="categoryData.image && categoryData.image.length" class="w-42 md:w-40 aspect-square relative">
+            <img
+              :src="'http://localhost:3000/uploads/' + categoryData.image.join('/')"
+              class="w-full h-full border border-gray-300 rounded-md object-cover"
+            />
+            <div class="absolute top-0 right-0 bg-white/70 p-1.5 m-2 rounded-full cursor-pointer">
               <Icon icon="nimbus:close" width="20" height="20" class="text-red-600" />
             </div>
           </div>
