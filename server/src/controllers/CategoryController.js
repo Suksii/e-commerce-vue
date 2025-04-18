@@ -39,3 +39,15 @@ export const addCategory = async (req, res) => {
 export const getCategoryOptions = async (req, res) => {
   res.status(200).json({ gender: genderOptions, season: seasonOptions });
 };
+
+export const getAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    if (!categories) {
+      return res.status(404).json({ message: "No categories found" });
+    }
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
