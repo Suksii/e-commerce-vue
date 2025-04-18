@@ -58,7 +58,7 @@ async function uploadImage(event) {
           'Content-Type': 'multipart/form-data',
         },
       })
-      productData.images.push(data[0])
+      productData.images.push(data)
     } catch (error) {
       notificationStore.isError = true
       notificationStore.showNotification('Image upload failed')
@@ -108,7 +108,7 @@ onMounted(async () => {
             :key="index"
           >
             <img
-              :src="'http://localhost:3000/uploads/' + image"
+              :src="'http://localhost:3000/uploads/' + image.join('/')"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
             <div
@@ -141,13 +141,23 @@ onMounted(async () => {
       <div class="w-full flex gap-2 items-center">
         <div class="flex flex-col w-full">
           <label class="text-xl font-medium">Price<span class="text-red-600 px-0.5">*</span></label>
-          <input type="number" min="1" class="custom-input w-full p-4" v-model="productData.price" />
+          <input
+            type="number"
+            min="1"
+            class="custom-input w-full p-4"
+            v-model="productData.price"
+          />
         </div>
         <div class="flex flex-col w-full">
           <label class="text-xl font-medium"
             >Discount<span class="text-gray-700 px-0.5">(optional)</span></label
           >
-          <input type="number" min="0" class="custom-input w-full p-4" v-model="productData.discount" />
+          <input
+            type="number"
+            min="0"
+            class="custom-input w-full p-4"
+            v-model="productData.discount"
+          />
         </div>
       </div>
       <div class="flex flex-col w-full">

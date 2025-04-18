@@ -1,9 +1,11 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import CustomSelect from './CustomSelect.vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { request } from '@/api'
+import { useNotificationStore } from '@/stores/notification'
 
+const notificationStore = useNotificationStore()
 const imageRef = ref(null)
 const categoryData = reactive({
   name: '',
@@ -11,6 +13,7 @@ const categoryData = reactive({
   image: '',
   gender: [],
   season: [],
+  parentCategory: [],
   selectedGenre: '',
   selectedSeason: '',
 })
@@ -21,18 +24,41 @@ onMounted(async () => {
   categoryData.season = data.season
 })
 
+async function uploadImage(event) {
+  const file = event.target.files[0]
+  const formData = new FormData()
+  formData.append('photo', file)
+  try {
+    const { data } = await request.post('/api/category/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    console.log(data)
+
+    // categoryData.image = data[0]
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification('Image upload failed')
+    console.error('Image upload failed', error)
+  }
+}
+
 async function addCategory() {
   try {
     const response = await request.post('/api/category/add', {
       name: categoryData.name,
-      image: '',
+      image: categoryData.image,
       slug: categoryData.name.toLowerCase().replaceAll(' ', '-'),
       gender: categoryData.selectedGenre,
       season: categoryData.selectedSeason,
       parentCategory: null,
     })
-    console.log(response)
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data.message || 'Category Successfully added')
   } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
   }
 }
@@ -50,7 +76,14 @@ async function addCategory() {
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div class="w-42 md:w-40 aspect-square relative">
             <div class="w-full h-full border border-gray-300 rounded-md"></div>
-            <div class="absolute top-0 right-0 bg-white/70 p-1.5 m-2 rounded-full cursor-pointer">
+            <div
+              v-if="categoryData.image"
+              class="absolute top-0 right-0 bg-white/70 p-1.5 m-2 rounded-full cursor-pointer"
+            >
+              <img
+                :src="'http://localhost:3000/uploads/categories/' + categoryData.image"
+                class="inset-0 object-cover"
+              />
               <Icon icon="nimbus:close" width="20" height="20" class="text-red-600" />
             </div>
           </div>
@@ -60,7 +93,7 @@ async function addCategory() {
               ref="imageRef"
               class="absolute inset-0 hidden"
               accept="image/*"
-              @change=""
+              @change="uploadImage"
             />
             <div
               class="w-full h-full flex justify-center items-center bg-gray-100 border border-dashed border-gray-400 rounded-md cursor-pointer hover:bg-gray-200 transition"

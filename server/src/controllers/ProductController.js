@@ -1,6 +1,5 @@
 import fs from "fs";
 import { Product } from "../models/Product.js";
-import { log } from "console";
 
 export const addProduct = async (req, res) => {
   const { name, description, category, images, price, discount } = req.body;

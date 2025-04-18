@@ -11,9 +11,9 @@ import {
 
 const router = Router();
 
-const photoUpload = multer({ dest: "uploads" });
+const photoUpload = multer({ dest: "uploads/products" });
 
-router.post("/upload", photoUpload.array("photos", 100), uploadImage);
+router.post("/upload", photoUpload.array("photos", 5), uploadImage);
 router.post("/add-product", addProduct);
 router.get("/", getProducts);
 router.delete("/delete-product/:id", deleteProduct);
