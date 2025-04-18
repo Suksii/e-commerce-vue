@@ -51,3 +51,14 @@ export const getAllCategories = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+export const getParentCategories = async (req, res) => {
+  try {
+    const parentCategories = await Category.find({ parentCategory: null });
+    if (!parentCategories) {
+      return res.status(404).json({ message: "No parent categories found" });
+    }
+    res.status(200).json(parentCategories);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};

@@ -16,12 +16,34 @@ const categoryData = reactive({
   parentCategory: [],
   selectedGenre: '',
   selectedSeason: '',
+  selectedCategory: '',
 })
 
-onMounted(async () => {
-  const { data } = await request.get('/api/category/options')
-  categoryData.gender = data.gender
-  categoryData.season = data.season
+const fetchCategoryOptions = async () => {
+  try {
+    const { data } = await request.get('/api/category/options')
+    categoryData.gender = data.gender
+    categoryData.season = data.season
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification('Error while fetching data')
+    console.error('Error while fetching data:', error)
+  }
+}
+const fetchCategories = async () => {
+  try {
+    const { data } = await request.get('/api/category')
+    categoryData.parentCategory = data
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification('Error while fetching data')
+    console.error('Error while fetching data:', error)
+  }
+}
+
+onMounted(() => {
+  fetchCategoryOptions()
+  fetchCategories()
 })
 
 async function uploadImage(event) {
@@ -51,7 +73,7 @@ async function addCategory() {
       slug: categoryData.name.toLowerCase().replaceAll(' ', '-'),
       gender: categoryData.selectedGenre,
       season: categoryData.selectedSeason,
-      parentCategory: null,
+      parentCategory: categoryData.selectedCategory || null,
     })
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message || 'Category Successfully added')
@@ -122,7 +144,10 @@ async function addCategory() {
       </div>
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium">Main Category</label>
-        <!-- <CustomSelect /> -->
+        <CustomSelect
+          v-model:selectedOption="categoryData.selectedCategory"
+          :options="categoryData.parentCategory"
+        />
       </div>
       <button class="min-w-42 w-full my-4 h-14 save-button">Add Category</button>
     </form>
