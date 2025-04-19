@@ -68,7 +68,9 @@ export const logoutUser = (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const sortField = req.query.sortBy || "username";
+    const sortOrder = req.query.order === "asc" ? 1 : -1;
+    const users = await User.find().sort({ [sortField]: sortOrder });
     res.json(users);
   } catch (error) {
     res.status(404).json(error);
