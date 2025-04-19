@@ -19,13 +19,36 @@ export const addCart = async (req, res) => {
       ? productData.price - (productData.price * productData.discount) / 100
       : productData.price;
     const totalPrice = (discountedPrice * quantity).toFixed(2);
-    const newCart = await Cart.create({
-      user: userData,
-      product: productData,
-      quantity: quantity || 1,
-      price: discountedPrice,
-      totalPrice: totalPrice,
+
+    const cartExists = await Cart.findOne({
+      user: userData._id,
+      product: productData._id,
     });
+
+    let newCart;
+
+    if (cartExists) {
+      cartExists.quantity += quantity;
+      cartExists.totalPrice = (cartExists.quantity * discountedPrice).toFixed(
+        2
+      );
+      newCart = await cartExists.save();
+    } else {
+      newCart = await Cart.create({
+        user: userData,
+        product: productData,
+        quantity: quantity || 1,
+        price: discountedPrice,
+        totalPrice: totalPrice,
+      });
+    }
+    // const newCart = await Cart.create({
+    //   user: userData,
+    //   product: productData,
+    //   quantity: quantity || 1,
+    //   price: discountedPrice,
+    //   totalPrice: totalPrice,
+    // });
     res.json({
       cart: newCart,
       message: "Product successfully added to cart",

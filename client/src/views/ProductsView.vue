@@ -12,7 +12,6 @@ onMounted(() => {
 
 <template>
   <div class="py-20">
-    <RouterLink to="/add-product" class="save-button">Add product</RouterLink>
     <CardList :data="productsStore.productsData" />
   </div>
 </template>
