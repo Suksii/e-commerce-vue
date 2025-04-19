@@ -4,7 +4,7 @@ import { useCartStore } from '@/stores/carts'
 defineProps({
   id: String,
   name: String,
-  images: String,
+  images: [String, Array],
   price: Number,
   discount: Number,
   category: String,
@@ -15,17 +15,22 @@ const cartStore = useCartStore()
 </script>
 
 <template>
-  <div class="min-w-[350px] w-[350px] bg-white rounded-md overflow-hidden">
-    <div class="flex justify-center w-full">
+  <div
+    :to="`/product/${id}`"
+    class="min-w-[350px] w-[350px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
+  >
+    <RouterLink :to="`/product/${id}`" class="flex justify-center w-full">
       <img
         :src="images"
         :alt="name"
         class="h-60 object-cover scale-90 transition ease-in-out duration-300"
       />
-    </div>
+    </RouterLink>
     <div class="px-4 pb-4 flex flex-col h-[160px] justify-between">
       <div>
-        <h2 class="text-lg font-semibold text-gray-800 line-clamp-2 leading-4">
+        <h2
+          class="text-lg font-semibold text-gray-800 line-clamp-2 leading-4 group-hover:text-teal-600"
+        >
           {{ name }}
         </h2>
         <p class="text-sm text-gray-600 mt-1">{{ category }}</p>

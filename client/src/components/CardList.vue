@@ -8,7 +8,7 @@ defineProps({
 
 <template>
   <div
-    class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 w-[90%] lg:w-[80%] mx-auto gap-4 py-12"
+    class="flex flex-wrap mx-auto gap-4 py-12"
   >
     <div
       v-for="item of data"
