@@ -21,7 +21,9 @@ export const addProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const sortField = req.query.sortBy || "name";
+    const sortOrder = req.query.order === "desc" ? -1 : 1;
+    const products = await Product.find().sort({ [sortField]: sortOrder });
     res.status(200).json(products);
   } catch (error) {
     res.status(404).json({ message: "No products found" });

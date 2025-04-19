@@ -119,8 +119,21 @@ function decreaseQuantity() {
         Add to Cart
       </button>
       <div class="flex gap-4 w-full py-4">
-        <span class="grow-1 py-6 px-4 border border-teal-600 font-medium text-lg">The product can be returned within 30 days</span>
-        <span class="grow-1 py-6 px-4 border border-teal-600 font-medium text-lg">Delivery is free for all orders over 30 EUR</span>
+        <p
+          class="flex items-center gap-4 grow-1 py-6 px-4 border border-teal-600 font-medium text-lg"
+        >
+          <Icon icon="ph:package-light" width="40" height="40" class="shrink-0" />The product can be returned within
+          30 days
+        </p>
+        <p
+          class="flex items-center gap-4 grow-1 py-6 px-4 border border-teal-600 font-medium text-lg"
+        >
+          <Icon
+            icon="material-symbols-light:delivery-truck-speed-outline"
+            width="40"
+            height="40" class="shrink-0"
+          />Delivery is free for all orders over 30 EUR
+        </p>
       </div>
     </div>
   </div>

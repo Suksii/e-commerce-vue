@@ -42,13 +42,6 @@ export const addCart = async (req, res) => {
         totalPrice: totalPrice,
       });
     }
-    // const newCart = await Cart.create({
-    //   user: userData,
-    //   product: productData,
-    //   quantity: quantity || 1,
-    //   price: discountedPrice,
-    //   totalPrice: totalPrice,
-    // });
     res.json({
       cart: newCart,
       message: "Product successfully added to cart",
