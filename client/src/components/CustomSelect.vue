@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 const props = defineProps({
   options: Array,
-  selectedOption: String,
+  selectedOption: [String, Number],
 })
 const emit = defineEmits(['update:selectedOption'])
 const showOptions = ref(false)
@@ -16,7 +16,7 @@ function toggleOptions() {
 }
 
 function selectOption(option) {
-  emit('update:selectedOption', option)
+  emit('update:selectedOption', typeof option === 'object' ? option.id : option)
   showOptions.value = false
 }
 </script>
@@ -47,7 +47,7 @@ function selectOption(option) {
           @click="selectOption(option)"
           class="px-4 py-3 text-gray-700 hover:bg-teal-600 hover:text-white cursor-pointer transition-all"
         >
-          {{ option }}
+          {{ typeof option === 'object' ? option.name : option }}
         </div>
       </div>
     </div>

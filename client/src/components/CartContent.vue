@@ -44,7 +44,11 @@ const totalCartPrice = computed(() => {
 
 <template>
   <div class="overflow-y-auto max-h-[500px] flex flex-col gap-2">
-    <div v-for="cart in carts" :key="cart._id" class="flex gap-4 w-full items-center rounded-xl border border-gray-200 shadow-sm p-4">
+    <div
+      v-for="cart in carts"
+      :key="cart._id"
+      class="flex gap-4 w-full items-center rounded-xl border border-gray-200 shadow-sm p-4"
+    >
       <Icon
         icon="streamline:delete-1-solid"
         width="12"
@@ -54,7 +58,7 @@ const totalCartPrice = computed(() => {
       />
 
       <img
-        :src="'http://localhost:3000/uploads/' + cart.product.images[0]"
+        :src="'http://localhost:3000/uploads/products/' + cart.product.images[0]"
         class="max-w-[60px] h-[110px] md:max-w-[80px] md:h-[140px] object-contain flex-2"
       />
       <div class="flex flex-col gap-2 overflow-hidden">
@@ -76,7 +80,7 @@ const totalCartPrice = computed(() => {
   <div class="flex items-center justify-between mt-4 p-4 bg-gray-100 shadow-sm rounded-lg gap-8">
     <div class="flex items-center gap-2">
       <p class="text-sm text-gray-500 uppercase tracking-wide">Total</p>
-      <p class="text-teal-600 font-bold text-2xl">€{{ totalCartPrice }}</p>
+      <p class="text-teal-600 font-bold text-2xl">€{{ totalCartPrice.toFixed(2) }}</p>
     </div>
     <div class="flex items-center gap-2">
       <button @click="emit('update:showCartModal', false)" class="close-button">Close</button>

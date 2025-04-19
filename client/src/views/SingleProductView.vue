@@ -6,7 +6,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const baseImgUrl = 'http://localhost:3000/uploads/'
+const baseImgUrl = 'http://localhost:3000/uploads/products/'
 const quantity = ref(1)
 const cartStore = useCartStore()
 const productStore = useProductsStore()

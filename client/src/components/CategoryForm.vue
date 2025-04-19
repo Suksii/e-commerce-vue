@@ -30,10 +30,13 @@ const fetchCategoryOptions = async () => {
     console.error('Error while fetching data:', error)
   }
 }
-const fetchCategories = async () => {
+const fetchParentCategories = async () => {
   try {
-    const { data } = await request.get('/api/category')
-    categoryData.parentCategory = data
+    const { data } = await request.get('/api/category/parent')
+    categoryData.parentCategory = data.map((category) => ({
+      name: category.name,
+      id: category._id,
+    }))
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification('Error while fetching data')
@@ -43,7 +46,7 @@ const fetchCategories = async () => {
 
 onMounted(() => {
   fetchCategoryOptions()
-  fetchCategories()
+  fetchParentCategories()
 })
 
 async function uploadImage(event) {

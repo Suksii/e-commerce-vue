@@ -23,7 +23,7 @@ export const addCategory = async (req, res) => {
     const newCategory = await Category.create({
       name,
       image,
-      parentCategory,
+      parentCategory: parentCategory || null,
       slug,
       gender,
       season,

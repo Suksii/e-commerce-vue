@@ -15,7 +15,7 @@ const cartStore = useCartStore()
 </script>
 
 <template>
-  <div class="min-w-[250px] w-[320px] bg-white rounded-md overflow-hidden shadow-lg">
+  <div class="min-w-[350px] w-[350px] bg-white rounded-md overflow-hidden">
     <div class="flex justify-center w-full">
       <img
         :src="images"

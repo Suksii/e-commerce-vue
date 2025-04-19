@@ -9,6 +9,7 @@ const sidebarMenu = [
     id: 1,
     name: 'Dashboard',
     icon: 'garden:dashboard-26',
+    link: '/all-products',
   },
   {
     id: 2,
