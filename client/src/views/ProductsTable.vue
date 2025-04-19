@@ -3,19 +3,22 @@ import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const productStore = useProductsStore()
 const notificationStore = useNotificationStore()
 const router = useRouter()
 
+const sortBy = ref('name')
+const order = ref('asc')
+
 onMounted(() => {
-  productStore.getProducts()
+  productStore.getProducts(sortBy.value, order.value)
 })
 
 const discountedPrice = (product) => {
-  return product.price - ((product.price * product.discount) / 100).toFixed(2)
+  return (product.price - (product.price * product.discount) / 100).toFixed(2)
 }
 
 async function deleteProduct(id) {
@@ -30,6 +33,16 @@ async function deleteProduct(id) {
     notificationStore.showNotification(error.response.message || 'Failed to delete product')
   }
 }
+
+const handleSort = (newSort) => {
+  if (sortBy.value === newSort) {
+    order.value = order.value === 'desc' ? 'asc' : 'desc'
+  } else {
+    sortBy.value = newSort
+    order.value = 'desc'
+  }
+  productStore.getProducts(sortBy.value, order.value)
+}
 </script>
 
 <template>
@@ -38,11 +51,52 @@ async function deleteProduct(id) {
       <thead class="w-full bg-teal-600 text-white">
         <tr>
           <th>#</th>
-          <th>Product ID</th>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Price</th>
-          <th>Discount</th>
+          <th @click="handleSort('_id')">
+            <span class="flex justify-center items-center gap-2">
+              Product ID
+              <Icon
+                :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
+                width="20"
+                height="20"
+              />
+            </span>
+          </th>
+          <th @click="handleSort('name')">
+            <span class="flex justify-center items-center gap-2">
+              Name
+              <Icon
+                :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
+                width="20"
+                height="20"
+              />
+            </span>
+          </th>
+          <th @click="handleSort('category')">
+            <span class="flex justify-center items-center gap-2">
+              Category<Icon
+                :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
+                width="20"
+                height="20"
+              />
+            </span>
+          </th>
+          <th @click="handleSort('price')">
+            <span class="flex justify-center items-center gap-2"
+              >Price
+              <Icon
+                :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
+                width="20"
+                height="20"
+            /></span>
+          </th>
+          <th @click="handleSort('discount')">
+            <span class="flex justify-center items-center gap-2"
+              >Discount<Icon
+                :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
+                width="20"
+                height="20"
+            /></span>
+          </th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -98,5 +152,6 @@ th {
   font-size: 24px;
   padding: 16px 12px;
   border: 1px solid #e5e7eb;
+  cursor: pointer;
 }
 </style>

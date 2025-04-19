@@ -7,9 +7,11 @@ export const useProductsStore = defineStore('products', () => {
   const singleProduct = ref({})
   const selectedImage = ref('')
 
-  async function getProducts() {
+  async function getProducts(sortBy = 'name', order = 'desc') {
     try {
-      const { data } = await request.get('/api/products')
+      const { data } = await request.get('/api/products', {
+        params: { sortBy, order },
+      })
       productsData.value = data
     } catch (error) {
       console.error('Failed to fetch products:', error)
