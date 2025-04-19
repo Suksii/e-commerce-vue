@@ -26,11 +26,11 @@ async function deleteProduct(id) {
     const response = await request.delete('/api/products/delete-product/' + id)
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message || 'Product successfully deleted')
-    productStore.getProducts()
+    productStore.getProducts(sortBy.value, order.value)
   } catch (error) {
     console.error('Failed to delete product:', error)
     notificationStore.isError = true
-    notificationStore.showNotification(error.response.message || 'Failed to delete product')
+    notificationStore.showNotification(error.response?.message || 'Failed to delete product')
   }
 }
 
@@ -55,6 +55,7 @@ const handleSort = (newSort) => {
             <span class="flex justify-center items-center gap-2">
               Product ID
               <Icon
+                v-if="sortBy === '_id'"
                 :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
                 width="20"
                 height="20"
@@ -65,6 +66,7 @@ const handleSort = (newSort) => {
             <span class="flex justify-center items-center gap-2">
               Name
               <Icon
+                v-if="sortBy === 'name'"
                 :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
                 width="20"
                 height="20"
@@ -74,6 +76,7 @@ const handleSort = (newSort) => {
           <th @click="handleSort('category')">
             <span class="flex justify-center items-center gap-2">
               Category<Icon
+                v-if="sortBy === 'category'"
                 :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
                 width="20"
                 height="20"
@@ -84,6 +87,7 @@ const handleSort = (newSort) => {
             <span class="flex justify-center items-center gap-2"
               >Price
               <Icon
+                v-if="sortBy === 'price'"
                 :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
                 width="20"
                 height="20"
@@ -92,6 +96,7 @@ const handleSort = (newSort) => {
           <th @click="handleSort('discount')">
             <span class="flex justify-center items-center gap-2"
               >Discount<Icon
+                v-if="sortBy === 'discount'"
                 :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
                 width="20"
                 height="20"
