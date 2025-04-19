@@ -1,17 +1,39 @@
 <script setup>
 import { request } from '@/api'
+import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 
 const usersData = ref([])
+const sortBy = ref('username')
+const order = ref('desc')
 
-onMounted(async () => {
+async function fetchUsers(sortField, sortOrder) {
   try {
-    const { data } = await request.get('/api/users/get-users')
+    const { data } = await request.get('/api/users/get-users', {
+      params: {
+        sortBy: sortField,
+        order: sortOrder,
+      },
+    })
     usersData.value = data
   } catch (error) {
     console.error(error)
   }
+}
+
+onMounted(async () => {
+  fetchUsers(sortBy.value, order.value)
 })
+
+const handleSort = (newSort) => {
+  if (sortBy.value === newSort) {
+    order.value = order.value === 'desc' ? 'asc' : 'desc'
+  } else {
+    sortBy.value = newSort
+    order.value = 'desc'
+  }
+  fetchUsers(sortBy.value, order.value)
+}
 </script>
 
 <template>
@@ -20,13 +42,43 @@ onMounted(async () => {
       <thead class="w-full bg-teal-600 text-white">
         <tr>
           <th>#</th>
-          <th>User ID</th>
-          <th>Username</th>
-          <th>Email</th>
+          <th @click="handleSort('_id')">
+            <span class="flex justify-center items-center gap-2">
+              User ID
+              <Icon
+                v-if="sortBy === '_id'"
+                :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
+                width="20"
+                height="20"
+              />
+            </span>
+          </th>
+          <th @click="handleSort('username')">
+            <span class="flex justify-center items-center gap-2">
+              Username
+              <Icon
+                v-if="sortBy === 'username'"
+                :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
+                width="20"
+                height="20"
+              />
+            </span>
+          </th>
+          <th @click="handleSort('email')">
+            <span class="flex justify-center items-center gap-2">
+              Email
+              <Icon
+                v-if="sortBy === 'email'"
+                :icon="order === 'asc' ? 'iwwa:arrow-up' : 'iwwa:arrow-down'"
+                width="20"
+                height="20"
+              />
+            </span>
+          </th>
         </tr>
       </thead>
       <tbody class="w-full">
-        <tr v-for="(user, index) of usersData" class="text-center even:bg-teal-100">
+        <tr v-for="(user, index) of usersData" :key="user._id" class="text-center even:bg-teal-100">
           <td>{{ index + 1 }}.</td>
           <td>{{ user._id }}</td>
           <td>{{ user.username }}</td>
