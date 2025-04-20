@@ -5,6 +5,7 @@ import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import CustomSelect from './CustomSelect.vue'
 
 const route = useRoute()
 const notificationStore = useNotificationStore()
@@ -14,7 +15,11 @@ const productData = reactive({
   price: '',
   discount: '',
   category: '',
+  gender: [],
+  season: [],
   images: [],
+  selectedGenre: '',
+  selectedSeason: '',
 })
 const inputRef = ref(null)
 const { id } = route.params
@@ -30,6 +35,8 @@ async function addProduct() {
           discount: productData.discount,
           category: productData.category,
           images: productData.images,
+          gender: productData.selectedGenre,
+          season: productData.selectedSeason,
         })
       : await request.post('/api/products/add-product', {
           name: productData.name,
@@ -38,6 +45,8 @@ async function addProduct() {
           discount: productData.discount,
           category: productData.category,
           images: productData.images,
+          gender: productData.selectedGenre,
+          season: productData.selectedSeason,
         })
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message)
@@ -70,6 +79,19 @@ async function uploadImage(event) {
     return
   }
 }
+
+const fetchProductOptions = async () => {
+  try {
+    const { data } = await request.get('/api/products/options')
+    productData.gender = data.gender
+    productData.season = data.season
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification('Error while fetching data')
+    console.error('Error while fetching data:', error)
+  }
+}
+
 function removeImage(imageIndex) {
   productData.images = productData.images.filter((_, index) => index !== imageIndex)
 }
@@ -85,8 +107,11 @@ onMounted(async () => {
       productData.discount = product.discount
       productData.category = product.category
       productData.images = product.images
+      productData.selectedGenre = product.gender
+      productData.selectedSeason = product.season
     }
   }
+  fetchProductOptions()
 })
 </script>
 
@@ -157,6 +182,24 @@ onMounted(async () => {
             min="0"
             class="custom-input w-full p-4"
             v-model="productData.discount"
+          />
+        </div>
+      </div>
+      <div class="w-full flex gap-2 items-center">
+        <div class="flex flex-col w-full">
+          <label class="text-xl font-medium"
+            >Gender<span class="text-red-600 px-0.5">*</span></label
+          >
+          <CustomSelect
+            v-model:selectedOption="productData.selectedGenre"
+            :options="productData.gender"
+          />
+        </div>
+        <div class="flex flex-col w-full">
+          <label class="text-xl font-medium">Season</label>
+          <CustomSelect
+            v-model:selectedOption="productData.selectedSeason"
+            :options="productData.season"
           />
         </div>
       </div>

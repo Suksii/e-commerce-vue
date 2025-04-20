@@ -11,25 +11,9 @@ const categoryData = reactive({
   name: '',
   slug: '',
   image: [],
-  gender: [],
-  season: [],
   parentCategory: [],
-  selectedGenre: '',
-  selectedSeason: '',
   selectedCategory: '',
 })
-
-const fetchCategoryOptions = async () => {
-  try {
-    const { data } = await request.get('/api/category/options')
-    categoryData.gender = data.gender
-    categoryData.season = data.season
-  } catch (error) {
-    notificationStore.isError = true
-    notificationStore.showNotification('Error while fetching data')
-    console.error('Error while fetching data:', error)
-  }
-}
 const fetchParentCategories = async () => {
   try {
     const { data } = await request.get('/api/category/parent')
@@ -45,7 +29,6 @@ const fetchParentCategories = async () => {
 }
 
 onMounted(() => {
-  fetchCategoryOptions()
   fetchParentCategories()
 })
 
@@ -126,24 +109,6 @@ async function addCategory() {
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium">Name<span class="text-red-600 px-0.5">*</span></label>
         <input v-model="categoryData.name" class="custom-input w-full p-4" />
-      </div>
-      <div class="w-full flex gap-2 items-center">
-        <div class="flex flex-col w-full">
-          <label class="text-xl font-medium"
-            >Gender<span class="text-red-600 px-0.5">*</span></label
-          >
-          <CustomSelect
-            v-model:selectedOption="categoryData.selectedGenre"
-            :options="categoryData.gender"
-          />
-        </div>
-        <div class="flex flex-col w-full">
-          <label class="text-xl font-medium">Season</label>
-          <CustomSelect
-            v-model:selectedOption="categoryData.selectedSeason"
-            :options="categoryData.season"
-          />
-        </div>
       </div>
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium">Main Category</label>

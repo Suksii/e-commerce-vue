@@ -2,12 +2,23 @@ import fs from "fs";
 import { Product, genderOptions, seasonOptions } from "../models/Product.js";
 
 export const addProduct = async (req, res) => {
-  const { name, description, category, images, price, discount } = req.body;
+  const {
+    name,
+    description,
+    category,
+    images,
+    price,
+    discount,
+    season,
+    gender,
+  } = req.body;
   try {
     const newProduct = await Product.create({
       name,
       description,
       category,
+      gender,
+      season,
       price,
       discount,
       images,
@@ -73,12 +84,23 @@ export const getSingleProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   const id = req.params.id;
-  const { name, description, category, images, price, discount } = req.body;
+  const {
+    name,
+    description,
+    category,
+    images,
+    price,
+    discount,
+    season,
+    gender,
+  } = req.body;
   try {
     const updatedProduct = await Product.findByIdAndUpdate(id, {
       name,
       description,
       category,
+      gender,
+      season,
       images,
       price,
       discount,

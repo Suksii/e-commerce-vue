@@ -3,7 +3,6 @@ import { Router } from "express";
 import {
   addCategory,
   getAllCategories,
-  getCategoryOptions,
   getParentCategories,
   uploadImage,
 } from "../controllers/CategoryController.js";
@@ -14,7 +13,6 @@ const photoUpload = multer({ dest: "uploads/categories" });
 
 router.post("/upload", photoUpload.single("photo"), uploadImage);
 router.post("/add", addCategory);
-router.get("/options", getCategoryOptions);
 router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
 
