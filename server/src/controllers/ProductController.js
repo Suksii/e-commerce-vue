@@ -1,5 +1,5 @@
 import fs from "fs";
-import { Product } from "../models/Product.js";
+import { Product, genderOptions, seasonOptions } from "../models/Product.js";
 
 export const addProduct = async (req, res) => {
   const { name, description, category, images, price, discount } = req.body;
@@ -28,6 +28,10 @@ export const getProducts = async (req, res) => {
   } catch (error) {
     res.status(404).json({ message: "No products found" });
   }
+};
+
+export const getProductOptions = async (req, res) => {
+  res.status(200).json({ gender: genderOptions, season: seasonOptions });
 };
 
 export const uploadImages = async (req, res) => {

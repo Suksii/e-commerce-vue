@@ -1,5 +1,5 @@
 import fs from "fs";
-import { Category, seasonOptions, genderOptions } from "../models/Category.js";
+import { Category } from "../models/Category.js";
 
 export const uploadImage = async (req, res) => {
   if (!req.file) {
@@ -19,14 +19,12 @@ export const uploadImage = async (req, res) => {
 
 export const addCategory = async (req, res) => {
   try {
-    const { name, image, parentCategory, slug, gender, season } = req.body;
+    const { name, image, parentCategory, slug } = req.body;
     const newCategory = await Category.create({
       name,
       image,
       parentCategory: parentCategory || null,
       slug,
-      gender,
-      season,
     });
     res
       .status(200)
@@ -34,10 +32,6 @@ export const addCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
   }
-};
-
-export const getCategoryOptions = async (req, res) => {
-  res.status(200).json({ gender: genderOptions, season: seasonOptions });
 };
 
 export const getAllCategories = async (req, res) => {

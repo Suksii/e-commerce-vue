@@ -8,7 +8,7 @@ defineProps({
 
 <template>
   <div
-    class="flex flex-wrap mx-auto gap-4 py-12"
+    class="flex justify-center flex-wrap gap-4 py-12"
   >
     <div
       v-for="item of data"
