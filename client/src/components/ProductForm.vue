@@ -6,6 +6,7 @@ import { Icon } from '@iconify/vue'
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import CustomSelect from './CustomSelect.vue'
+import router from '@/router'
 
 const route = useRoute()
 const notificationStore = useNotificationStore()
@@ -50,6 +51,7 @@ async function addProduct() {
         })
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message)
+    router.push(`/product/${id}`)
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message)

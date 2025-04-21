@@ -71,6 +71,20 @@ function decreaseQuantity() {
     </div>
 
     <div class="flex-3 flex-col">
+      <div class="flex gap-4 items-center mb-4">
+        <p
+          v-if="productStore.singleProduct.gender"
+          class="py-1 px-4 min-w-32 bg-teal-600 text-white text-sm rounded-md"
+        >
+          {{ productStore.singleProduct.gender }}
+        </p>
+        <p
+          v-if="productStore.singleProduct.season"
+          class="py-1 px-4 min-w-32 bg-teal-600 text-white text-sm rounded-md"
+        >
+          {{ productStore.singleProduct.season }}
+        </p>
+      </div>
       <h2 class="text-3xl font-bold">{{ productStore.singleProduct.name }}</h2>
       <p class="text-gray-700">{{ productStore.singleProduct.category }}</p>
       <div class="border-t border-gray-200 my-4"></div>
@@ -122,8 +136,8 @@ function decreaseQuantity() {
         <p
           class="flex items-center gap-4 grow-1 py-6 px-4 border border-teal-600 font-medium text-lg"
         >
-          <Icon icon="ph:package-light" width="40" height="40" class="shrink-0" />The product can be returned within
-          30 days
+          <Icon icon="ph:package-light" width="40" height="40" class="shrink-0" />The product can be
+          returned within 30 days
         </p>
         <p
           class="flex items-center gap-4 grow-1 py-6 px-4 border border-teal-600 font-medium text-lg"
@@ -131,7 +145,8 @@ function decreaseQuantity() {
           <Icon
             icon="material-symbols-light:delivery-truck-speed-outline"
             width="40"
-            height="40" class="shrink-0"
+            height="40"
+            class="shrink-0"
           />Delivery is free for all orders over 30 EUR
         </p>
       </div>
