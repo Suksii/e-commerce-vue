@@ -43,7 +43,22 @@ const sidebarMenu = [
       },
       {
         name: 'See categories',
-        link: '/categories',
+        link: '/',
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: 'Brands',
+    icon: 'tabler:square-rounded-letter-b-filled',
+    options: [
+      {
+        name: 'Add Brand',
+        link: '/add-brand',
+      },
+      {
+        name: 'See brands',
+        link: '/',
       },
     ],
   },

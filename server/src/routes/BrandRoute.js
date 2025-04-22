@@ -1,13 +1,13 @@
-import { Router } from "express";
-import { addBrand } from "../controllers/BrandController";
-import { uploadImage } from "../controllers/UploadController";
 import multer from "multer";
+import { Router } from "express";
+import { addBrand } from "../controllers/BrandController.js";
+import { uploadImage } from "../controllers/UploadController.js";
 
 const router = Router();
 
 const photoUpload = multer({ dest: "uploads/brands" });
 
-router.post("/add", addBrand);
 router.post("/upload", photoUpload.single("photo"), uploadImage);
+router.post("/add", addBrand);
 
-export const BrandRoute = router;
+export const brandRoute = router;

@@ -2,12 +2,13 @@ import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import path from "path";
 import { userRoute } from "./src/routes/UserRoute.js";
 import { productRoute } from "./src/routes/ProductRoute.js";
 import { cartRoute } from "./src/routes/CartRoute.js";
 import { categoryRoute } from "./src/routes/CategoryRoute.js";
-import cookieParser from "cookie-parser";
-import path from "path";
+import { brandRoute } from "./src/routes/BrandRoute.js";
 
 dotenv.config();
 
@@ -39,5 +40,5 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/category", categoryRoute);
-app.use("/api/brand")
+app.use("/api/brand", brandRoute);
 app.use("/api/products", productRoute);
