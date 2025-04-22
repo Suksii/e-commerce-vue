@@ -167,6 +167,5 @@ th {
   font-size: 24px;
   padding: 16px 12px;
   border: 1px solid #e5e7eb;
-  cursor: pointer;
 }
 </style>

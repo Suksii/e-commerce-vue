@@ -110,3 +110,29 @@ export const updateProduct = async (req, res) => {
     res.json({ message: "Internal Server Error", error });
   }
 };
+
+export const searchProduct = async () => {
+  const { name, gender, season, category } = req.query;
+  try {
+    const filter = {};
+
+    if (name) {
+      filter.name = name;
+    }
+    if (category) {
+      filter.category = category;
+    }
+    if (gender) {
+      filter.gender = gender;
+    }
+    if (season) {
+      filter.season = season;
+    }
+
+    const filteredProducts = await Product.find(filter);
+
+    res.status(200).json({ products: filteredProducts });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
