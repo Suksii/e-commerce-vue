@@ -5,6 +5,7 @@ import {
   deleteProduct,
   getProductOptions,
   getProducts,
+  getSearchedProduct,
   getSingleProduct,
   updateProduct,
   uploadImages,
@@ -21,5 +22,6 @@ router.get("/options", getProductOptions);
 router.delete("/delete-product/:id", deleteProduct);
 router.get("/:id", getSingleProduct);
 router.put("/update-product/:id", updateProduct);
+router.get("/search", getSearchedProduct);
 
 export const productRoute = router;
