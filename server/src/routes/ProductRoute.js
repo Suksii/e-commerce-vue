@@ -8,8 +8,8 @@ import {
   getSearchedProduct,
   getSingleProduct,
   updateProduct,
-  uploadImages,
 } from "../controllers/ProductController.js";
+import { uploadImages } from "../controllers/UploadController.js";
 
 const router = Router();
 

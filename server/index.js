@@ -39,4 +39,5 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/category", categoryRoute);
+app.use("/api/brand")
 app.use("/api/products", productRoute);

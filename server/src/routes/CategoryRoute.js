@@ -4,14 +4,14 @@ import {
   addCategory,
   getAllCategories,
   getParentCategories,
-  uploadImage,
 } from "../controllers/CategoryController.js";
+import { uploadImages } from "../controllers/UploadController.js";
 
 const router = Router();
 
 const photoUpload = multer({ dest: "uploads/categories" });
 
-router.post("/upload", photoUpload.single("photo"), uploadImage);
+router.post("/upload", photoUpload.single("photo"), uploadImages);
 router.post("/add", addCategory);
 router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
