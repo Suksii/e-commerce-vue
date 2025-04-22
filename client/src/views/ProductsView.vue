@@ -1,6 +1,7 @@
 <script setup>
 import { request } from '@/api'
 import CardList from '@/components/CardList.vue'
+import { useDebounce } from '@/composables/useDebounce'
 import { useProductsStore } from '@/stores/products'
 import { onMounted, ref, watch } from 'vue'
 
@@ -8,11 +9,13 @@ const productsStore = useProductsStore()
 
 const searchQuery = ref('')
 
+const debouncedValue = useDebounce(searchQuery, 3000)
+
 async function searchProducts() {
   try {
     const { data } = await request.get('/api/products/search', {
       params: {
-        name: searchQuery.value,
+        name: debouncedValue.value,
       },
     })
     productsStore.productsData = data
@@ -25,7 +28,7 @@ async function searchProducts() {
 onMounted(() => {
   productsStore.getProducts()
 })
-watch(searchQuery, (newVal) => {
+watch(debouncedValue, (newVal) => {
   if (newVal.length >= 2) {
     searchProducts()
   } else {
