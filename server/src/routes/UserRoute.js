@@ -14,7 +14,7 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.get("/profile", authenticateUser, getCurrentUser);
-router.get("/get-users", getUsers);
-router.patch("/update-user/:id", updateUser);
+router.get("/", getUsers);
+router.patch("/update/:id", updateUser);
 
 export const userRoute = router;

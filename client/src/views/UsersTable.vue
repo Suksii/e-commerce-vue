@@ -9,7 +9,7 @@ const order = ref('desc')
 
 async function fetchUsers(sortField, sortOrder) {
   try {
-    const { data } = await request.get('/api/users/get-users', {
+    const { data } = await request.get('/api/users', {
       params: {
         sortBy: sortField,
         order: sortOrder,

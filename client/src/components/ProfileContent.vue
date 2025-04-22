@@ -40,7 +40,7 @@ async function handleLogout() {
 }
 async function updateUser(id) {
   try {
-    const response = await request.patch('/api/users/update-user/' + id, {
+    const response = await request.patch('/api/users/update/' + id, {
       username: username.value,
     })
     notificationStore.isError = response.data?.message === 'Username has already been taken'

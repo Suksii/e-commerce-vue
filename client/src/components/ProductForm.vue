@@ -29,7 +29,7 @@ const productStore = useProductsStore()
 async function addProduct() {
   try {
     const response = id
-      ? await request.put('/api/products/update-product/' + id, {
+      ? await request.put('/api/products/update/' + id, {
           name: productData.name,
           description: productData.description,
           price: productData.price,
@@ -39,7 +39,7 @@ async function addProduct() {
           gender: productData.selectedGenre,
           season: productData.selectedSeason,
         })
-      : await request.post('/api/products/add-product', {
+      : await request.post('/api/products/add', {
           name: productData.name,
           description: productData.description,
           price: productData.price,

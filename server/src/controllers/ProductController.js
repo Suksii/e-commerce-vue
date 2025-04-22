@@ -75,7 +75,6 @@ export const getSingleProduct = async (req, res) => {
   const id = req.params.id;
   try {
     const product = await Product.findById(id);
-    console.log(product);
     res.status(200).json(product);
   } catch (error) {
     res.json({ message: "Cannot find specific product:", error });
@@ -111,13 +110,13 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-export const searchProduct = async () => {
+export const getSearchedProduct = async (req, res) => {
   const { name, gender, season, category } = req.query;
   try {
     const filter = {};
 
     if (name) {
-      filter.name = name;
+      filter.name = { $regex: name, $options: "i" };
     }
     if (category) {
       filter.category = category;
@@ -129,9 +128,9 @@ export const searchProduct = async () => {
       filter.season = season;
     }
 
-    const filteredProducts = await Product.find(filter);
+    const products = await Product.find(filter);
 
-    res.status(200).json({ products: filteredProducts });
+    res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
   }

@@ -33,7 +33,7 @@ const discountedPrice = (product) => {
 
 async function deleteProduct(id) {
   try {
-    const response = await request.delete('/api/products/delete-product/' + id)
+    const response = await request.delete('/api/products/delete/' + id)
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message || 'Product successfully deleted')
     productStore.getProducts(sortBy.value, order.value)
