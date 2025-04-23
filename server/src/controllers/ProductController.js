@@ -45,22 +45,6 @@ export const getProductOptions = async (req, res) => {
   res.status(200).json({ gender: genderOptions, season: seasonOptions });
 };
 
-export const uploadImages = async (req, res) => {
-  try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "No files uploaded" });
-    }
-    const { path, originalname } = req.files[0];
-    const extension = originalname.split(".").pop();
-    const newPath = path + "." + extension;
-
-    fs.renameSync(path, newPath);
-    res.status(200).send(newPath.split("\\").slice(1));
-  } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
-  }
-};
-
 export const deleteProduct = async (req, res) => {
   const id = req.params.id;
   try {

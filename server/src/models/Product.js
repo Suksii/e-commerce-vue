@@ -12,7 +12,12 @@ const ProductSchema = new mongoose.Schema({
   },
   season: { type: String, enum: seasonOptions },
   discount: { type: Number },
-  category: { type: String, required: true },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    required: true,
+  },
+  brand: { type: mongoose.Schema.Types.ObjectId, ref: "Brand" },
   images: [{ type: String, required: true }],
 });
 

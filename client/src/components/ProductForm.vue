@@ -18,9 +18,11 @@ const productData = reactive({
   category: '',
   gender: [],
   season: [],
+  brand: [],
   images: [],
   selectedGenre: '',
   selectedSeason: '',
+  selectedBrand: '',
 })
 const inputRef = ref(null)
 const { id } = route.params
@@ -38,6 +40,7 @@ async function addProduct() {
           images: productData.images,
           gender: productData.selectedGenre,
           season: productData.selectedSeason,
+          brand: productData.brand,
         })
       : await request.post('/api/products/add', {
           name: productData.name,
@@ -48,6 +51,7 @@ async function addProduct() {
           images: productData.images,
           gender: productData.selectedGenre,
           season: productData.selectedSeason,
+          brand: productData.brand,
         })
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message)
@@ -111,6 +115,7 @@ onMounted(async () => {
       productData.images = product.images
       productData.selectedGenre = product.gender
       productData.selectedSeason = product.season
+      productData.selectedBrand = product.brand
     }
   }
   fetchProductOptions()
@@ -214,6 +219,7 @@ onMounted(async () => {
           v-model="productData.description"
         ></textarea>
       </div>
+      <CustomSelect v-model:selectedOption="productData.selectedBrand" />
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium"
           >Category<span class="text-red-600 px-0.5">*</span></label
