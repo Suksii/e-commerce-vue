@@ -24,8 +24,6 @@ export const useProductsStore = defineStore('products', () => {
       if (data.images && data.images.length > 0) {
         selectedImage.value = data.images[0]
       }
-      console.log(singleProduct.value)
-
       singleProduct.value = data
     } catch (error) {
       console.error('Error fetching specific product', error)

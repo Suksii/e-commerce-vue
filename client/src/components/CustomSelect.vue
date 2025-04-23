@@ -16,7 +16,9 @@ function toggleOptions() {
 }
 
 function selectOption(option) {
-  emit('update:selectedOption', typeof option === 'object' ? option.id : option)
+  emit('update:selectedOption', typeof option === 'object' ? option._id : option)
+  console.log(option)
+
   showOptions.value = false
 }
 </script>

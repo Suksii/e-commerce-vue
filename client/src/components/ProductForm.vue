@@ -7,9 +7,12 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import CustomSelect from './CustomSelect.vue'
 import router from '@/router'
+import { useBrandStore } from '@/stores/brands.js'
 
 const route = useRoute()
 const notificationStore = useNotificationStore()
+const brandStore = useBrandStore()
+
 const productData = reactive({
   name: '',
   description: '',
@@ -20,7 +23,7 @@ const productData = reactive({
   season: [],
   brand: [],
   images: [],
-  selectedGenre: '',
+  selectedGender: '',
   selectedSeason: '',
   selectedBrand: '',
 })
@@ -30,29 +33,20 @@ const productStore = useProductsStore()
 
 async function addProduct() {
   try {
+    const payload = {
+      name: productData.name,
+      description: productData.description,
+      price: productData.price,
+      discount: productData.discount,
+      category: productData.category,
+      images: productData.images,
+      gender: productData.selectedGender,
+      season: productData.selectedSeason,
+      brand: productData.selectedBrand,
+    }
     const response = id
-      ? await request.put('/api/products/update/' + id, {
-          name: productData.name,
-          description: productData.description,
-          price: productData.price,
-          discount: productData.discount,
-          category: productData.category,
-          images: productData.images,
-          gender: productData.selectedGenre,
-          season: productData.selectedSeason,
-          brand: productData.brand,
-        })
-      : await request.post('/api/products/add', {
-          name: productData.name,
-          description: productData.description,
-          price: productData.price,
-          discount: productData.discount,
-          category: productData.category,
-          images: productData.images,
-          gender: productData.selectedGenre,
-          season: productData.selectedSeason,
-          brand: productData.brand,
-        })
+      ? await request.put('/api/products/update/' + id, payload)
+      : await request.post('/api/products/add', payload)
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message)
     router.push(`/product/${id}`)
@@ -102,6 +96,8 @@ function removeImage(imageIndex) {
   productData.images = productData.images.filter((_, index) => index !== imageIndex)
 }
 onMounted(async () => {
+  fetchProductOptions()
+  brandStore.fetchBrands()
   if (id) {
     await productStore.getProduct(id)
     const product = productStore.singleProduct
@@ -113,13 +109,13 @@ onMounted(async () => {
       productData.discount = product.discount
       productData.category = product.category
       productData.images = product.images
-      productData.selectedGenre = product.gender
+      productData.selectedGender = product.gender
       productData.selectedSeason = product.season
       productData.selectedBrand = product.brand
     }
   }
-  fetchProductOptions()
 })
+
 </script>
 
 <template>
@@ -198,7 +194,7 @@ onMounted(async () => {
             >Gender<span class="text-red-600 px-0.5">*</span></label
           >
           <CustomSelect
-            v-model:selectedOption="productData.selectedGenre"
+            v-model:selectedOption="productData.selectedGender"
             :options="productData.gender"
           />
         </div>
@@ -219,7 +215,13 @@ onMounted(async () => {
           v-model="productData.description"
         ></textarea>
       </div>
-      <CustomSelect v-model:selectedOption="productData.selectedBrand" />
+      <div class="flex flex-col w-full">
+        <label class="text-xl font-medium">Brand</label>
+        <CustomSelect
+          v-model:selectedOption="productData.selectedBrand"
+          :options="brandStore.brandData"
+        />
+      </div>
       <div class="flex flex-col w-full">
         <label class="text-xl font-medium"
           >Category<span class="text-red-600 px-0.5">*</span></label

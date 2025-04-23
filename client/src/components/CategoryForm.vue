@@ -19,7 +19,7 @@ const fetchParentCategories = async () => {
     const { data } = await request.get('/api/category/parent')
     categoryData.parentCategory = data.map((category) => ({
       name: category.name,
-      id: category._id,
+      _id: category._id,
     }))
   } catch (error) {
     notificationStore.isError = true

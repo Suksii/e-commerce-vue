@@ -1,4 +1,3 @@
-import fs from "fs";
 import { Product, genderOptions, seasonOptions } from "../models/Product.js";
 
 export const addProduct = async (req, res) => {
@@ -11,6 +10,7 @@ export const addProduct = async (req, res) => {
     discount,
     season,
     gender,
+    brand,
   } = req.body;
   try {
     const newProduct = await Product.create({
@@ -22,6 +22,7 @@ export const addProduct = async (req, res) => {
       price,
       discount,
       images,
+      brand,
     });
 
     res.status(200).json({ newProduct, message: "Product added successfully" });
@@ -76,17 +77,19 @@ export const updateProduct = async (req, res) => {
     discount,
     season,
     gender,
+    brand,
   } = req.body;
   try {
     const updatedProduct = await Product.findByIdAndUpdate(id, {
       name,
       description,
       category,
-      gender,
-      season,
       images,
       price,
       discount,
+      gender,
+      season,
+      brand,
     });
     res.json({ message: "Product edited successfuly", updatedProduct });
   } catch (error) {
