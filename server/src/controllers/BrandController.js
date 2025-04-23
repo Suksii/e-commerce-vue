@@ -12,7 +12,7 @@ export const addBrand = async (req, res) => {
   }
 };
 
-export const getBrand = async (req, res) => {
+export const getBrands = async (req, res) => {
   try {
     const brands = await Brand.find();
     if (!brands) {
