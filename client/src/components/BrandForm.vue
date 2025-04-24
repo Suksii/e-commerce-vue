@@ -1,10 +1,13 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
+import { useBrandStore } from '@/stores/brands'
 
 const notificationStore = useNotificationStore()
+const brandStore = useBrandStore()
+
 const imageRef = ref(null)
 const brandData = reactive({
   name: '',
@@ -38,6 +41,7 @@ async function addBrand() {
     })
     notificationStore.isError = false
     notificationStore.showNotification(response.data.message || 'Brand Successfully added')
+    brandStore.fetchBrands()
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
@@ -47,7 +51,7 @@ async function addBrand() {
 </script>
 
 <template>
-  <div class="w-[95%] lg:w-[50%] mx-auto py-24">
+  <div class="w-[95%] lg:w-[50%] mx-auto">
     <h2 class="text-center text-4xl font-medium">Add new brand</h2>
     <form
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
@@ -88,4 +92,6 @@ async function addBrand() {
       <button class="min-w-42 w-full my-4 h-14 save-button">Add Brand</button>
     </form>
   </div>
+
+  
 </template>
