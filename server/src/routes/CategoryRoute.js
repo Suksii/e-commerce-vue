@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   addCategory,
   getAllCategories,
+  getNestedCategories,
   getParentCategories,
 } from "../controllers/CategoryController.js";
 import { uploadImages } from "../controllers/UploadController.js";

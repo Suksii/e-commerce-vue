@@ -27,7 +27,6 @@ const fetchParentCategories = async () => {
     console.error('Error while fetching data:', error)
   }
 }
-
 onMounted(() => {
   fetchParentCategories()
 })

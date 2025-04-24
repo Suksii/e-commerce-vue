@@ -39,3 +39,22 @@ export const getParentCategories = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+export const getNestedCategories = async (req, res) => {
+  try {
+    const categories = await Category.aggregate([
+      { $match: { parentCategory: null } },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "_id",
+          foreignField: "parentCategory",
+          as: "subCategories",
+        },
+      },
+    ]);
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};

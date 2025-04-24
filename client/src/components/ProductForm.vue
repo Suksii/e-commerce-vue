@@ -115,7 +115,6 @@ onMounted(async () => {
     }
   }
 })
-
 </script>
 
 <template>
