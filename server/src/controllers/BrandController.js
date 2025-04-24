@@ -23,3 +23,13 @@ export const getBrands = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+export const deleteBrand = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Brand.findByIdAndDelete(id);
+    res.status(200).json({ message: "Brand deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete brand", error });
+  }
+};
