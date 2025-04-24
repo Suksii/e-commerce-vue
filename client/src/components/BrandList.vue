@@ -3,10 +3,11 @@ import { request } from '@/api'
 import { useBrandStore } from '@/stores/brands'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const brandStore = useBrandStore()
 const notificationStore = useNotificationStore()
+const displayedAction = ref(null)
 
 const handleDelete = async (id) => {
   try {
@@ -16,9 +17,15 @@ const handleDelete = async (id) => {
     brandStore.fetchBrands()
   } catch (error) {
     notificationStore.isError = true
-    notificationStore.showNotification(error.response.data?.message || 'Failed to delete brand')
+    notificationStore.showNotification(error.response?.data?.message || 'Failed to delete brand')
     console.error(error)
   }
+}
+const showActions = (id) => {
+  displayedAction.value = id
+}
+const hideAction = () => {
+  displayedAction.value = null
 }
 
 onMounted(() => {
@@ -33,7 +40,9 @@ onMounted(() => {
       <div
         v-for="brand in brandStore.brandData"
         :key="brand._id"
-        class="relative flex flex-col items-center justify-center gap-2 py-2 min-w-[350px] w-[350px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
+        @mouseenter="showActions(brand._id)"
+        @mouseleave="hideAction"
+        class="relative flex flex-col items-center justify-center gap-2 py-2 w-[350px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
       >
         <img
           :src="'http://localhost:3000/uploads/brands/' + brand.image"
@@ -41,13 +50,12 @@ onMounted(() => {
           class="text-center w-54 h-54 object-contain mb-2 p-2"
         />
         <p class="text-3xl font-medium text-center">{{ brand.name }}</p>
-        <div class="absolute right-0 top-0 p-3 m-2 bg-red-600/70 rounded-full" @click="handleDelete(brand._id)">
-          <Icon
-            icon="fluent:delete-28-filled"
-            width="28"
-            height="28"
-            class="text-white cursor-pointer"
-          />
+        <div
+          v-if="displayedAction === brand._id"
+          class="absolute right-0 top-0 p-3 m-2 bg-red-600/80 rounded-full cursor-pointer"
+          @click="handleDelete(brand._id)"
+        >
+          <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-white" />
         </div>
       </div>
     </div>
