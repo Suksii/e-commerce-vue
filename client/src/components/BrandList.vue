@@ -1,13 +1,29 @@
 <script setup>
+import { request } from '@/api'
 import { useBrandStore } from '@/stores/brands'
+import { useNotificationStore } from '@/stores/notification'
+import { Icon } from '@iconify/vue'
 import { onMounted } from 'vue'
 
 const brandStore = useBrandStore()
+const notificationStore = useNotificationStore()
+
+const handleDelete = async (id) => {
+  try {
+    const response = await request.delete('/api/brand/delete/' + id)
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data?.message || 'Brand deleted successfully')
+    brandStore.fetchBrands()
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response.data?.message || 'Failed to delete brand')
+    console.error(error)
+  }
+}
 
 onMounted(() => {
   brandStore.fetchBrands()
 })
-console.log(brandStore.brandData)
 </script>
 
 <template>
@@ -16,15 +32,23 @@ console.log(brandStore.brandData)
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-8">
       <div
         v-for="brand in brandStore.brandData"
-        :key="brand.id"
-        class="flex flex-col items-center justify-center gap-2 py-2 min-w-[350px] w-[350px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
+        :key="brand._id"
+        class="relative flex flex-col items-center justify-center gap-2 py-2 min-w-[350px] w-[350px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
       >
         <img
           :src="'http://localhost:3000/uploads/brands/' + brand.image"
           :alt="brand.name"
-          class="text-center w-54 h-54 object-cover rounded-full mb-2"
+          class="text-center w-54 h-54 object-contain mb-2 p-2"
         />
         <p class="text-3xl font-medium text-center">{{ brand.name }}</p>
+        <div class="absolute right-0 top-0 p-3 m-2 bg-red-600/70 rounded-full" @click="handleDelete(brand._id)">
+          <Icon
+            icon="fluent:delete-28-filled"
+            width="28"
+            height="28"
+            class="text-white cursor-pointer"
+          />
+        </div>
       </div>
     </div>
   </div>

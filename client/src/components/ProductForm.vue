@@ -49,11 +49,11 @@ async function addProduct() {
       ? await request.put('/api/products/update/' + id, payload)
       : await request.post('/api/products/add', payload)
     notificationStore.isError = false
-    notificationStore.showNotification(response.data.message)
+    notificationStore.showNotification(response.data?.message)
     router.push(`/product/${id}`)
   } catch (error) {
     notificationStore.isError = true
-    notificationStore.showNotification(error.response.data.message)
+    notificationStore.showNotification(error.response.data?.message)
     console.error(error)
   }
 }
@@ -100,7 +100,6 @@ async function nestedCategories() {
   try {
     const { data } = await request.get('/api/category/nested')
     productData.category = data
-    console.log(productData.category)
   } catch (error) {
     console.error(error)
   }
