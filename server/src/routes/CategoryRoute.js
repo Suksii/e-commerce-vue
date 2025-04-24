@@ -16,5 +16,6 @@ router.post("/upload", photoUpload.single("photo"), uploadImages);
 router.post("/add", addCategory);
 router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
+router.get("/nested", getNestedCategories);
 
 export const categoryRoute = router;

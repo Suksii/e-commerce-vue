@@ -8,18 +8,32 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:selectedOption'])
 const showOptions = ref(false)
+const showSubOptions = ref(null)
 
 function toggleOptions() {
   if (props.options.length > 0) {
     showOptions.value = !showOptions.value
-  } else return
+    showSubOptions.value = null
+  }
+}
+function toggleSubOptions(suboption) {
+  if (showSubOptions.value === suboption) {
+    showSubOptions.value = null
+  } else {
+    showSubOptions.value = suboption
+  }
 }
 
 function selectOption(option) {
   emit('update:selectedOption', typeof option === 'object' ? option._id : option)
   console.log(option)
-
   showOptions.value = false
+  showSubOptions.value = null
+}
+function selectSubOption(suboption) {
+  emit('update:selectedOption', suboption._id)
+  showOptions.value = false
+  showSubOptions.value = null
 }
 </script>
 
@@ -46,10 +60,31 @@ function selectOption(option) {
         <div
           v-for="(option, index) in props.options"
           :key="index"
-          @click="selectOption(option)"
-          class="px-4 py-3 text-gray-700 hover:bg-teal-600 hover:text-white cursor-pointer transition-all"
+          @click="!option.subCategories ? selectOption(option) : toggleSubOptions(option)"
+          class="px-4 py-3 text-gray-700 cursor-pointer transition-all"
+          :class="{ 'hover:bg-teal-600 hover:text-white': !option.subCategories }"
         >
-          {{ typeof option === 'object' ? option.name : option }}
+          <div class="flex justify-between">
+            <p>
+              {{ typeof option === 'object' ? option.name : option }}
+            </p>
+            <Icon
+              v-if="option.subCategories && option.subCategories.length > 0"
+              icon="simple-line-icons:arrow-down"
+              width="18"
+              height="18"
+              :class="{ 'rotate-180': showSubOptions === option }"
+              class="transition"
+            />
+          </div>
+          <p
+            v-if="option.subCategories && showSubOptions === option"
+            v-for="suboption of option.subCategories"
+            @click="selectSubOption(suboption)"
+            class="w-full px-4 py-3 text-gray-700 cursor-pointer transition-all hover:bg-teal-600 hover:text-white"
+          >
+            <span class="">{{ suboption.name }}</span>
+          </p>
         </div>
       </div>
     </div>

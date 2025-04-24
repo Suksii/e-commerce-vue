@@ -26,6 +26,7 @@ const productData = reactive({
   selectedGender: '',
   selectedSeason: '',
   selectedBrand: '',
+  selectedCategory: '',
 })
 const inputRef = ref(null)
 const { id } = route.params
@@ -38,7 +39,7 @@ async function addProduct() {
       description: productData.description,
       price: productData.price,
       discount: productData.discount,
-      category: productData.category,
+      category: productData.selectedCategory,
       images: productData.images,
       gender: productData.selectedGender,
       season: productData.selectedSeason,
@@ -95,9 +96,19 @@ const fetchProductOptions = async () => {
 function removeImage(imageIndex) {
   productData.images = productData.images.filter((_, index) => index !== imageIndex)
 }
+async function nestedCategories() {
+  try {
+    const { data } = await request.get('/api/category/nested')
+    productData.category = data
+    console.log(productData.category)
+  } catch (error) {
+    console.error(error)
+  }
+}
 onMounted(async () => {
   fetchProductOptions()
   brandStore.fetchBrands()
+  nestedCategories()
   if (id) {
     await productStore.getProduct(id)
     const product = productStore.singleProduct
@@ -107,8 +118,8 @@ onMounted(async () => {
       productData.description = product.description
       productData.price = product.price
       productData.discount = product.discount
-      productData.category = product.category
       productData.images = product.images
+      productData.selectedCategory = product.category
       productData.selectedGender = product.gender
       productData.selectedSeason = product.season
       productData.selectedBrand = product.brand
@@ -187,6 +198,16 @@ onMounted(async () => {
           />
         </div>
       </div>
+
+      <div class="flex flex-col w-full">
+        <label class="text-xl font-medium"
+          >Category<span class="text-red-600 px-0.5">*</span></label
+        >
+        <CustomSelect
+          v-model:selectedOption="productData.selectedCategory"
+          :options="productData.category"
+        />
+      </div>
       <div class="w-full flex gap-2 items-center">
         <div class="flex flex-col w-full">
           <label class="text-xl font-medium"
@@ -221,12 +242,7 @@ onMounted(async () => {
           :options="brandStore.brandData"
         />
       </div>
-      <div class="flex flex-col w-full">
-        <label class="text-xl font-medium"
-          >Category<span class="text-red-600 px-0.5">*</span></label
-        >
-        <input class="custom-input w-full p-4" v-model="productData.category" />
-      </div>
+
       <button class="min-w-42 w-full my-4 h-14 save-button">
         {{ id ? 'Save Changes' : 'Add Product' }}
       </button>
