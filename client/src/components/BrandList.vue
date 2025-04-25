@@ -8,6 +8,7 @@ import { onMounted, ref } from 'vue'
 const brandStore = useBrandStore()
 const notificationStore = useNotificationStore()
 const displayedAction = ref(null)
+const editMode = ref(false)
 
 const handleDelete = async (id) => {
   try {

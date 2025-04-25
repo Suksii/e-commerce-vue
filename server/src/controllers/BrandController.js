@@ -33,3 +33,16 @@ export const deleteBrand = async (req, res) => {
     res.status(500).json({ message: "Failed to delete brand", error });
   }
 };
+
+export const updateBrand = async (req, res) => {
+  const { id } = req.params;
+  const { image, name } = req.body;
+  try {
+    const updatedBrand = await Brand.findByIdAndUpdate(id, { image, name });
+    res
+      .status(200)
+      .json({ message: "Brand updated successfully", brand: updatedBrand });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
