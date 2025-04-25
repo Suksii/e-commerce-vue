@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { reactive, ref, watchEffect } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { useBrandStore } from '@/stores/brands'
@@ -8,18 +8,16 @@ import { useBrandActions } from '@/composables/useBrandActions'
 
 const notificationStore = useNotificationStore()
 const brandStore = useBrandStore()
-const { id } = useBrandActions()
-
-console.log(id.value)
+const { id, cancel } = useBrandActions()
 
 const imageRef = ref(null)
 const brandData = reactive({
   name: '',
-  image: [],
+  image: '',
 })
 
 async function uploadImage(event) {
-  const file = event.target.files[0]
+  const file = event.target?.files[0]
   const formData = new FormData()
   formData.append('photo', file)
   try {
@@ -39,8 +37,8 @@ async function uploadImage(event) {
 
 async function addBrand() {
   try {
-    const response = id
-      ? await request.put('/api/brand/update/' + id, {
+    const response = id.value
+      ? await request.put('/api/brand/update/' + id.value, {
           name: brandData.name,
           image: brandData.image,
         })
@@ -50,15 +48,34 @@ async function addBrand() {
         })
     notificationStore.isError = false
     notificationStore.showNotification(
-      response.data.message || id ? 'Brand edited successfully' : 'Brand successfully added',
+      response.data.message || id.value ? 'Brand edited successfully' : 'Brand successfully added',
     )
     brandStore.fetchBrands()
+    cancel()
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
   }
 }
+
+watch(
+  id,
+  async (newId) => {
+    if (newId) {
+      await brandStore.fetchSingleBrand(newId)
+      const brand = brandStore.singleBrand
+      if (brand) {
+        brandData.name = brand.name
+        brandData.image = brand.image
+      }
+    } else {
+      brandData.name = ''
+      brandData.image = ''
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -73,10 +90,7 @@ async function addBrand() {
       <div class="flex flex-col gap-2 w-full">
         <p class="text-xl font-medium">Upload image<span class="text-red-600 px-0.5"></span></p>
         <div class="flex gap-2 flex-wrap items-center w-full">
-          <div
-            v-if="brandData.image && brandData.image.length"
-            class="w-42 md:w-40 aspect-square relative"
-          >
+          <div v-if="brandData.image" class="w-42 md:w-40 aspect-square relative">
             <img
               :src="'http://localhost:3000/uploads/brands/' + brandData.image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
@@ -102,9 +116,14 @@ async function addBrand() {
         <label class="text-xl font-medium">Name<span class="text-red-600 px-0.5">*</span></label>
         <input v-model="brandData.name" class="custom-input w-full p-4" />
       </div>
-      <button class="min-w-42 w-full my-4 h-14 save-button">
-        {{ id ? 'Save Changes' : 'Add Brand' }}
-      </button>
+      <div class="flex justify-between gap-2 w-full transition-all">
+        <button v-if="id" @click="cancel" class="min-w-42 w-full my-4 h-14 save-button">
+          Cancel
+        </button>
+        <button class="min-w-42 w-full my-4 h-14 save-button">
+          {{ id ? 'Save Changes' : 'Add Brand' }}
+        </button>
+      </div>
     </form>
   </div>
 </template>

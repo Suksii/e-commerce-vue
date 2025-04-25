@@ -18,6 +18,6 @@ router.post("/add", addBrand);
 router.get("/", getBrands);
 router.delete("/delete/:id", deleteBrand);
 router.put("/update/:id", updateBrand);
-router.put("/:id", getSingleBrand);
+router.get("/:id", getSingleBrand);
 
 export const brandRoute = router;

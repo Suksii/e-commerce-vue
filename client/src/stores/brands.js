@@ -17,12 +17,12 @@ export const useBrandStore = defineStore('brands', () => {
 
   async function fetchSingleBrand(id) {
     try {
-      const { data } = await request.get('/api/brand' + id)
+      const { data } = await request.get('/api/brand/' + id)
       singleBrand.value = data
     } catch (error) {
       console.error('Error fetching specific brand', error)
     }
   }
 
-  return { fetchBrands, brandData, fetchSingleBrand }
+  return { fetchBrands, brandData, fetchSingleBrand, singleBrand }
 })
