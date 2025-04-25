@@ -1,12 +1,16 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { onMounted, reactive, ref } from 'vue'
+import { reactive, ref, watchEffect } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { useBrandStore } from '@/stores/brands'
+import { useBrandActions } from '@/composables/useBrandActions'
 
 const notificationStore = useNotificationStore()
 const brandStore = useBrandStore()
+const { id } = useBrandActions()
+
+console.log(id.value)
 
 const imageRef = ref(null)
 const brandData = reactive({
@@ -45,7 +49,9 @@ async function addBrand() {
           image: brandData.image,
         })
     notificationStore.isError = false
-    notificationStore.showNotification(response.data.message || id ? 'Brand edited successfully' : 'Brand successfully added')
+    notificationStore.showNotification(
+      response.data.message || id ? 'Brand edited successfully' : 'Brand successfully added',
+    )
     brandStore.fetchBrands()
   } catch (error) {
     notificationStore.isError = true
@@ -57,7 +63,9 @@ async function addBrand() {
 
 <template>
   <div class="w-[95%] lg:w-[50%] mx-auto">
-    <h2 class="text-center text-4xl font-medium">Add new brand</h2>
+    <h2 class="text-center text-4xl font-medium">
+      {{ id ? 'Update this brand' : 'Add new brand' }}
+    </h2>
     <form
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
       @submit.prevent="addBrand"
@@ -94,7 +102,9 @@ async function addBrand() {
         <label class="text-xl font-medium">Name<span class="text-red-600 px-0.5">*</span></label>
         <input v-model="brandData.name" class="custom-input w-full p-4" />
       </div>
-      <button class="min-w-42 w-full my-4 h-14 save-button">Add Brand</button>
+      <button class="min-w-42 w-full my-4 h-14 save-button">
+        {{ id ? 'Save Changes' : 'Add Brand' }}
+      </button>
     </form>
   </div>
 </template>

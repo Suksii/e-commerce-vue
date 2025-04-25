@@ -1,5 +1,6 @@
 <script setup>
 import { request } from '@/api'
+import { useBrandActions } from '@/composables/useBrandActions'
 import { useBrandStore } from '@/stores/brands'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
@@ -8,7 +9,7 @@ import { onMounted, ref } from 'vue'
 const brandStore = useBrandStore()
 const notificationStore = useNotificationStore()
 const displayedAction = ref(null)
-const editMode = ref(false)
+const { handleEdit } = useBrandActions()
 
 const handleDelete = async (id) => {
   try {
@@ -51,6 +52,13 @@ onMounted(() => {
           class="text-center w-54 h-54 object-contain mb-2 p-2"
         />
         <p class="text-3xl font-medium text-center">{{ brand.name }}</p>
+        <div
+          v-if="displayedAction === brand._id"
+          class="absolute left-0 top-0 p-3 m-2 bg-teal-600/80 rounded-full cursor-pointer"
+          @click="handleEdit(brand._id)"
+        >
+          <Icon icon="lucide:edit" width="28" height="28" class="text-white" />
+        </div>
         <div
           v-if="displayedAction === brand._id"
           class="absolute right-0 top-0 p-3 m-2 bg-red-600/80 rounded-full cursor-pointer"
