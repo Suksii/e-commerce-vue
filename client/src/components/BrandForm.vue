@@ -35,12 +35,17 @@ async function uploadImage(event) {
 
 async function addBrand() {
   try {
-    const response = await request.post('/api/brand/add', {
-      name: brandData.name,
-      image: brandData.image,
-    })
+    const response = id
+      ? await request.put('/api/brand/update/' + id, {
+          name: brandData.name,
+          image: brandData.image,
+        })
+      : await request.post('/api/brand/add', {
+          name: brandData.name,
+          image: brandData.image,
+        })
     notificationStore.isError = false
-    notificationStore.showNotification(response.data.message || 'Brand Successfully added')
+    notificationStore.showNotification(response.data.message || id ? 'Brand edited successfully' : 'Brand successfully added')
     brandStore.fetchBrands()
   } catch (error) {
     notificationStore.isError = true
@@ -92,6 +97,4 @@ async function addBrand() {
       <button class="min-w-42 w-full my-4 h-14 save-button">Add Brand</button>
     </form>
   </div>
-
-  
 </template>
