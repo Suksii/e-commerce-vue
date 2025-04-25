@@ -4,6 +4,7 @@ import {
   addBrand,
   deleteBrand,
   getBrands,
+  getSingleBrand,
   updateBrand,
 } from "../controllers/BrandController.js";
 import { uploadImage } from "../controllers/UploadController.js";
@@ -17,5 +18,6 @@ router.post("/add", addBrand);
 router.get("/", getBrands);
 router.delete("/delete/:id", deleteBrand);
 router.put("/update/:id", updateBrand);
+router.put("/:id", getSingleBrand);
 
 export const brandRoute = router;
