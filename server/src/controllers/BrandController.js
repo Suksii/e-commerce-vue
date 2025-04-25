@@ -46,3 +46,13 @@ export const updateBrand = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+export const getSingleBrand = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const brand = await Brand.findById(id);
+    res.status(200).json(brand);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
