@@ -1,4 +1,5 @@
 <script setup>
+import { useBrandStore } from '@/stores/brands'
 import { useCartStore } from '@/stores/carts'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
@@ -6,20 +7,23 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const baseImgUrl = 'http://localhost:3000/uploads/products/'
+const baseImgUrl = 'http://localhost:3000/uploads/'
 const quantity = ref(1)
 const cartStore = useCartStore()
 const productStore = useProductsStore()
+const brandStore = useBrandStore()
 
 const discountedPrice = (productPrice, productDiscount) => {
   return (productPrice - productPrice * (productDiscount / 100)).toFixed(2)
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (route.params.id) {
-    productStore.getProduct(route.params.id)
+    await productStore.getProduct(route.params.id)
+    await brandStore.fetchSingleBrand(productStore.singleProduct.brand)
   }
 })
+
 function increaseQuantity() {
   if (quantity.value < 5) {
     quantity.value += 1
@@ -33,7 +37,7 @@ function decreaseQuantity() {
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row gap-12 w-[90%] md:w-[70%] mx-auto py-24">
+  <div class="flex flex-col xl:flex-row gap-12 w-[90%] xl:w-[80%] mx-auto py-24">
     <div class="flex-2">
       <div
         class="border border-teal-600/20 flex justify-center items-center group overflow-hidden rounded-md"
@@ -48,7 +52,7 @@ function decreaseQuantity() {
           <img
             v-if="productStore.selectedImage"
             :key="productStore.selectedImage"
-            :src="baseImgUrl + productStore.selectedImage"
+            :src="baseImgUrl + 'products/' + productStore.selectedImage"
             :alt="productStore.selectedImage"
             class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
           />
@@ -61,7 +65,7 @@ function decreaseQuantity() {
           class="w-full border border-teal-600/20 rounded-md group cursor-pointer"
         >
           <img
-            :src="baseImgUrl + image"
+            :src="baseImgUrl + 'products/' + image"
             :alt="image"
             @click="productStore.selectedImage = image"
             class="w-full object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
@@ -71,22 +75,31 @@ function decreaseQuantity() {
     </div>
 
     <div class="flex-3 flex-col">
-      <div class="flex gap-4 items-center mb-4">
-        <p
-          v-if="productStore.singleProduct.gender"
-          class="py-1 px-4 min-w-32 bg-teal-600 text-white text-sm rounded-md"
-        >
-          {{ productStore.singleProduct.gender }}
-        </p>
-        <p
-          v-if="productStore.singleProduct.season"
-          class="py-1 px-4 min-w-32 bg-teal-600 text-white text-sm rounded-md"
-        >
-          {{ productStore.singleProduct.season }}
-        </p>
+      <div class="flex flex-row md:flex-col lg:flex-row justify-between lg:items-center">
+        <div>
+          <div class="flex gap-4 items-center mb-4">
+            <p
+              v-if="productStore.singleProduct.gender"
+              class="py-1 px-4 min-w-32 bg-teal-600 text-white text-sm rounded-md"
+            >
+              {{ productStore.singleProduct.gender }}
+            </p>
+            <p
+              v-if="productStore.singleProduct.season"
+              class="py-1 px-4 min-w-32 bg-teal-600 text-white text-sm rounded-md"
+            >
+              {{ productStore.singleProduct.season }}
+            </p>
+          </div>
+          <h2 class="text-3xl font-bold">{{ productStore.singleProduct.name }}</h2>
+          <p class="text-gray-700">{{ productStore.singleProduct.category }}</p>
+        </div>
+        <img
+          v-if="brandStore.singleBrand"
+          :src="baseImgUrl + 'brands/' + brandStore.singleBrand.image"
+          class="w-32 lg:w-48"
+        />
       </div>
-      <h2 class="text-3xl font-bold">{{ productStore.singleProduct.name }}</h2>
-      <p class="text-gray-700">{{ productStore.singleProduct.category }}</p>
       <div class="border-t border-gray-200 my-4"></div>
       <div class="flex gap-6">
         <div class="flex items-end">

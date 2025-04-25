@@ -69,7 +69,7 @@ const handleExpand = (item) => {
 <template>
   <div
     v-if="profileStore.currentUser && profileStore.currentUser.isAdmin"
-    class="min-h-[calc(100vh-56px-48px)] m-4 md:mx-6 my-6 p-4 w-32 shrink-0 md:w-96 flex flex-col gap-2 bg-teal-600 rounded-md shadow-md shadow-black transition-all ease-in-out duration-300"
+    class="min-h-[calc(100vh-56px-48px)] m-4 md:mx-6 my-6 p-4 w-32 shrink-0 md:w-64 xl:w-96 flex flex-col gap-2 bg-teal-600 rounded-md shadow-md shadow-black transition-all ease-in-out duration-300"
   >
     <div class="flex justify-between items-center">
       <div class="hidden md:flex flex-col">

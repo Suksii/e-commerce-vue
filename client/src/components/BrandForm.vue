@@ -51,6 +51,8 @@ async function addBrand() {
       response.data.message || id.value ? 'Brand edited successfully' : 'Brand successfully added',
     )
     brandStore.fetchBrands()
+    brandData.name = ''
+    brandData.image = ''
     cancel()
   } catch (error) {
     notificationStore.isError = true

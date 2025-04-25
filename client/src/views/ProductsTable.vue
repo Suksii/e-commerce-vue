@@ -13,18 +13,9 @@ const router = useRouter()
 const sortBy = ref('name')
 const order = ref('asc')
 
-async function fetchAllCategories() {
-  try {
-    const { data } = await request('/api/category/')
-    console.log(data)
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 onMounted(() => {
   productStore.getProducts(sortBy.value, order.value)
-  fetchAllCategories()
+  // fetchAllCategories()
 })
 
 const discountedPrice = (product) => {
