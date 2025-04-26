@@ -1,10 +1,14 @@
 <script setup>
+import { request } from '@/api'
 import { useCategoryStore } from '@/stores/categories'
+import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 
 const categoryStore = useCategoryStore()
 const expandCategory = ref(null)
+const displayedAction = ref(null)
+const notificationStore = useNotificationStore()
 
 const expand = (cat) => {
   expandCategory.value = cat
@@ -12,9 +16,28 @@ const expand = (cat) => {
 const close = () => {
   expandCategory.value = null
 }
+const displayAction = (id) => {
+  displayedAction.value = id
+}
+const hideAction = () => {
+  displayedAction.value = null
+}
 
-onMounted(() => {
-  categoryStore.fetchCategories()
+async function handleDelete(id) {
+  try {
+    const response = await request.delete('/api/category/delete/' + id)
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data.message || 'Category deleted successfully')
+    await categoryStore.fetchCategories()
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
+    console.error(error)
+  }
+}
+
+onMounted(async () => {
+  await categoryStore.fetchCategories()
 })
 </script>
 
@@ -23,6 +46,8 @@ onMounted(() => {
     <div
       v-for="category in categoryStore.categoriesData"
       :key="category._id"
+      @mouseenter="displayAction(category._id)"
+      @mouseleave="hideAction"
       @click.stop="expand(category)"
       class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-md transition-all duration-300 cursor-pointer group"
     >
@@ -38,6 +63,19 @@ onMounted(() => {
           </p>
         </div>
         <div
+          v-if="displayedAction === category._id"
+          class="absolute left-0 top-0 p-3 m-2 bg-teal-600/80 rounded-full cursor-pointer"
+        >
+          <Icon icon="lucide:edit" width="28" height="28" class="text-white" />
+        </div>
+        <div
+          v-if="displayedAction === category._id"
+          class="absolute right-0 top-0 p-3 m-2 bg-red-600/80 rounded-full cursor-pointer"
+          @click.stop="handleDelete(category._id)"
+        >
+          <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-white" />
+        </div>
+        <div
           v-if="expandCategory === category && category.subCategories.length"
           class="absolute inset-0 w-full bg-gray-50 flex flex-col"
         >
@@ -48,7 +86,9 @@ onMounted(() => {
             <div
               v-for="subCategory in category.subCategories"
               :key="subCategory._id"
-              class="relative flex items-center gap-4 bg-white p-3 rounded-lg shadow hover:bg-gray-100 transition"
+              @mouseenter="displayAction(subCategory._id)"
+              @mouseleave="hideAction"
+              class="relative flex items-center gap-4 bg-white p-3 rounded-lg shadow hover:bg-gray-100 transition z-20"
             >
               <img
                 :src="'http://localhost:3000/uploads/categories/' + subCategory.image"
@@ -56,13 +96,19 @@ onMounted(() => {
                 class="w-24 h-20 object-cover rounded-md"
               />
               <p class="text-lg font-medium text-gray-700">{{ subCategory.name }}</p>
-              <div class="absolute right-0 top-1/2 -translate-y-1/2 flex gap-4">
-                <div class="p-3 bg-teal-600/80 rounded-full cursor-pointer">
+              <div
+                v-if="displayedAction === subCategory._id"
+                class="absolute right-0 top-1/2 -translate-y-1/2 flex gap-4"
+              >
+                <button class="p-3 bg-teal-600/80 rounded-full cursor-pointer">
                   <Icon icon="lucide:edit" width="24" height="24" class="text-white" />
-                </div>
-                <div class="p-3 bg-red-600/80 rounded-full cursor-pointer">
+                </button>
+                <button
+                  class="p-3 bg-red-600/80 rounded-full cursor-pointer"
+                  @click.stop="handleDelete(subCategory._id)"
+                >
                   <Icon icon="fluent:delete-28-filled" width="24" height="24" class="text-white" />
-                </div>
+                </button>
               </div>
             </div>
           </div>
