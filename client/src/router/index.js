@@ -61,8 +61,8 @@ const router = createRouter({
       component: ProductsView,
     },
     {
-      path: '/add-category',
-      name: 'addCategory',
+      path: '/categories',
+      name: 'categories',
       component: CategoryForm,
     },
     {

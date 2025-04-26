@@ -36,16 +36,7 @@ const sidebarMenu = [
     id: 4,
     name: 'Categories',
     icon: 'material-symbols:category-rounded',
-    options: [
-      {
-        name: 'Add Category',
-        link: '/add-category',
-      },
-      {
-        name: 'See categories',
-        link: '/',
-      },
-    ],
+    link: '/categories',
   },
   {
     id: 5,
