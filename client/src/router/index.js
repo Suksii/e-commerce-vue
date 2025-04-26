@@ -8,9 +8,8 @@ import { useProfile } from '@/stores/profile'
 import UsersTable from '@/views/UsersTable.vue'
 import ProductsTable from '@/views/ProductsTable.vue'
 import ProductForm from '@/components/ProductForm.vue'
-import CategoryForm from '@/components/CategoryForm.vue'
-import BrandForm from '@/components/BrandForm.vue'
 import Brands from '@/components/Brands.vue'
+import Categories from '@/components/Categories.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,7 +62,7 @@ const router = createRouter({
     {
       path: '/categories',
       name: 'categories',
-      component: CategoryForm,
+      component: Categories,
     },
     {
       path: '/brands',
