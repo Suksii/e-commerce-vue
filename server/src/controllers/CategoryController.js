@@ -58,3 +58,18 @@ export const getNestedCategories = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+export const deleteCategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const category = await Category.findById(id);
+
+    if (category.parentCategory === null) {
+      await Category.deleteMany({ parentCategory: category._id });
+    }
+    await Category.findByIdAndDelete(id);
+    res.status(200).json({ message: "Category deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};

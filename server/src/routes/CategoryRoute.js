@@ -2,6 +2,7 @@ import multer from "multer";
 import { Router } from "express";
 import {
   addCategory,
+  deleteCategory,
   getAllCategories,
   getNestedCategories,
   getParentCategories,
@@ -17,5 +18,6 @@ router.post("/add", addCategory);
 router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
 router.get("/nested", getNestedCategories);
+router.delete("/delete/:id", deleteCategory);
 
 export const categoryRoute = router;
