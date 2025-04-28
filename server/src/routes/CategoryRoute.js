@@ -6,6 +6,7 @@ import {
   getAllCategories,
   getNestedCategories,
   getParentCategories,
+  updateCategory,
 } from "../controllers/CategoryController.js";
 import { uploadImage } from "../controllers/UploadController.js";
 
@@ -19,5 +20,6 @@ router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
 router.get("/nested", getNestedCategories);
 router.delete("/delete/:id", deleteCategory);
+router.update("/update/:id", updateCategory);
 
 export const categoryRoute = router;

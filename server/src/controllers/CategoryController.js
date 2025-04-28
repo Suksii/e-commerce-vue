@@ -73,3 +73,20 @@ export const deleteCategory = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const updateCategory = async (req, res) => {
+  const { id } = req.params;
+  const { name, image } = req.body;
+  try {
+    const updatedCategory = await Category.findByIdAndUpdate(id, {
+      name,
+      image,
+      parentCategory,
+    });
+    res
+      .status(200)
+      .json({ message: "Category updated successfully", updatedCategory });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
