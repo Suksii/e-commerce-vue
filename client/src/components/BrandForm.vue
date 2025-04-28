@@ -35,7 +35,7 @@ async function uploadImage(event) {
   }
 }
 
-async function addBrand() {
+async function handleBrand() {
   try {
     const response = brandId.value
       ? await request.put('/api/brand/update/' + brandId.value, {
@@ -89,7 +89,7 @@ watch(
     </h2>
     <form
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
-      @submit.prevent="addBrand"
+      @submit.prevent="handleBrand"
     >
       <div class="flex flex-col gap-2 w-full">
         <p class="text-xl font-medium">Upload image<span class="text-red-600 px-0.5"></span></p>

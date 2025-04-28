@@ -76,12 +76,13 @@ export const deleteCategory = async (req, res) => {
 
 export const updateCategory = async (req, res) => {
   const { id } = req.params;
-  const { name, image } = req.body;
+  const { name, image, slug, parentCategory } = req.body;
   try {
     const updatedCategory = await Category.findByIdAndUpdate(id, {
       name,
+      slug,
       image,
-      parentCategory,
+      parentCategory: parentCategory || null,
     });
     res
       .status(200)

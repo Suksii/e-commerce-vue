@@ -1,14 +1,16 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import CustomSelect from './CustomSelect.vue'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { useEditActions } from '@/composables/useEditActions'
+import { useCategoryStore } from '@/stores/categories'
 
 const notificationStore = useNotificationStore()
+const categoryStore = useCategoryStore()
 const imageRef = ref(null)
-const { id: categoryId, categoryCancel } = useEditActions()
+const { id: categoryId, cancel: categoryCancel } = useEditActions()
 const categoryData = reactive({
   name: '',
   slug: '',
@@ -52,18 +54,24 @@ async function uploadImage(event) {
   }
 }
 
-async function addCategory() {
+async function handleCategory() {
   try {
-    const response = await request.post('/api/category/add', {
+    const payload = {
       name: categoryData.name,
       image: categoryData.image,
       slug: categoryData.name.toLowerCase().replaceAll(' ', '-'),
-      gender: categoryData.selectedGenre,
-      season: categoryData.selectedSeason,
       parentCategory: categoryData.selectedCategory || null,
-    })
+    }
+    const response = categoryId.value
+      ? await request.put('/api/category/update/' + categoryId.value, payload)
+      : await request.post('/api/category/add', payload)
     notificationStore.isError = false
-    notificationStore.showNotification(response.data.message || 'Category Successfully added')
+    notificationStore.showNotification(
+      response.data.message || categoryId
+        ? 'Category edited successfully'
+        : 'Category added successfully',
+    )
+    categoryStore.fetchCategories()
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
@@ -74,10 +82,12 @@ async function addCategory() {
 
 <template>
   <div class="w-[95%] lg:w-[50%] mx-auto py-24">
-    <h2 class="text-center text-4xl font-medium">Add new category</h2>
+    <h2 class="text-center text-4xl font-medium">
+      {{ categoryId ? 'Update this category' : 'Add new category' }}
+    </h2>
     <form
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
-      @submit.prevent="addCategory"
+      @submit.prevent="handleCategory"
     >
       <div class="flex flex-col gap-2 w-full">
         <p class="text-xl font-medium">Upload image<span class="text-red-600 px-0.5"></span></p>
