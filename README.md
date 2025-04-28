@@ -1,4 +1,4 @@
-# E-commerce App (in progress...)
+# E-commerce App
 
 ### Backend
 
