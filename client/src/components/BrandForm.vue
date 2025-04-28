@@ -15,7 +15,10 @@ const brandData = reactive({
   name: '',
   image: '',
 })
-
+function resetForm() {
+  brandData.name = ''
+  brandData.image = ''
+}
 async function uploadImage(event) {
   const file = event.target?.files[0]
   const formData = new FormData()
@@ -53,8 +56,7 @@ async function handleBrand() {
         : 'Brand successfully added',
     )
     brandStore.fetchBrands()
-    brandData.name = ''
-    brandData.image = ''
+    resetForm()
     brandCancel()
   } catch (error) {
     notificationStore.isError = true
@@ -74,8 +76,7 @@ watch(
         brandData.image = brand.image
       }
     } else {
-      brandData.name = ''
-      brandData.image = ''
+      resetForm()
     }
   },
   { immediate: true },

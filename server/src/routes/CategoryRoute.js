@@ -6,6 +6,7 @@ import {
   getAllCategories,
   getNestedCategories,
   getParentCategories,
+  getSingleCategory,
   updateCategory,
 } from "../controllers/CategoryController.js";
 import { uploadImage } from "../controllers/UploadController.js";
@@ -19,7 +20,7 @@ router.post("/add", addCategory);
 router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
 router.get("/nested", getNestedCategories);
-router.get("/:id");
+router.get("/:id", getSingleCategory);
 router.delete("/delete/:id", deleteCategory);
 router.put("/update/:id", updateCategory);
 

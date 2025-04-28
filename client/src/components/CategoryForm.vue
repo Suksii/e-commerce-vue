@@ -31,6 +31,11 @@ const fetchParentCategories = async () => {
     console.error('Error while fetching data:', error)
   }
 }
+function resetForm() {
+  categoryData.name = ''
+  categoryData.image = ''
+  categoryData.parentCategory = ''
+}
 onMounted(() => {
   fetchParentCategories()
 })
@@ -72,12 +77,31 @@ async function handleCategory() {
         : 'Category added successfully',
     )
     categoryStore.fetchCategories()
+    resetForm()
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
   }
 }
+
+watch(
+  categoryId,
+  async (newId) => {
+    if (newId) {
+      await categoryStore.getSingleCategory(newId)
+      const category = categoryStore.singleCategoryData
+      if (category) {
+        categoryData.name = category.name
+        categoryData.image = category.image
+        categoryData.selectedCategory = category.parentCategory || ''
+      } else {
+        resetForm()
+      }
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
