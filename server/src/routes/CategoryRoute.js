@@ -19,6 +19,7 @@ router.post("/add", addCategory);
 router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
 router.get("/nested", getNestedCategories);
+router.get("/:id");
 router.delete("/delete/:id", deleteCategory);
 router.put("/update/:id", updateCategory);
 
