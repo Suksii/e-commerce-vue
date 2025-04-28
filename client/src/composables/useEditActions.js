@@ -9,6 +9,6 @@ const cancel = () => {
   editMode.value = null
 }
 
-export const useBrandActions = () => {
+export const useEditActions = () => {
   return { id: editMode, handleEdit, cancel }
 }

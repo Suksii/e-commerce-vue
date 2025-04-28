@@ -1,5 +1,6 @@
 <script setup>
 import { request } from '@/api'
+import { useEditActions } from '@/composables/useEditActions'
 import { useCategoryStore } from '@/stores/categories'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
@@ -9,6 +10,7 @@ const categoryStore = useCategoryStore()
 const expandCategory = ref(null)
 const displayedAction = ref(null)
 const notificationStore = useNotificationStore()
+const { handleEdit: handleCategoryEdit } = useEditActions()
 
 const expand = (cat) => {
   expandCategory.value = cat
@@ -64,6 +66,7 @@ onMounted(async () => {
         </div>
         <div
           v-if="displayedAction === category._id"
+          @click.stop="handleCategoryEdit(category._id)"
           class="absolute left-0 top-0 p-3 m-2 bg-teal-600/80 rounded-full cursor-pointer"
         >
           <Icon icon="lucide:edit" width="28" height="28" class="text-white" />
@@ -100,7 +103,10 @@ onMounted(async () => {
                 v-if="displayedAction === subCategory._id"
                 class="absolute right-0 top-1/2 -translate-y-1/2 flex gap-4"
               >
-                <button class="p-3 bg-teal-600/80 rounded-full cursor-pointer">
+                <button
+                  @click.stop="handleCategoryEdit(subCategory._id)"
+                  class="p-3 bg-teal-600/80 rounded-full cursor-pointer"
+                >
                   <Icon icon="lucide:edit" width="24" height="24" class="text-white" />
                 </button>
                 <button

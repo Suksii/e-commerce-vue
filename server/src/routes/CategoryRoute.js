@@ -20,6 +20,6 @@ router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
 router.get("/nested", getNestedCategories);
 router.delete("/delete/:id", deleteCategory);
-router.update("/update/:id", updateCategory);
+// router.update("/update/:id", updateCategory);
 
 export const categoryRoute = router;

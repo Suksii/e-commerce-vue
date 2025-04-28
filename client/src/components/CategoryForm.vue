@@ -4,9 +4,11 @@ import CustomSelect from './CustomSelect.vue'
 import { onMounted, reactive, ref } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
+import { useEditActions } from '@/composables/useEditActions'
 
 const notificationStore = useNotificationStore()
 const imageRef = ref(null)
+const { id: categoryId, categoryCancel } = useEditActions()
 const categoryData = reactive({
   name: '',
   slug: '',
@@ -116,7 +118,18 @@ async function addCategory() {
           :options="categoryData.parentCategory"
         />
       </div>
-      <button class="min-w-42 w-full my-4 h-14 save-button">Add Category</button>
+      <div class="flex justify-between gap-2 w-full transition-all">
+        <button
+          v-if="categoryId"
+          @click="categoryCancel"
+          class="min-w-42 w-full my-4 h-14 save-button"
+        >
+          Cancel
+        </button>
+        <button class="min-w-42 w-full my-4 h-14 save-button">
+          {{ categoryId ? 'Save Changes' : 'Add Category' }}
+        </button>
+      </div>
     </form>
   </div>
 </template>

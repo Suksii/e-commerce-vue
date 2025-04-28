@@ -4,11 +4,11 @@ import { reactive, ref, watch } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { useBrandStore } from '@/stores/brands'
-import { useBrandActions } from '@/composables/useBrandActions'
+import { useEditActions } from '@/composables/useEditActions'
 
 const notificationStore = useNotificationStore()
 const brandStore = useBrandStore()
-const { id, cancel } = useBrandActions()
+const { id: brandId, cancel: brandCancel } = useEditActions()
 
 const imageRef = ref(null)
 const brandData = reactive({
@@ -37,8 +37,8 @@ async function uploadImage(event) {
 
 async function addBrand() {
   try {
-    const response = id.value
-      ? await request.put('/api/brand/update/' + id.value, {
+    const response = brandId.value
+      ? await request.put('/api/brand/update/' + brandId.value, {
           name: brandData.name,
           image: brandData.image,
         })
@@ -48,12 +48,14 @@ async function addBrand() {
         })
     notificationStore.isError = false
     notificationStore.showNotification(
-      response.data.message || id.value ? 'Brand edited successfully' : 'Brand successfully added',
+      response.data.message || brandId.value
+        ? 'Brand edited successfully'
+        : 'Brand successfully added',
     )
     brandStore.fetchBrands()
     brandData.name = ''
     brandData.image = ''
-    cancel()
+    brandCancel()
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
@@ -62,7 +64,7 @@ async function addBrand() {
 }
 
 watch(
-  id,
+  brandId,
   async (newId) => {
     if (newId) {
       await brandStore.fetchSingleBrand(newId)
@@ -83,7 +85,7 @@ watch(
 <template>
   <div class="w-[95%] lg:w-[50%] mx-auto">
     <h2 class="text-center text-4xl font-medium">
-      {{ id ? 'Update this brand' : 'Add new brand' }}
+      {{ brandId ? 'Update this brand' : 'Add new brand' }}
     </h2>
     <form
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
@@ -119,11 +121,11 @@ watch(
         <input v-model="brandData.name" class="custom-input w-full p-4" />
       </div>
       <div class="flex justify-between gap-2 w-full transition-all">
-        <button v-if="id" @click="cancel" class="min-w-42 w-full my-4 h-14 save-button">
+        <button v-if="brandId" @click="brandCancel" class="min-w-42 w-full my-4 h-14 save-button">
           Cancel
         </button>
         <button class="min-w-42 w-full my-4 h-14 save-button">
-          {{ id ? 'Save Changes' : 'Add Brand' }}
+          {{ brandId ? 'Save Changes' : 'Add Brand' }}
         </button>
       </div>
     </form>
