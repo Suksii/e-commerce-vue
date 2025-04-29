@@ -5,11 +5,11 @@ import RegisterView from '@/views/RegisterView.vue'
 import SingleProductView from '@/views/SingleProductView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import { useProfile } from '@/stores/profile'
-import UsersTable from '@/views/UsersTable.vue'
-import ProductsTable from '@/views/ProductsTable.vue'
-import ProductForm from '@/components/ProductForm.vue'
-import Brands from '@/components/Brands.vue'
-import Categories from '@/components/Categories.vue'
+import UsersTable from '@/views/administrator/UsersTable.vue'
+import ProductsTable from '@/views/administrator/ProductsTable.vue'
+import ProductForm from '@/components/administrator/forms/ProductForm.vue'
+import Brands from '@/views/administrator/Brands.vue'
+import Categories from '@/views/administrator/Categories.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

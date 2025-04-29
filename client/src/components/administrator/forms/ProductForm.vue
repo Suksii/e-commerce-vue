@@ -1,13 +1,13 @@
 <script setup>
 import { request } from '@/api'
-import { useNotificationStore } from '@/stores/notification'
-import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import CustomSelect from './CustomSelect.vue'
 import router from '@/router'
 import { useBrandStore } from '@/stores/brands.js'
+import { useNotificationStore } from '@/stores/notification'
+import { useProductsStore } from '@/stores/products'
+import CustomSelect from '@/components/CustomSelect.vue'
 
 const route = useRoute()
 const notificationStore = useNotificationStore()

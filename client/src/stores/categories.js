@@ -9,8 +9,6 @@ export const useCategoryStore = defineStore('category', () => {
   async function fetchCategories() {
     try {
       const { data } = await request.get('/api/category/nested')
-      console.log(data)
-
       categoriesData.value = data
     } catch (error) {
       console.error('Failed to fetch categories: ', error)

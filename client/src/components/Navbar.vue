@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import Modal from './Modal.vue'
 import ProfileContent from './ProfileContent.vue'
 import CartContent from './CartContent.vue'

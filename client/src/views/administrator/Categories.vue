@@ -1,6 +1,6 @@
 <script setup>
-import CategoryForm from './CategoryForm.vue'
-import CategoryList from './CategoryList.vue'
+import CategoryForm from '@/components/administrator/forms/CategoryForm.vue'
+import CategoryList from '@/components/administrator/forms/lists/CategoryList.vue'
 </script>
 
 <template>

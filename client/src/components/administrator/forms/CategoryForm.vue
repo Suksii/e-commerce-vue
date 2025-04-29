@@ -1,11 +1,11 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import CustomSelect from './CustomSelect.vue'
 import { onMounted, reactive, ref, watch } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { useEditActions } from '@/composables/useEditActions'
 import { useCategoryStore } from '@/stores/categories'
+import CustomSelect from '@/components/CustomSelect.vue'
 
 const notificationStore = useNotificationStore()
 const categoryStore = useCategoryStore()
@@ -14,10 +14,16 @@ const { id: categoryId, cancel: categoryCancel } = useEditActions()
 const categoryData = reactive({
   name: '',
   slug: '',
-  image: [],
+  image: '',
   parentCategory: [],
   selectedCategory: '',
 })
+function resetForm() {
+  categoryData.name = ''
+  categoryData.image = ''
+  categoryData.selectedCategory = ''
+  categoryData.slug = ''
+}
 const fetchParentCategories = async () => {
   try {
     const { data } = await request.get('/api/category/parent')
@@ -30,11 +36,6 @@ const fetchParentCategories = async () => {
     notificationStore.showNotification('Error while fetching data')
     console.error('Error while fetching data:', error)
   }
-}
-function resetForm() {
-  categoryData.name = ''
-  categoryData.image = ''
-  categoryData.parentCategory = ''
 }
 onMounted(() => {
   fetchParentCategories()
@@ -72,12 +73,13 @@ async function handleCategory() {
       : await request.post('/api/category/add', payload)
     notificationStore.isError = false
     notificationStore.showNotification(
-      response.data.message || categoryId
+      response.data.message || categoryId.value
         ? 'Category edited successfully'
         : 'Category added successfully',
     )
     categoryStore.fetchCategories()
     resetForm()
+    categoryCancel()
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
@@ -95,9 +97,9 @@ watch(
         categoryData.name = category.name
         categoryData.image = category.image
         categoryData.selectedCategory = category.parentCategory || ''
-      } else {
-        resetForm()
       }
+    } else {
+      resetForm()
     }
   },
   { immediate: true },

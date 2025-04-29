@@ -3,7 +3,7 @@ import { RouterView, useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Notification from './components/Notification.vue'
 import { useNotificationStore } from './stores/notification'
-import AdminSidebar from './components/AdminSidebar.vue'
+import AdminSidebar from './components/administrator/AdminSidebar.vue'
 
 const route = useRoute()
 const notificationStore = useNotificationStore()
