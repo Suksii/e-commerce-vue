@@ -1,5 +1,6 @@
 <script setup>
 import { request } from '@/api'
+import DeleteContent from '@/components/DeleteContent.vue'
 import { useNotificationStore } from '@/stores/notification'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
@@ -12,10 +13,10 @@ const router = useRouter()
 
 const sortBy = ref('name')
 const order = ref('asc')
+const showDeleteModal = ref(null)
 
 onMounted(() => {
   productStore.getProducts(sortBy.value, order.value)
-  // fetchAllCategories()
 })
 
 const discountedPrice = (product) => {
@@ -137,7 +138,13 @@ const handleSort = (newSort) => {
               width="28"
               height="28"
               class="text-red-600 cursor-pointer"
-              @click="deleteProduct(product._id)"
+              @click="showDeleteModal = product._id"
+            />
+            <DeleteContent
+              v-if="showDeleteModal === product._id"
+              @cancel="showDeleteModal = null"
+              @delete="deleteProduct(product._id)"
+              :item="product.name"
             />
             <Icon
               icon="lucide:edit"
