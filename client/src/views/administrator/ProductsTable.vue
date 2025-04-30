@@ -1,6 +1,7 @@
 <script setup>
 import { request } from '@/api'
 import DeleteContent from '@/components/DeleteContent.vue'
+import { useModal } from '@/composables/useModal'
 import { useNotificationStore } from '@/stores/notification'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
@@ -10,10 +11,10 @@ import { useRouter } from 'vue-router'
 const productStore = useProductsStore()
 const notificationStore = useNotificationStore()
 const router = useRouter()
+const { showModal, handleCloseModal, handleShowModal } = useModal()
 
 const sortBy = ref('name')
 const order = ref('asc')
-const showDeleteModal = ref(null)
 
 onMounted(() => {
   productStore.getProducts(sortBy.value, order.value)
@@ -138,11 +139,11 @@ const handleSort = (newSort) => {
               width="28"
               height="28"
               class="text-red-600 cursor-pointer"
-              @click="showDeleteModal = product._id"
+              @click="handleShowModal(product._id)"
             />
             <DeleteContent
-              v-if="showDeleteModal === product._id"
-              @cancel="showDeleteModal = null"
+              v-if="showModal === product._id"
+              @cancel="handleCloseModal"
               @delete="deleteProduct(product._id)"
               :item="product.name"
             />
