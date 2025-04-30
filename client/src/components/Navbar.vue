@@ -5,6 +5,7 @@ import Modal from './Modal.vue'
 import ProfileContent from './ProfileContent.vue'
 import CartContent from './CartContent.vue'
 import { useCartStore } from '@/stores/carts'
+import SearchInput from './SearchInput.vue'
 
 const showProfileModal = ref(false)
 const showCartModal = ref(false)
@@ -35,6 +36,7 @@ onMounted(() => {
         </p>
       </div>
       <div class="flex gap-8 items-center">
+        <SearchInput />
         <div class="relative">
           <Icon
             icon="qlementine-icons:user-24"
