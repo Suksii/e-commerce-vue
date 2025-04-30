@@ -3,8 +3,8 @@ import { request } from '@/api'
 import { useCartStore } from '@/stores/carts'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
-import { computed, onMounted } from 'vue'
-defineProps({
+import { computed, watch } from 'vue'
+const props = defineProps({
   showCartModal: Boolean,
 })
 
@@ -13,20 +13,23 @@ const notificationStore = useNotificationStore()
 const carts = cartStore.carts
 const emit = defineEmits(['update:showCartModal'])
 
-onMounted(() => {
-  cartStore.getCarts()
-})
+watch(
+  () => props.showCartModal,
+  (val) => {
+    if (val) cartStore.getCarts()
+  },
+)
 
 async function deleteCart(id) {
   try {
     const response = await request.delete('/api/cart/delete-cart/' + id)
     notificationStore.isError = false
-    notificationStore.showNotification(response.data.message)
+    notificationStore.showNotification(response.data?.message)
     await cartStore.getCarts()
   } catch (error) {
     console.error('Error while removing the cart:', error)
     notificationStore.isError = true
-    notificationStore.showNotification(error.response.message || 'Error while removing the cart')
+    notificationStore.showNotification(error.response?.message || 'Error while removing the cart')
   }
 }
 async function updateQuantity(id, type) {
@@ -58,12 +61,12 @@ const totalCartPrice = computed(() => {
       />
 
       <img
-        :src="'http://localhost:3000/uploads/products/' + cart.product.images[0]"
+        :src="'http://localhost:3000/uploads/products/' + cart.product?.images[0]"
         class="max-w-[60px] h-[110px] md:max-w-[80px] md:h-[140px] object-contain flex-2"
       />
       <div class="flex flex-col gap-2 overflow-hidden">
-        <h2 class="text-nowrap font-medium">{{ cart.product.name }}</h2>
-        <p class="line-clamp-2 text-sm text-gray-600">{{ cart.product.description }}</p>
+        <h2 class="text-nowrap font-medium">{{ cart.product?.name }}</h2>
+        <p class="line-clamp-2 text-sm text-gray-600">{{ cart.product?.description }}</p>
       </div>
       <div class="flex items-center gap-2 mx-2 md:mx-8">
         <button @click="updateQuantity(cart._id, 'decrease')">
