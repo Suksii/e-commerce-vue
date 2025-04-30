@@ -1,6 +1,8 @@
 <script setup>
 import { request } from '@/api'
+import DeleteContent from '@/components/DeleteContent.vue'
 import { useEditActions } from '@/composables/useEditActions'
+import { useModal } from '@/composables/useModal'
 import { useBrandStore } from '@/stores/brands'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
@@ -10,6 +12,7 @@ const brandStore = useBrandStore()
 const notificationStore = useNotificationStore()
 const displayedAction = ref(null)
 const { handleEdit: handleBrandEdit } = useEditActions()
+const { showModal, handleCloseModal, handleShowModal } = useModal()
 
 const handleDelete = async (id) => {
   try {
@@ -62,10 +65,16 @@ onMounted(() => {
         <div
           v-if="displayedAction === brand._id"
           class="absolute right-0 top-0 p-3 m-2 bg-red-600/80 rounded-full cursor-pointer"
-          @click="handleDelete(brand._id)"
+          @click="handleShowModal(brand._id)"
         >
           <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-white" />
         </div>
+        <DeleteContent
+          v-if="showModal === brand._id"
+          @cancel="handleCloseModal"
+          @delete="handleDelete(brand._id)"
+          :item="brand.name"
+        />
       </div>
     </div>
   </div>
