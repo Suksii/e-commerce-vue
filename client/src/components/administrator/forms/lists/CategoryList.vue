@@ -1,6 +1,8 @@
 <script setup>
 import { request } from '@/api'
+import DeleteContent from '@/components/DeleteContent.vue'
 import { useEditActions } from '@/composables/useEditActions'
+import { useModal } from '@/composables/useModal'
 import { useCategoryStore } from '@/stores/categories'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
@@ -11,6 +13,7 @@ const expandCategory = ref(null)
 const displayedAction = ref(null)
 const notificationStore = useNotificationStore()
 const { handleEdit: handleCategoryEdit } = useEditActions()
+const { showModal, handleCloseModal, handleShowModal } = useModal()
 
 const expand = (cat) => {
   expandCategory.value = cat
@@ -50,7 +53,7 @@ onMounted(async () => {
       :key="category._id"
       @mouseenter="displayAction(category._id)"
       @mouseleave="hideAction"
-      @click.stop="expand(category)"
+      @click.stop="expand(category._id)"
       class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-md transition-all duration-300 cursor-pointer group"
     >
       <div class="relative">
@@ -74,12 +77,18 @@ onMounted(async () => {
         <div
           v-if="displayedAction === category._id"
           class="absolute right-0 top-0 p-3 m-2 bg-red-600/80 rounded-full cursor-pointer"
-          @click.stop="handleDelete(category._id)"
+          @click.stop="handleShowModal(category._id)"
         >
           <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-white" />
         </div>
+        <DeleteContent
+          v-if="showModal === category._id"
+          @cancel="handleCloseModal"
+          @delete="handleDelete(category._id)"
+          :item="category.name"
+        />
         <div
-          v-if="expandCategory === category && category.subCategories.length"
+          v-if="expandCategory === category._id && category.subCategories.length"
           class="absolute inset-0 w-full bg-gray-50 flex flex-col"
         >
           <button @click.stop="close" class="flex justify-end p-2 cursor-pointer">
@@ -111,11 +120,17 @@ onMounted(async () => {
                 </button>
                 <button
                   class="p-3 bg-red-600/80 rounded-full cursor-pointer"
-                  @click.stop="handleDelete(subCategory._id)"
+                  @click.stop="handleShowModal(subCategory._id)"
                 >
                   <Icon icon="fluent:delete-28-filled" width="24" height="24" class="text-white" />
                 </button>
               </div>
+              <DeleteContent
+                v-if="showModal === subCategory._id"
+                @cancel="handleCloseModal"
+                @delete="handleDelete(subCategory._id)"
+                :item="subCategory.name"
+              />
             </div>
           </div>
         </div>
