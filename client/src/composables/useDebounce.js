@@ -1,7 +1,7 @@
 import { onBeforeUnmount, ref, watch } from 'vue'
 
 export const useDebounce = (value, delay) => {
-  const debouced = ref(value.value)
+  const debounced = ref(value.value)
   let timeout
 
   const clear = () => {
@@ -11,7 +11,7 @@ export const useDebounce = (value, delay) => {
   watch(value, (newValue) => {
     clear()
     timeout = setTimeout(() => {
-      debouced.value = newValue
+      debounced.value = newValue
     }, delay)
   })
 
@@ -19,5 +19,5 @@ export const useDebounce = (value, delay) => {
     clear()
   })
 
-  return debouced
+  return debounced
 }
