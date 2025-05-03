@@ -1,7 +1,9 @@
 <script setup>
+import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 const showSearch = ref(false)
+const productsStore = useProductsStore()
 </script>
 
 <template>
@@ -13,6 +15,7 @@ const showSearch = ref(false)
       height="24"
     />
     <input
+      v-model="productsStore.searchQuery"
       placeholder="Type a search term..."
       class="pl-8 py-2 bg-teal-100 rounded-md w-64 md:w-96 outline-none"
     />
@@ -41,6 +44,7 @@ const showSearch = ref(false)
           height="35"
         />
         <input
+          v-model="productsStore.searchQuery"
           class="w-full py-2 mx-12 pl-2 pr-24 border-b-2 border-teal-100 outline-none text-xl text-teal-100 placeholder:text-teal-100/80"
           placeholder="Type search term..."
         />

@@ -8,12 +8,16 @@ export const useDebounce = (value, delay) => {
     if (timeout) clearTimeout(timeout)
   }
 
-  watch(value, (newValue) => {
-    clear()
-    timeout = setTimeout(() => {
-      debounced.value = newValue
-    }, delay)
-  })
+  watch(
+    value,
+    (newValue) => {
+      clear()
+      timeout = setTimeout(() => {
+        debounced.value = newValue
+      }, delay)
+    },
+    { immediate: true },
+  )
 
   onBeforeUnmount(() => {
     clear()
