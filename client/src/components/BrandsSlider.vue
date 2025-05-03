@@ -19,12 +19,12 @@ function prev() {
 }
 </script>
 <template>
-  <div class="relative w-full bg-gray-200 py-12">
+  <div class="relative w-[90%] py-12">
     <div class="relative w-full">
       <div class="relative flex items-center w-[80%] mx-auto overflow-x-hidden">
         <div
           v-for="brand of brandsStore.brandData"
-          class="flex justify-center transition shrink-0 w-[50%] md:w-[20%]"
+          class="flex justify-center transition shrink-0 w-[50%] md:w-[20%] cursor-pointer"
           :style="{ transform: `translateX(-${currentBrandIndex * 100}%)` }"
         >
           <img
@@ -37,16 +37,20 @@ function prev() {
     <button
       :disabled="currentBrandIndex === 0"
       @click="prev"
-      class="absolute right-30 bottom-0 p-4 rounded-full bg-red-500"
-      :class="{ 'cursor-not-allowed': currentBrandIndex === 0 }"
+      class="absolute left-0 top-1/2 -translate-y-1/2 p-4 rounded-full bg-teal-600"
+      :class="currentBrandIndex === 0 ? 'cursor-not-allowed' : 'cursor-pointer'"
     >
       <Icon icon="line-md:arrow-left" width="24" height="24" class="text-white" />
     </button>
     <button
-      :disabled="currentBrandIndex === brandsStore.brandData.length"
+      :disabled="currentBrandIndex === brandsStore.brandData.length - 5"
       @click="next"
-      class="absolute right-30 top-0 p-4 rounded-full bg-red-500"
-      :class="{ 'cursor-not-allowed': currentBrandIndex === brandsStore.brandData.length - 5 }"
+      class="absolute right-0 top-1/2 -translate-y-1/2 p-4 rounded-full bg-teal-600"
+      :class="
+        currentBrandIndex === brandsStore.brandData.length - 5
+          ? 'cursor-not-allowed'
+          : 'cursor-pointer'
+      "
     >
       <Icon icon="line-md:arrow-right" width="24" height="24" class="text-white" />
     </button>
