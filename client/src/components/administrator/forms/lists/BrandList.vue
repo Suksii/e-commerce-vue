@@ -41,7 +41,7 @@ onMounted(() => {
 <template>
   <div class="px-12">
     <h3 class="text-center text-4xl font-medium">All Brands</h3>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-8">
+    <div class="flex flex-wrap justify-center gap-6 p-8">
       <div
         v-for="brand in brandStore.brandData"
         :key="brand._id"
