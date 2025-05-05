@@ -1,6 +1,6 @@
 import { Featured } from "../models/Featured";
 
-export const addFeature = async (req, res) => {
+export const addFeatured = async (req, res) => {
   const { title, image, description } = req.body;
   try {
     const newFeature = await Featured.create({ title, image, description });
