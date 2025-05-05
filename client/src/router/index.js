@@ -10,6 +10,7 @@ import ProductsTable from '@/views/administrator/ProductsTable.vue'
 import ProductForm from '@/components/administrator/forms/ProductForm.vue'
 import Brands from '@/views/administrator/Brands.vue'
 import Categories from '@/views/administrator/Categories.vue'
+import FeaturedForm from '@/components/administrator/forms/FeaturedForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,12 @@ const router = createRouter({
       path: '/brands',
       name: 'brands',
       component: Brands,
+    },
+    
+    {
+      path: '/featured',
+      name: 'featured',
+      component: FeaturedForm,
     },
   ],
 })

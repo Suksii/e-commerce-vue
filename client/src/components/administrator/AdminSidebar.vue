@@ -44,6 +44,12 @@ const sidebarMenu = [
     icon: 'tabler:square-rounded-letter-b-filled',
     link: '/brands',
   },
+  {
+    id: 6,
+    name: 'Featured',
+    icon: 'material-symbols-light:featured-video',
+    link: '/featured',
+  },
 ]
 
 const profileStore = useProfile()
