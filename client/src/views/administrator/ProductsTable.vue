@@ -163,7 +163,7 @@ const handleSort = (newSort) => {
 <style scoped>
 td,
 th {
-  font-size: 24px;
+  font-size: 16px;
   padding: 16px 12px;
   border: 1px solid #e5e7eb;
 }

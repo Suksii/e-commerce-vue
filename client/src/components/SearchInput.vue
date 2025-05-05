@@ -4,6 +4,11 @@ import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 const showSearch = ref(false)
 const productsStore = useProductsStore()
+
+const closeSearch = () => {
+  showSearch.value = false
+  productsStore.searchQuery = ''
+}
 </script>
 
 <template>
@@ -17,7 +22,15 @@ const productsStore = useProductsStore()
     <input
       v-model="productsStore.searchQuery"
       placeholder="Type a search term..."
-      class="pl-8 py-2 bg-teal-100 rounded-md w-64 md:w-96 outline-none"
+      class="px-8 py-2 bg-teal-100 rounded-md w-64 md:w-96 outline-none"
+    />
+    <Icon
+      v-if="productsStore.searchQuery"
+      icon="streamline:delete-1-solid"
+      width="14"
+      height="14"
+      class="absolute right-3 top-1/2 -translate-y-1/2 shrink-0 text-teal-600 cursor-pointer"
+      @click="productsStore.searchQuery = ''"
     />
   </div>
   <div class="block md:hidden cursor-pointer w-full relative z-20">
@@ -45,7 +58,7 @@ const productsStore = useProductsStore()
         />
         <input
           v-model="productsStore.searchQuery"
-          class="w-full py-2 mx-12 pl-2 pr-24 border-b-2 border-teal-100 outline-none text-xl text-teal-100 placeholder:text-teal-100/80"
+          class="w-full py-2 mx-12 pl-2 pr-24 border-b-2 border-teal-100 outline-none text-lg text-teal-100 placeholder:text-teal-100/80"
           placeholder="Type search term..."
         />
         <Icon
@@ -53,7 +66,7 @@ const productsStore = useProductsStore()
           width="20"
           height="20"
           class="absolute right-3 top-1/2 -translate-y-1/2 shrink-0 text-white"
-          @click="showSearch = false"
+          @click="closeSearch"
         />
       </div>
     </Transition>

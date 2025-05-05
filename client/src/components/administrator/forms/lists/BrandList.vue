@@ -40,14 +40,14 @@ onMounted(() => {
 
 <template>
   <div class="px-12">
-    <h3 class="text-center text-4xl font-medium">All Brands</h3>
+    <h3 class="text-center text-3xl font-medium">All Brands</h3>
     <div class="flex flex-wrap justify-center gap-6 p-8">
       <div
         v-for="brand in brandStore.brandData"
         :key="brand._id"
         @mouseenter="showActions(brand._id)"
         @mouseleave="hideAction"
-        class="relative flex flex-col items-center justify-center gap-2 py-2 w-[350px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
+        class="relative flex flex-col items-center justify-center gap-2 py-2 w-[300px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
       >
         <img
           :src="'http://localhost:3000/uploads/brands/' + brand.image"

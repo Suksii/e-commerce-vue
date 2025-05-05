@@ -37,7 +37,7 @@ function decreaseQuantity() {
 </script>
 
 <template>
-  <div class="flex flex-col xl:flex-row gap-12 w-[90%] xl:w-[80%] mx-auto py-24">
+  <div class="flex flex-col xl:flex-row gap-12 w-[90%] xl:w-[80%] mx-auto py-12">
     <div class="flex-2">
       <div
         class="border border-teal-600/20 flex justify-center items-center group overflow-hidden rounded-md"
@@ -75,7 +75,7 @@ function decreaseQuantity() {
     </div>
 
     <div class="flex-3 flex-col">
-      <div class="flex flex-row md:flex-col lg:flex-row justify-between lg:items-center">
+      <div class="flex flex-col md:flex-row justify-between md:items-center">
         <div>
           <div class="flex gap-4 items-center mb-4">
             <p
@@ -147,13 +147,13 @@ function decreaseQuantity() {
       </button>
       <div class="flex gap-4 w-full py-4">
         <p
-          class="flex items-center gap-4 grow-1 py-6 px-4 border border-teal-600 font-medium text-lg"
+          class="flex items-center gap-4 grow-1 py-6 px-4 border border-teal-600 font-medium md:text-lg"
         >
           <Icon icon="ph:package-light" width="40" height="40" class="shrink-0" />The product can be
           returned within 30 days
         </p>
         <p
-          class="flex items-center gap-4 grow-1 py-6 px-4 border border-teal-600 font-medium text-lg"
+          class="flex items-center gap-4 grow-1 py-6 px-4 border border-teal-600 font-medium md:text-lg"
         >
           <Icon
             icon="material-symbols-light:delivery-truck-speed-outline"

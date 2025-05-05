@@ -4,7 +4,6 @@ import Navbar from './components/Navbar.vue'
 import Notification from './components/Notification.vue'
 import { useNotificationStore } from './stores/notification'
 import AdminSidebar from './components/administrator/AdminSidebar.vue'
-import DeleteContent from './components/DeleteContent.vue'
 
 const route = useRoute()
 const notificationStore = useNotificationStore()

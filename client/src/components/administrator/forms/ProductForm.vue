@@ -129,18 +129,18 @@ onMounted(async () => {
 
 <template>
   <div class="w-[95%] lg:w-[50%] mx-auto py-24">
-    <h2 class="text-center text-4xl font-medium">
+    <h2 class="text-center text-3xl font-medium">
       {{ id ? 'Edit this product' : 'Add new product' }}
     </h2>
     <form
       @submit.prevent="addProduct"
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
     >
-      <div class="flex flex-col gap-2 w-full">
-        <p class="text-xl font-medium">Upload images<span class="text-red-600 px-0.5">*</span></p>
+      <div class="flex flex-col gap-1 w-full">
+        <label class="text-xl font-medium">Upload images<span class="text-red-600 px-0.5">*</span></label>
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div
-            class="w-42 md:w-40 aspect-square relative"
+            class="w-32 md:w-36 aspect-square relative"
             v-for="(image, index) of productData.images"
             :key="index"
           >
@@ -155,7 +155,7 @@ onMounted(async () => {
               <Icon icon="nimbus:close" width="20" height="20" class="text-red-600" />
             </div>
           </div>
-          <div class="w-42 md:w-40 aspect-square shrink-0 relative" @click="inputRef?.click()">
+          <div class="w-32 md:w-36 aspect-square shrink-0 relative" @click="inputRef?.click()">
             <input
               type="file"
               ref="inputRef"
@@ -172,36 +172,32 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex flex-col w-full">
-        <label class="text-xl font-medium">Name<span class="text-red-600 px-0.5">*</span></label>
-        <input class="custom-input w-full p-4" v-model="productData.name" />
+        <label>Name<span class="text-red-600 px-0.5">*</span></label>
+        <input class="custom-input w-full px-3 py-2.5" v-model="productData.name" />
       </div>
       <div class="w-full flex gap-2 items-center">
         <div class="flex flex-col w-full">
-          <label class="text-xl font-medium">Price<span class="text-red-600 px-0.5">*</span></label>
+          <label>Price<span class="text-red-600 px-0.5">*</span></label>
           <input
             type="number"
             min="1"
-            class="custom-input w-full p-4"
+            class="custom-input w-full px-3 py-2.5"
             v-model="productData.price"
           />
         </div>
         <div class="flex flex-col w-full">
-          <label class="text-xl font-medium"
-            >Discount<span class="text-gray-700 px-0.5">(optional)</span></label
-          >
+          <label>Discount<span class="text-gray-700 px-0.5">(optional)</span></label>
           <input
             type="number"
             min="0"
-            class="custom-input w-full p-4"
+            class="custom-input w-full px-3 py-2.5"
             v-model="productData.discount"
           />
         </div>
       </div>
 
       <div class="flex flex-col w-full">
-        <label class="text-xl font-medium"
-          >Category<span class="text-red-600 px-0.5">*</span></label
-        >
+        <label>Category<span class="text-red-600 px-0.5">*</span></label>
         <CustomSelect
           v-model:selectedOption="productData.selectedCategory"
           :options="productData.category"
@@ -209,16 +205,14 @@ onMounted(async () => {
       </div>
       <div class="w-full flex gap-2 items-center">
         <div class="flex flex-col w-full">
-          <label class="text-xl font-medium"
-            >Gender<span class="text-red-600 px-0.5">*</span></label
-          >
+          <label>Gender<span class="text-red-600 px-0.5">*</span></label>
           <CustomSelect
             v-model:selectedOption="productData.selectedGender"
             :options="productData.gender"
           />
         </div>
         <div class="flex flex-col w-full">
-          <label class="text-xl font-medium">Season</label>
+          <label>Season</label>
           <CustomSelect
             v-model:selectedOption="productData.selectedSeason"
             :options="productData.season"
@@ -226,16 +220,14 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex flex-col w-full">
-        <label class="text-xl font-medium"
-          >Description<span class="text-red-600 px-0.5">*</span></label
-        >
+        <label>Description<span class="text-red-600 px-0.5">*</span></label>
         <textarea
-          class="custom-input w-full p-4 min-h-52 max-h-[500px]"
+          class="custom-input w-full px-3 py-2.5 min-h-52 max-h-[500px]"
           v-model="productData.description"
         ></textarea>
       </div>
       <div class="flex flex-col w-full">
-        <label class="text-xl font-medium">Brand</label>
+        <label>Brand</label>
         <CustomSelect
           v-model:selectedOption="productData.selectedBrand"
           :options="brandStore.brandData"

@@ -85,23 +85,23 @@ watch(
 
 <template>
   <div class="w-[95%] lg:w-[50%] mx-auto">
-    <h2 class="text-center text-4xl font-medium">
+    <h2 class="text-center text-3xl font-medium">
       {{ brandId ? 'Update this brand' : 'Add new brand' }}
     </h2>
     <form
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
       @submit.prevent="handleBrand"
     >
-      <div class="flex flex-col gap-2 w-full">
-        <p class="text-xl font-medium">Upload image<span class="text-red-600 px-0.5"></span></p>
+      <div class="flex flex-col gap-1 w-full">
+        <label>Upload image</label>
         <div class="flex gap-2 flex-wrap items-center w-full">
-          <div v-if="brandData.image" class="w-42 md:w-40 aspect-square relative">
+          <div v-if="brandData.image" class="w-32 md:w-36 aspect-square relative">
             <img
               :src="'http://localhost:3000/uploads/brands/' + brandData.image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
           </div>
-          <div class="w-42 md:w-40 aspect-square shrink-0 relative" @click="imageRef?.click()">
+          <div class="w-32 md:w-36 aspect-square shrink-0 relative" @click="imageRef?.click()">
             <input
               type="file"
               ref="imageRef"
@@ -118,14 +118,14 @@ watch(
         </div>
       </div>
       <div class="flex flex-col w-full">
-        <label class="text-xl font-medium">Name<span class="text-red-600 px-0.5">*</span></label>
-        <input v-model="brandData.name" class="custom-input w-full p-4" />
+        <label>Name<span class="text-red-600 px-0.5">*</span></label>
+        <input v-model="brandData.name" class="custom-input w-full px-3 py-2.5" />
       </div>
       <div class="flex justify-between gap-2 w-full transition-all">
-        <button v-if="brandId" @click="brandCancel" class="min-w-42 w-full my-4 h-14 save-button">
+        <button v-if="brandId" @click="brandCancel" class="min-w-42 w-full my-4 h-11 save-button">
           Cancel
         </button>
-        <button class="min-w-42 w-full my-4 h-14 save-button">
+        <button class="min-w-42 w-full my-4 h-11 save-button">
           {{ brandId ? 'Save Changes' : 'Add Brand' }}
         </button>
       </div>

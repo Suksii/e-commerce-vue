@@ -42,13 +42,13 @@ function selectSubOption(suboption) {
     <div class="relative bg-white shadow-md rounded-lg border border-gray-300">
       <div
         @click="toggleOptions"
-        class="flex justify-between items-center p-4 cursor-pointer bg-gray-100"
+        class="flex justify-between items-center px-3 py-2.5 cursor-pointer bg-gray-100"
       >
         <span class="text-gray-800 font-medium">{{ selectedOption || 'Select option' }}</span>
         <Icon
           icon="simple-line-icons:arrow-down"
-          width="18"
-          height="18"
+          width="12"
+          height="12"
           :class="{ 'rotate-180': showOptions }"
           class="transition"
         />
@@ -72,8 +72,8 @@ function selectSubOption(suboption) {
               <Icon
                 v-if="option.subCategories && option.subCategories.length > 0"
                 icon="simple-line-icons:arrow-down"
-                width="18"
-                height="18"
+                width="12"
+                height="12"
                 :class="{ 'rotate-180': showSubOptions === option }"
                 class="transition"
               />
@@ -82,7 +82,7 @@ function selectSubOption(suboption) {
               v-if="option.subCategories && showSubOptions === option"
               v-for="suboption of option.subCategories"
               @click="selectSubOption(suboption)"
-              class="w-full px-4 py-3 text-gray-700 cursor-pointer transition-all hover:bg-teal-600 hover:text-white"
+              class="w-full px-3 py-2.5 text-gray-700 cursor-pointer transition-all hover:bg-teal-600 hover:text-white"
             >
               <span class="">{{ suboption.name }}</span>
             </p>
