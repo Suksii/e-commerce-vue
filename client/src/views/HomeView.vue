@@ -4,7 +4,7 @@ import FilterSidebar from '@/components/FilterSidebar.vue'
 </script>
 
 <template>
-  <div class="flex justify-center items-center min-h-screen w-full">
+  <div class="flex justify-center items-center w-full">
     <FilterSidebar />
     <BrandsSlider />
   </div>
