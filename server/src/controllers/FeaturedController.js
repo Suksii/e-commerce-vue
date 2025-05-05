@@ -31,3 +31,13 @@ export const updateFeatured = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+export const deleteFeatured = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Featured.findByIdAndDelete(id);
+    res.status(200).json({ message: "Featured deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
