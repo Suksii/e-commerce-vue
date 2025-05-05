@@ -41,3 +41,12 @@ export const deleteFeatured = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+export const getFeatured = async (req, res) => {
+  try {
+    const featured = await Featured.find();
+    res.status(200).json(featured);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
