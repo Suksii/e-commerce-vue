@@ -54,7 +54,7 @@ function prev() {
         >
           <img
             :src="'http://localhost:3000/uploads/brands/' + brand.image"
-            class="w-32 h-32 object-contain"
+            class="w-28 h-28 object-contain"
           />
         </div>
       </div>
@@ -62,22 +62,22 @@ function prev() {
     <button
       :disabled="currentBrandIndex === 0"
       @click="prev"
-      class="absolute left-0 top-1/2 -translate-y-1/2 p-4 rounded-full bg-teal-600"
+      class="absolute left-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-teal-600"
       :class="currentBrandIndex === 0 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'"
     >
-      <Icon icon="line-md:arrow-left" width="24" height="24" class="text-white" />
+      <Icon icon="line-md:arrow-left" width="20" height="20" class="text-white" />
     </button>
     <button
       :disabled="currentBrandIndex === brandsStore.brandData.length - visibleBrands"
       @click="next"
-      class="absolute right-0 top-1/2 -translate-y-1/2 p-4 rounded-full bg-teal-600"
+      class="absolute right-0 top-1/2 -translate-y-1/2 p-3 rounded-full bg-teal-600"
       :class="
         currentBrandIndex === brandsStore.brandData.length - visibleBrands
           ? 'cursor-not-allowed opacity-50'
           : 'cursor-pointer'
       "
     >
-      <Icon icon="line-md:arrow-right" width="24" height="24" class="text-white" />
+      <Icon icon="line-md:arrow-right" width="20" height="20" class="text-white" />
     </button>
   </div>
 </template>
