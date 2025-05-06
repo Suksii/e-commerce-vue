@@ -1,25 +1,72 @@
 <script setup>
+import { request } from '@/api'
+import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+
+const notificationStore = useNotificationStore()
 
 const imageRef = ref(null)
+const featuredData = reactive({ title: '', image: '', description: '' })
+
+async function uploadImage(event) {
+  const file = event.target.files[0]
+  const formData = new FormData()
+  formData.append('photo', file)
+  try {
+    const { data } = await request.post('/api/featured/upload', formData, {
+      hearders: { 'Content-Type': 'multipart/form-data' },
+    })
+    featuredData.image = data[1]
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification('Image upload failed')
+    console.error('Image upload failed', error)
+  }
+}
+
+async function handleAdd() {
+  const payload = {
+    title: featuredData.title,
+    description: featuredData.description,
+    image: featuredData.image,
+  }
+  try {
+    const response = await request.post('/api/featured/add', payload)
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data?.message || 'Featured added successfully')
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
+    console.error(error)
+  }
+}
 </script>
 
 <template>
   <div class="w-[95%] lg:w-[50%] mx-auto">
     <h2 class="text-center text-3xl font-medium">Add new featured</h2>
-    <form class="flex flex-col items-center justify-center w-full gap-4 py-12" @submit.prevent="">
+    <form
+      class="flex flex-col items-center justify-center w-full gap-4 py-12"
+      @submit.prevent="handleAdd"
+    >
       <div class="flex flex-col gap-1 w-full">
         <label>Upload image</label>
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div class="w-full h-[300px] shrink-0 relative">
             <img
-              :src="'http://localhost:3000/uploads/categories/'"
+              :src="'http://localhost:3000/uploads/featured/' + featuredData.image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
           </div>
           <div class="w-full h-[300px] shrink-0 relative" @click="imageRef?.click()">
-            <input type="file" ref="imageRef" class="absolute inset-0 hidden" accept="image/*" />
+            <input
+              type="file"
+              ref="imageRef"
+              class="absolute inset-0 hidden"
+              accept="image/*"
+              @change="uploadImage"
+            />
             <div
               class="w-full h-full flex justify-center items-center bg-gray-100 border border-dashed border-gray-400 rounded-md cursor-pointer hover:bg-gray-200 transition"
             >
@@ -29,13 +76,16 @@ const imageRef = ref(null)
         </div>
       </div>
       <div class="flex flex-col w-full">
-        <label>Name<span class="text-red-600 px-0.5">*</span></label>
-        <input class="custom-input w-full px-3 py-2.5" />
+        <label>Title<span class="text-red-600 px-0.5">*</span></label>
+        <input v-model="featuredData.title" class="custom-input w-full px-3 py-2.5" />
       </div>
       <div class="flex flex-col w-full">
         <div class="flex flex-col w-full">
           <label>Description</label>
-          <textarea class="custom-input w-full px-3 py-2.5 min-h-52 max-h-[500px]"></textarea>
+          <textarea
+            v-model="featuredData.description"
+            class="custom-input w-full px-3 py-2.5 min-h-52 max-h-[500px]"
+          ></textarea>
         </div>
       </div>
       <div class="flex justify-between gap-2 w-full transition-all">
