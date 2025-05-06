@@ -41,6 +41,10 @@ async function handleAdd() {
     console.error(error)
   }
 }
+
+const removeImage = () => {
+  return (featuredData.image = '')
+}
 </script>
 
 <template>
@@ -52,26 +56,27 @@ async function handleAdd() {
     >
       <div class="flex flex-col gap-1 w-full">
         <label>Upload image</label>
-        <div class="flex gap-2 flex-wrap items-center w-full">
-          <div class="w-full h-[300px] shrink-0 relative">
-            <img
-              :src="'http://localhost:3000/uploads/featured/' + featuredData.image"
-              class="w-full h-full border border-gray-300 rounded-md object-cover"
-            />
+        <div v-if="featuredData.image" class="w-full h-[300px] shrink-0 relative">
+          <img
+            :src="'http://localhost:3000/uploads/featured/' + featuredData.image"
+            class="w-full h-full border border-gray-300 rounded-md object-cover"
+          />
+          <div @click="removeImage" class="absolute right-0 top-0 p-2">
+            <Icon icon="nimbus:close" width="20" height="20" class="text-red-600 cursor-pointer" />
           </div>
-          <div class="w-full h-[300px] shrink-0 relative" @click="imageRef?.click()">
-            <input
-              type="file"
-              ref="imageRef"
-              class="absolute inset-0 hidden"
-              accept="image/*"
-              @change="uploadImage"
-            />
-            <div
-              class="w-full h-full flex justify-center items-center bg-gray-100 border border-dashed border-gray-400 rounded-md cursor-pointer hover:bg-gray-200 transition"
-            >
-              <Icon icon="fluent:add-24-filled" width="40" height="40" class="text-gray-500" />
-            </div>
+        </div>
+        <div v-else class="w-full h-[300px] shrink-0 relative" @click="imageRef?.click()">
+          <input
+            type="file"
+            ref="imageRef"
+            class="absolute inset-0 hidden"
+            accept="image/*"
+            @change="uploadImage"
+          />
+          <div
+            class="w-full h-full flex justify-center items-center bg-gray-100 border border-dashed border-gray-400 rounded-md cursor-pointer hover:bg-gray-200 transition"
+          >
+            <Icon icon="fluent:add-24-filled" width="40" height="40" class="text-gray-500" />
           </div>
         </div>
       </div>
