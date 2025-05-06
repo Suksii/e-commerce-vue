@@ -1,3 +1,74 @@
-<script setup></script>
+<script setup>
+import DeleteContent from '@/components/DeleteContent.vue'
+import { useEditActions } from '@/composables/useEditActions'
+import { useModal } from '@/composables/useModal'
+import { useFeaturedStore } from '@/stores/featured'
+import { Icon } from '@iconify/vue'
+import { onMounted, ref } from 'vue'
 
-<template></template>
+const featuredStore = useFeaturedStore()
+const { handleEdit: handleFeaturedEdit } = useEditActions()
+const displayedAction = ref(null)
+const { showModal, handleShowModal, handleCloseModal } = useModal()
+
+const showActions = (id) => {
+  displayedAction.value = id
+}
+const hideAction = () => {
+  displayedAction.value = null
+}
+
+onMounted(() => {
+  featuredStore.getFeatured()
+})
+</script>
+
+<template>
+  <div class="px-12">
+    <h3 class="text-center text-3xl font-medium py-4">All Brands</h3>
+    <div class="flex flex-wrap justify-center gap-6">
+      <div
+        v-for="featured in featuredStore.featuredData"
+        :key="featured._id"
+        @mouseenter="showActions(featured._id)"
+        @mouseleave="hideAction"
+        class="relative flex justify-center gap-2 w-full bg-white overflow-hidden transition group"
+      >
+        <div class="flex items-center justify-center flex-1">
+          <div class="flex flex-col items-center justify-center">
+            <h2 class="text-2xl font-medium">{{ featured.title }}</h2>
+            <p class="">{{ featured.description }}</p>
+          </div>
+        </div>
+        <div class="flex-2">
+          <img
+            :src="'http://localhost:3000/uploads/featured/' + featured.image"
+            :alt="featured.name"
+            class="text-center w-full object-contain"
+          />
+        </div>
+
+        <div
+          v-if="displayedAction === featured._id"
+          class="absolute left-0 top-0 p-3 bg-teal-600/80 rounded-full cursor-pointer"
+          @click="handleFeaturedEdit(brand._id)"
+        >
+          <Icon icon="lucide:edit" width="28" height="28" class="text-white" />
+        </div>
+        <div
+          v-if="displayedAction === featured._id"
+          class="absolute right-0 top-0 p-3 bg-red-600/80 rounded-full cursor-pointer"
+          @click="handleShowModal(featured._id)"
+        >
+          <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-white" />
+        </div>
+        <DeleteContent
+          v-if="showModal === featured._id"
+          @cancel="handleCloseModal"
+          @delete="handleDelete(featured._id)"
+          :item="featured.name"
+        />
+      </div>
+    </div>
+  </div>
+</template>
