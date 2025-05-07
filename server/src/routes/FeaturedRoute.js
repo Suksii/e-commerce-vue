@@ -3,6 +3,7 @@ import {
   addFeatured,
   deleteFeatured,
   getFeatured,
+  getSingleFeatured,
   updateFeatured,
 } from "../controllers/FeaturedController.js";
 import multer from "multer";
@@ -15,6 +16,7 @@ const photoUpload = multer({ dest: "uploads/featured" });
 router.post("/upload", photoUpload.single("photo"), uploadImage);
 router.post("/add", addFeatured);
 router.get("/", getFeatured);
+router.get("/:id", getSingleFeatured);
 router.put("/update/:id", updateFeatured);
 router.delete("/delete/:id", deleteFeatured);
 

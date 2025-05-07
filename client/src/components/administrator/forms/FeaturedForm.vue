@@ -3,7 +3,7 @@ import { request } from '@/api'
 import { useEditActions } from '@/composables/useEditActions'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 const notificationStore = useNotificationStore()
 const { id: featuredId, cancel: featuredCancel } = useEditActions()

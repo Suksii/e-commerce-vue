@@ -4,7 +4,7 @@ import FeaturedList from '@/components/administrator/forms/lists/FeaturedList.vu
 </script>
 
 <template>
-  <div class="flex flex-col justify-center items-center w-full mx-auto py-24">
+  <div class="flex flex-col justify-center items-center w-full mx-auto py-12">
     <FeaturedForm />
     <FeaturedList />
   </div>

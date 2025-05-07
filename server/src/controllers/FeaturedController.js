@@ -50,3 +50,13 @@ export const getFeatured = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+export const getSingleFeatured = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const singleFeatured = await Featured.findById(id);
+    res.status(200).json(singleFeatured);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};

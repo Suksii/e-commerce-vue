@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="px-12">
+  <div class="w-[95%] lg:w-[50%] mx-auto">
     <h3 class="text-center text-3xl font-medium py-4">All Featured</h3>
     <div class="flex flex-wrap justify-center gap-6">
       <div
