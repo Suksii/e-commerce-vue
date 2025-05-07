@@ -5,11 +5,11 @@ import FilterSidebar from '@/components/FilterSidebar.vue'
 </script>
 
 <template>
-  <div class="flex justify-center items-center w-full">
+  <div class="flex justify-center py-2 w-full">
     <FilterSidebar />
     <div class="flex flex-col">
       <FeaturedSection />
-      <!-- <BrandsSlider /> -->
+      <BrandsSlider />
     </div>
   </div>
 </template>
