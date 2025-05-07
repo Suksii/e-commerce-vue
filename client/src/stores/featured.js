@@ -16,7 +16,7 @@ export const useFeaturedStore = defineStore('featured', () => {
   }
   async function getSingleFeatured(id) {
     try {
-      const { data } = await request.get('/api//featured/' + id)
+      const { data } = await request.get('/api/featured/' + id)
       singleFeatured.value = data
     } catch (error) {}
   }

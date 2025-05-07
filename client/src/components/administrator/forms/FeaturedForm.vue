@@ -1,15 +1,23 @@
 <script setup>
 import { request } from '@/api'
 import { useEditActions } from '@/composables/useEditActions'
+import { useFeaturedStore } from '@/stores/featured'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
 import { reactive, ref, watch } from 'vue'
 
 const notificationStore = useNotificationStore()
+const featuredStore = useFeaturedStore()
 const { id: featuredId, cancel: featuredCancel } = useEditActions()
 
 const imageRef = ref(null)
 const featuredData = reactive({ title: '', image: '', description: '' })
+
+const resetForm = () => {
+  featuredData.title = ''
+  featuredData.image = ''
+  featuredData.description = ''
+}
 
 async function uploadImage(event) {
   const file = event.target.files[0]
@@ -43,12 +51,33 @@ async function handleFeatured() {
         ? 'Featured edited successfully'
         : 'Featured added successfully',
     )
+    featuredStore.getFeatured()
+    resetForm()
+    featuredCancel()
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
   }
 }
+
+watch(
+  featuredId,
+  async (newId) => {
+    if (newId) {
+      await featuredStore.getSingleFeatured(newId)
+      const featured = featuredStore.singleFeatured
+      if (featured) {
+        featuredData.title = featured.title
+        featuredData.description = featured.description
+        featuredData.image = featured.image
+      }
+    } else {
+      resetForm()
+    }
+  },
+  { immediate: true },
+)
 
 const removeImage = () => {
   return (featuredData.image = '')
