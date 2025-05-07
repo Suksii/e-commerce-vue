@@ -14,8 +14,8 @@ const photoUpload = multer({ dest: "uploads/featured" });
 
 router.post("/upload", photoUpload.single("photo"), uploadImage);
 router.post("/add", addFeatured);
+router.get("/", getFeatured);
 router.put("/update/:id", updateFeatured);
 router.delete("/delete/:id", deleteFeatured);
-router.get("/", getFeatured);
 
 export const featuredRoute = router;

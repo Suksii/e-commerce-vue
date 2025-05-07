@@ -25,7 +25,7 @@ onMounted(() => {
 
 <template>
   <div class="px-12">
-    <h3 class="text-center text-3xl font-medium py-4">All Brands</h3>
+    <h3 class="text-center text-3xl font-medium py-4">All Featured</h3>
     <div class="flex flex-wrap justify-center gap-6">
       <div
         v-for="featured in featuredStore.featuredData"
@@ -51,7 +51,7 @@ onMounted(() => {
         <div
           v-if="displayedAction === featured._id"
           class="absolute left-0 top-0 p-3 bg-teal-600/80 rounded-full cursor-pointer"
-          @click="handleFeaturedEdit(brand._id)"
+          @click="handleFeaturedEdit(featured._id)"
         >
           <Icon icon="lucide:edit" width="28" height="28" class="text-white" />
         </div>
