@@ -4,6 +4,7 @@ import { ref } from 'vue'
 
 export const useFeaturedStore = defineStore('featured', () => {
   const featuredData = ref([])
+  const singleFeatured = ref([])
 
   async function getFeatured() {
     try {
@@ -13,6 +14,12 @@ export const useFeaturedStore = defineStore('featured', () => {
       console.error('Failed to fetch featured data: ', error)
     }
   }
+  async function getSingleFeatured(id) {
+    try {
+      const { data } = await request.get('/api//featured/' + id)
+      singleFeatured.value = data
+    } catch (error) {}
+  }
 
-  return { getFeatured, featuredData }
+  return { getFeatured, featuredData, getSingleFeatured, singleFeatured }
 })
