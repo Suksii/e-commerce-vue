@@ -6,6 +6,7 @@ import ProfileContent from './ProfileContent.vue'
 import CartContent from './CartContent.vue'
 import { useCartStore } from '@/stores/carts'
 import SearchInput from './SearchInput.vue'
+import { RouterLink } from 'vue-router'
 
 const showProfileModal = ref(false)
 const showCartModal = ref(false)
@@ -27,14 +28,14 @@ onMounted(() => {
 <template>
   <nav class="flex items-center h-14 shadow-md shadow-black/60 bg-teal-700">
     <div class="w-[80%] mx-auto flex items-center justify-between">
-      <div class="relative">
+      <RouterLink to="/" class="relative">
         <Icon icon="mdi:storm-outline" width="62" height="62" class="text-yellow-400" />
         <p
           class="absolute left-1/2 top-1/2 -translate-1/2 text-3xl font-bold italic tracking-wider text-nowrap text-white"
         >
           S-Shop
         </p>
-      </div>
+      </RouterLink>
       <div class="flex gap-8 items-center">
         <SearchInput />
         <div class="relative">
