@@ -6,9 +6,9 @@ import FilterSidebar from '@/components/FilterSidebar.vue'
 </script>
 
 <template>
-  <div class="flex justify-center py-2 w-full">
+  <div class="flex justify-center w-full">
     <FilterSidebar />
-    <div class="flex flex-col">
+    <div class="flex flex-col w-full">
       <FeaturedSection />
       <CategorySection />
       <BrandsSlider />

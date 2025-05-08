@@ -46,7 +46,7 @@ const totalCartPrice = computed(() => {
 </script>
 
 <template>
-  <div class="overflow-y-auto max-h-[500px] flex flex-col gap-2">
+  <div class="overflow-y-auto max-h-[500px] flex flex-col gap-2 z-40">
     <div
       v-for="cart in carts"
       :key="cart._id"

@@ -71,19 +71,19 @@ const categoryItems = [
 
 <template>
   <h2 class="text-2xl font-bold text-center py-8 w-[350px] mx-auto">Explore Our Categories and Find What You Need</h2>
-  <div class="flex justify-center flex-wrap gap-6 w-full">
+  <div class="grid grid-cols-1 md:grid-cols-3 justify-center gap-6 w-full">
     <div
       v-for="item of categoryItems"
       :key="item.id"
-      class="w-[90%] md:w-[470px] h-[600px] md:h-[800px] bg-cover bg-center flex flex-col justify-end items-center pb-8 gap-6 relative"
+      class="flex-grow-0 h-[600px] md:h-[800px] bg-cover bg-center flex flex-col justify-end items-center pb-8 gap-6 relative"
       :style="{ backgroundImage: `url('${item.image}') ` }"
     >
-      <div class="absolute inset-0 bg-black/30 z-10"></div>
+      <div class="absolute inset-0 bg-black/30"></div>
       <RouterLink
         v-for="i of item.list"
         :key="i.id"
         :to="i.link"
-        class="py-4 bg-white/80 hover:bg-white w-5/6 text-center shadow-sm shadow-gray-400 cursor-pointer z-20 transition"
+        class="py-4 bg-white/80 hover:bg-white w-5/6 text-center shadow-sm shadow-gray-400 z-10 cursor-pointer transition"
       >
         <p class="text-lg font-medium text-gray-800">{{ i.title }}</p>
       </RouterLink>
