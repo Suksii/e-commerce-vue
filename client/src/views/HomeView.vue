@@ -7,13 +7,10 @@ import FooterSection from '@/components/FooterSection.vue'
 </script>
 
 <template>
-  <div class="flex justify-center w-full">
-    <FilterSidebar />
-    <div class="flex flex-col w-full">
-      <FeaturedSection />
-      <CategorySection />
-      <BrandsSlider />
-      <FooterSection />
-    </div>
+  <div class="flex flex-col w-full">
+    <FeaturedSection />
+    <CategorySection />
+    <BrandsSlider />
+    <FooterSection />
   </div>
 </template>

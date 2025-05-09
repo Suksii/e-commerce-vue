@@ -10,7 +10,7 @@
   @apply bg-red-600 text-white rounded-md hover:bg-red-700 font-medium cursor-pointer;
 }
 .close-button {
-  @apply min-w-24 border-2 border-gray-500 px-4 py-2 rounded-md cursor-pointer text-gray-700 font-medium shadow-md transition-all duration-200 hover:bg-gray-600 hover:text-white hover:border-gray-700;
+  @apply md:min-w-24 border-2 border-gray-500 px-4 py-2 rounded-md cursor-pointer text-gray-700 font-medium shadow-md transition-all duration-200 hover:bg-gray-600 hover:text-white hover:border-gray-700;
 }
 .register-button {
   @apply w-full py-3 px-4 rounded-md cursor-pointer bg-teal-600 relative overflow-hidden;
