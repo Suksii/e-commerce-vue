@@ -1,14 +1,16 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
-import { onMounted } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 
 const brandStore = useBrandStore()
+const selectedBrands = ref([])
 
 onMounted(() => {
   brandStore.fetchBrands()
 })
-
-console.log(brandStore.brandData)
+watchEffect(() => {
+  console.log(selectedBrands.value)
+})
 </script>
 
 <template>
@@ -16,9 +18,17 @@ console.log(brandStore.brandData)
     <div class="flex flex-col w-full gap-2">
       <div>
         <h3 class="text-sm font-medium uppercase border-b-2 border-teal-600 mb-2">Brands</h3>
-        <div v-for="brand of brandStore.brandData" class="flex gap-2">
-          <input type="checkbox" />
-          <p>{{ brand.name }}</p>
+        <div v-for="brand in brandStore.brandData" :key="brand.id" class="flex items-center gap-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              class="input-checkbox"
+              :value="brand.name"
+              v-model="selectedBrands"
+            />
+            <span class="custom-checkbox"></span>
+            <p class="text-gray-800">{{ brand.name }}</p>
+          </label>
         </div>
       </div>
       <div class="w-full">
@@ -92,5 +102,36 @@ console.log(brandStore.brandData)
   background-color: #f0fdfa;
   transform: scale(1.1);
   border-color: #0f766e;
+}
+
+.input-checkbox {
+  display: none;
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #0d9488;
+  border-radius: 4px;
+  background-color: white;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+.input-checkbox:checked + .custom-checkbox {
+  background-color: #0d9488;
+  border-color: #0d9488;
+}
+
+.input-checkbox:checked + .custom-checkbox::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 </style>
