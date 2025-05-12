@@ -4,6 +4,7 @@ import {
   addCategory,
   deleteCategory,
   getAllCategories,
+  getChildCategories,
   getNestedCategories,
   getParentCategories,
   getSingleCategory,
@@ -19,6 +20,7 @@ router.post("/upload", photoUpload.single("photo"), uploadImage);
 router.post("/add", addCategory);
 router.get("/", getAllCategories);
 router.get("/parent", getParentCategories);
+router.get("/child", getChildCategories);
 router.get("/nested", getNestedCategories);
 router.get("/:id", getSingleCategory);
 router.delete("/delete/:id", deleteCategory);
