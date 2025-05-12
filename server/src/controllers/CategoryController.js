@@ -49,7 +49,7 @@ export const getChildCategories = async (req, res) => {
     if (!childCategories || childCategories.length === 0) {
       return res.status(404).json({ message: "No child categories found" });
     }
-    res.status(200).json({ childCategories });
+    res.status(200).json(childCategories);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
   }

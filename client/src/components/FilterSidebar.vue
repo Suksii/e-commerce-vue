@@ -1,24 +1,35 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
-import { onMounted, ref, watchEffect } from 'vue'
+import { useCategoryStore } from '@/stores/categories'
+import { onMounted, ref } from 'vue'
 import CustomCheckBox from './CustomCheckBox.vue'
 
 const brandStore = useBrandStore()
+const categoryStore = useCategoryStore()
 const selectedBrands = ref([])
+const selectedCategories = ref([])
 
 onMounted(() => {
   brandStore.fetchBrands()
-  console.log('brandStore.brandData', brandStore.brandData)
-})
-watchEffect(() => {
-  console.log(selectedBrands.value)
+  categoryStore.getChildCategories()
+  console.log(categoryStore.childCategoriesData, brandStore.brandData)
 })
 </script>
 
 <template>
   <div class="w-64">
     <div class="flex flex-col w-full gap-2">
-      <div>
+      <div v-if="categoryStore.childCategoriesData.length">
+        <h3 class="text-sm font-medium uppercase border-b-2 border-teal-600 mb-2">Categories</h3>
+        <div
+          v-for="category of categoryStore.childCategoriesData"
+          :key="category._id"
+          class="flex items-center gap-2"
+        >
+          <CustomCheckBox v-model:selectedItem="selectedCategories" :name="category.name" />
+        </div>
+      </div>
+      <div v-if="brandStore.brandData.length">
         <h3 class="text-sm font-medium uppercase border-b-2 border-teal-600 mb-2">Brands</h3>
         <div v-for="brand in brandStore.brandData" :key="brand._id" class="flex items-center gap-2">
           <CustomCheckBox v-model:selectedItem="selectedBrands" :name="brand.name" />

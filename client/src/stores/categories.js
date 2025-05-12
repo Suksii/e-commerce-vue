@@ -36,9 +36,9 @@ export const useCategoryStore = defineStore('category', () => {
   return {
     fetchCategories,
     categoriesData,
-    getSingleCategory,
-    singleCategoryData,
     getChildCategories,
     childCategoriesData,
+    getSingleCategory,
+    singleCategoryData,
   }
 })
