@@ -40,6 +40,21 @@ export const getParentCategories = async (req, res) => {
   }
 };
 
+export const getChildCategories = async (req, res) => {
+  try {
+    const childCategories = await Category.find({
+      parentCategory: { $ne: null },
+    });
+
+    if (!childCategories || childCategories.length === 0) {
+      return res.status(404).json({ message: "No child categories found" });
+    }
+    res.status(200).json({ childCategories });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 export const getNestedCategories = async (req, res) => {
   try {
     const categories = await Category.aggregate([
