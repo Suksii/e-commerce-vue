@@ -99,6 +99,7 @@ export const updateProduct = async (req, res) => {
 
 export const getSearchedProduct = async (req, res) => {
   const { name, gender, season, category, brand } = req.query;
+
   try {
     const filter = {};
 
@@ -106,7 +107,7 @@ export const getSearchedProduct = async (req, res) => {
       filter.name = { $regex: name, $options: "i" };
     }
     if (category) {
-      filter.category = category;
+      filter.category = Array.isArray(category) ? { $in: category } : category;
     }
     if (gender) {
       filter.gender = gender;
@@ -115,7 +116,7 @@ export const getSearchedProduct = async (req, res) => {
       filter.season = season;
     }
     if (brand) {
-      filter.brand = brand;
+      filter.brand = Array.isArray(brand) ? { $in: brand } : brand;
     }
 
     const products = await Product.find(filter);

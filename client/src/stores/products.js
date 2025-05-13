@@ -3,11 +3,14 @@ import { useDebounce } from '@/composables/useDebounce'
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import qs from 'qs'
 
 export const useProductsStore = defineStore('products', () => {
   const productsData = ref([])
   const singleProduct = ref({})
   const selectedImage = ref('')
+  const selectedBrands = ref([])
+  const selectedCategories = ref([])
   const searchQuery = ref('')
   const router = useRouter()
   const route = useRoute()
@@ -29,14 +32,20 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   async function searchProducts() {
+    const params = {
+      name: debouncedValue.value || undefined,
+      brand: selectedBrands.value?.length ? selectedBrands.value : undefined,
+      category: selectedCategories.value?.length ? selectedCategories.value : undefined,
+    }
+
     try {
       const { data } = await request.get('/api/products/search', {
-        params: {
-          name: debouncedValue.value,
-        },
+        params,
+        paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
       })
       productsData.value = data
-      console.log(data)
+      console.log('Params', params)
+      console.log('Selected', selectedBrands.value)
     } catch (error) {
       console.error(error)
     }
@@ -54,17 +63,55 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
+  // watch(
+  //   [debouncedValue, selectedBrands, selectedCategories],
+  //   async (newSearch, newBrands, newCategories) => {
+  //     const hasSearch = newSearch && newSearch.length >= 2
+  //     const hasFilters = newBrands || newCategories
+  //     if (hasSearch || hasFilters) {
+  //       console.log(selectedBrands.value)
+
+  //       const query = {
+  //         ...(hasSearch ? { name: newSearch } : {}),
+  //         ...(newBrands ? { name: newBrands } : {}),
+  //         ...(newCategories ? { name: newCategories } : {}),
+  //       }
+
+  //       await searchProducts()
+  //       if (route.name !== 'allProducts' || route.query.q !== newSearch) {
+  //         router.push({ name: 'allProducts', query: { q: newSearch } })
+  //       }
+  //     } else {
+  //       await getProducts()
+  //       if (route.query.q) {
+  //         router.push({ name: 'allProducts', query: {} })
+  //       }
+  //     }
+  //   },
+  //   { immediate: true },
+  // )
+
   watch(
-    () => debouncedValue.value,
-    async (newVal) => {
-      if (newVal && newVal.length >= 2) {
+    [debouncedValue, selectedBrands, selectedCategories],
+    async ([newSearch, newBrands, newCategories]) => {
+      const hasSearch = newSearch && newSearch.length >= 2
+      const hasFilters = newBrands || newCategories
+
+      if (hasSearch || hasFilters) {
+        const query = {
+          ...(hasSearch ? { name: newSearch } : {}),
+          ...(newBrands ? { brand: newBrands } : {}),
+          ...(newCategories ? { category: newCategories } : {}),
+        }
+
         await searchProducts()
-        if (route.name !== 'allProducts' || route.query.q !== newVal) {
-          router.push({ name: 'allProducts', query: { q: newVal } })
+
+        if (JSON.stringify(route.query) !== JSON.stringify(query)) {
+          router.push({ name: 'allProducts', query })
         }
       } else {
         await getProducts()
-        if (route.query.q) {
+        if (Object.keys(route.query).length > 0) {
           router.push({ name: 'allProducts', query: {} })
         }
       }
@@ -81,5 +128,7 @@ export const useProductsStore = defineStore('products', () => {
     searchProducts,
     debouncedValue,
     searchQuery,
+    selectedBrands,
+    selectedCategories,
   }
 })

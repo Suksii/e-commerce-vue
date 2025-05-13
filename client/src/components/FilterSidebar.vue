@@ -8,17 +8,15 @@ import { useProductsStore } from '@/stores/products'
 const brandStore = useBrandStore()
 const categoryStore = useCategoryStore()
 const productsStore = useProductsStore()
-const selectedBrands = ref([])
-const selectedCategories = ref([])
+
+const selectedMin = ref(0)
+const selectedMax = ref(0)
 
 onMounted(() => {
   brandStore.fetchBrands()
   categoryStore.getChildCategories()
   productsStore.getProducts()
 })
-
-const selectedMin = ref(0)
-const selectedMax = ref(0)
 
 const minPrice = computed(() => {
   if (!productsStore.productsData.length) return 0
@@ -81,13 +79,21 @@ const rangeBackground = computed(() => {
           :key="category._id"
           class="flex items-center gap-2"
         >
-          <CustomCheckBox v-model:selectedItem="selectedCategories" :name="category.name" />
+          <CustomCheckBox
+            v-model:selectedItem="productsStore.selectedCategories"
+            :name="category.name"
+            :id="category._id"
+          />
         </div>
       </div>
       <div v-if="brandStore.brandData.length">
         <h3 class="text-sm font-medium uppercase border-b-2 border-teal-600 mb-2">Brands</h3>
         <div v-for="brand in brandStore.brandData" :key="brand._id" class="flex items-center gap-2">
-          <CustomCheckBox v-model:selectedItem="selectedBrands" :name="brand.name" />
+          <CustomCheckBox
+            v-model:selectedItem="productsStore.selectedBrands"
+            :name="brand.name"
+            :id="brand._id"
+          />
         </div>
       </div>
       <div class="w-full">
