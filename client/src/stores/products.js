@@ -15,7 +15,9 @@ export const useProductsStore = defineStore('products', () => {
   const router = useRouter()
   const route = useRoute()
 
-  const debouncedValue = useDebounce(searchQuery, 1000)
+  const debouncedSearch = useDebounce(searchQuery, 1000)
+  const debouncedCategories = useDebounce(selectedCategories, 1000)
+  const debouncedBrands = useDebounce(selectedBrands, 1000)
 
   async function getProducts(sortBy = 'name', order = 'desc') {
     try {
@@ -33,7 +35,7 @@ export const useProductsStore = defineStore('products', () => {
 
   async function searchProducts() {
     const params = {
-      name: debouncedValue.value || undefined,
+      name: debouncedSearch.value || undefined,
       brand: selectedBrands.value?.length ? selectedBrands.value.map((b) => b._id) : undefined,
       category: selectedCategories.value?.length
         ? selectedCategories.value.map((c) => c._id)
@@ -66,7 +68,7 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   watch(
-    [debouncedValue, selectedBrands, selectedCategories],
+    [debouncedSearch, debouncedBrands, debouncedCategories],
     async ([newSearch, newBrands, newCategories]) => {
       const hasSearch = newSearch && newSearch.length >= 2
       const hasFilters = newBrands || newCategories
@@ -100,7 +102,7 @@ export const useProductsStore = defineStore('products', () => {
     singleProduct,
     selectedImage,
     searchProducts,
-    debouncedValue,
+    debouncedSearch,
     searchQuery,
     selectedBrands,
     selectedCategories,
