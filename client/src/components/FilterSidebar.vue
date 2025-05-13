@@ -82,7 +82,7 @@ const rangeBackground = computed(() => {
           <CustomCheckBox
             v-model:selectedItem="productsStore.selectedCategories"
             :name="category.name"
-            :id="category._id"
+            :item="category"
           />
         </div>
       </div>
@@ -92,7 +92,7 @@ const rangeBackground = computed(() => {
           <CustomCheckBox
             v-model:selectedItem="productsStore.selectedBrands"
             :name="brand.name"
-            :id="brand._id"
+            :item="brand"
           />
         </div>
       </div>

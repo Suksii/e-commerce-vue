@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  id: String,
+  item: Object,
   name: String,
   selectedItem: Array,
 })
@@ -21,7 +21,7 @@ const selected = computed({
 
 <template>
   <label class="flex items-center gap-2 cursor-pointer">
-    <input type="checkbox" class="input-checkbox" :value="id" v-model="selected" />
+    <input type="checkbox" class="input-checkbox" :value="item" v-model="selected" />
     <span class="custom-checkbox"></span>
     <p class="text-gray-800">{{ name }}</p>
   </label>

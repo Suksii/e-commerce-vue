@@ -34,8 +34,10 @@ export const useProductsStore = defineStore('products', () => {
   async function searchProducts() {
     const params = {
       name: debouncedValue.value || undefined,
-      brand: selectedBrands.value?.length ? selectedBrands.value : undefined,
-      category: selectedCategories.value?.length ? selectedCategories.value : undefined,
+      brand: selectedBrands.value?.length ? selectedBrands.value.map((b) => b._id) : undefined,
+      category: selectedCategories.value?.length
+        ? selectedCategories.value.map((c) => c._id)
+        : undefined,
     }
 
     try {
@@ -63,34 +65,6 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
-  // watch(
-  //   [debouncedValue, selectedBrands, selectedCategories],
-  //   async (newSearch, newBrands, newCategories) => {
-  //     const hasSearch = newSearch && newSearch.length >= 2
-  //     const hasFilters = newBrands || newCategories
-  //     if (hasSearch || hasFilters) {
-  //       console.log(selectedBrands.value)
-
-  //       const query = {
-  //         ...(hasSearch ? { name: newSearch } : {}),
-  //         ...(newBrands ? { name: newBrands } : {}),
-  //         ...(newCategories ? { name: newCategories } : {}),
-  //       }
-
-  //       await searchProducts()
-  //       if (route.name !== 'allProducts' || route.query.q !== newSearch) {
-  //         router.push({ name: 'allProducts', query: { q: newSearch } })
-  //       }
-  //     } else {
-  //       await getProducts()
-  //       if (route.query.q) {
-  //         router.push({ name: 'allProducts', query: {} })
-  //       }
-  //     }
-  //   },
-  //   { immediate: true },
-  // )
-
   watch(
     [debouncedValue, selectedBrands, selectedCategories],
     async ([newSearch, newBrands, newCategories]) => {
@@ -100,8 +74,8 @@ export const useProductsStore = defineStore('products', () => {
       if (hasSearch || hasFilters) {
         const query = {
           ...(hasSearch ? { name: newSearch } : {}),
-          ...(newBrands ? { brand: newBrands } : {}),
-          ...(newCategories ? { category: newCategories } : {}),
+          ...(newBrands ? { brand: newBrands.map((b) => b.name) } : {}),
+          ...(newCategories ? { category: newCategories.map((c) => c.name) } : {}),
         }
 
         await searchProducts()
