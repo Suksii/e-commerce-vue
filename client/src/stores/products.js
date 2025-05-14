@@ -11,6 +11,8 @@ export const useProductsStore = defineStore('products', () => {
   const selectedImage = ref('')
   const selectedBrands = ref([])
   const selectedCategories = ref([])
+  const selectedMin = ref(null)
+  const selectedMax = ref(null)
   const searchQuery = ref('')
   const router = useRouter()
   const route = useRoute()
@@ -18,6 +20,8 @@ export const useProductsStore = defineStore('products', () => {
   const debouncedSearch = useDebounce(searchQuery, 1000)
   const debouncedCategories = useDebounce(selectedCategories, 1000)
   const debouncedBrands = useDebounce(selectedBrands, 1000)
+  const debouncedMin = useDebounce(selectedMin, 1000)
+  const debouncedMax = useDebounce(selectedMax, 1000)
 
   async function getProducts(sortBy = 'name', order = 'desc') {
     try {
@@ -40,6 +44,8 @@ export const useProductsStore = defineStore('products', () => {
       category: selectedCategories.value?.length
         ? selectedCategories.value.map((c) => c._id)
         : undefined,
+      minPrice: selectedMin.value != null ? selectedMin.value : undefined,
+      maxPrice: selectedMax.value != null ? selectedMax.value : undefined,
     }
 
     try {
@@ -48,8 +54,7 @@ export const useProductsStore = defineStore('products', () => {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
       })
       productsData.value = data
-      console.log('Params', params)
-      console.log('Selected', selectedBrands.value)
+      console.log('Params', params.minPrice, params.maxPrice)
     } catch (error) {
       console.error(error)
     }
@@ -71,24 +76,26 @@ export const useProductsStore = defineStore('products', () => {
     [debouncedSearch, debouncedBrands, debouncedCategories],
     async ([newSearch, newBrands, newCategories]) => {
       const hasSearch = newSearch && newSearch.length >= 2
-      const hasFilters = newBrands || newCategories
+      const hasFilters =
+        (newBrands && newBrands.length > 0) || (newCategories && newCategories.length > 0)
 
       if (hasSearch || hasFilters) {
         const query = {
           ...(hasSearch ? { name: newSearch } : {}),
           ...(newBrands ? { brand: newBrands.map((b) => b.name) } : {}),
           ...(newCategories ? { category: newCategories.map((c) => c.name) } : {}),
+          // ...(newMinPrice != null ? { minPrice: newMinPrice } : {}),
+          // ...(newMaxPrice != null ? { maxPrice: newMaxPrice } : {}),
         }
-
-        await searchProducts()
 
         if (JSON.stringify(route.query) !== JSON.stringify(query)) {
-          router.push({ name: 'allProducts', query })
+          await router.push({ name: 'allProducts', query })
         }
+        await searchProducts()
       } else {
         await getProducts()
         if (Object.keys(route.query).length > 0) {
-          router.push({ name: 'allProducts', query: {} })
+          await router.push({ name: 'allProducts', query: {} })
         }
       }
     },
@@ -106,5 +113,7 @@ export const useProductsStore = defineStore('products', () => {
     searchQuery,
     selectedBrands,
     selectedCategories,
+    selectedMin,
+    selectedMax,
   }
 })

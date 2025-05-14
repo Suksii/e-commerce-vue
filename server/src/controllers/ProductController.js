@@ -98,7 +98,8 @@ export const updateProduct = async (req, res) => {
 };
 
 export const getSearchedProduct = async (req, res) => {
-  const { name, gender, season, category, brand } = req.query;
+  const { name, gender, season, category, brand, minPrice, maxPrice } =
+    req.query;
 
   try {
     const filter = {};
@@ -118,7 +119,11 @@ export const getSearchedProduct = async (req, res) => {
     if (brand) {
       filter.brand = Array.isArray(brand) ? { $in: brand } : brand;
     }
-
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    }
     const products = await Product.find(filter);
 
     res.status(200).json(products);

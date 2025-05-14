@@ -1,16 +1,24 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
 import { useCategoryStore } from '@/stores/categories'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import CustomCheckBox from './CustomCheckBox.vue'
 import { useProductsStore } from '@/stores/products'
+import { Icon } from '@iconify/vue'
 
 const brandStore = useBrandStore()
 const categoryStore = useCategoryStore()
 const productsStore = useProductsStore()
 
-const selectedMin = ref(0)
-const selectedMax = ref(0)
+const expand = reactive({
+  categories: false,
+  brands: false,
+  price: false,
+})
+
+const handleExpand = (item) => {
+  expand[item] = !expand[item]
+}
 
 onMounted(() => {
   brandStore.fetchBrands()
@@ -31,29 +39,29 @@ const maxPrice = computed(() => {
 watch(
   [minPrice, maxPrice],
   () => {
-    selectedMin.value = minPrice.value
-    selectedMax.value = maxPrice.value
+    productsStore.selectedMin = minPrice.value
+    productsStore.selectedMax = maxPrice.value
   },
   { immediate: true },
 )
 
 const validateMin = (e) => {
   const value = +e.target.value
-  if (value + 10 <= selectedMax.value) {
-    selectedMin.value = value
+  if (!isNaN(value) && value <= productsStore.selectedMax - 10) {
+    productsStore.selectedMin = value
   } else {
-    selectedMin.value = selectedMax.value - 10
-    e.target.value = selectedMax.value
+    productsStore.selectedMin = productsStore.selectedMax - 10
+    e.target.value = productsStore.selectedMax
   }
 }
 
 const validateMax = (e) => {
   const value = +e.target.value
-  if (value - 10 >= selectedMin.value) {
-    selectedMax.value = value
+  if (!isNaN(value) && value >= productsStore.selectedMin + 10) {
+    productsStore.selectedMax = value
   } else {
-    selectedMax.value = selectedMin.value + 10
-    e.target.value = selectedMin.value
+    productsStore.selectedMax = productsStore.selectedMin + 10
+    e.target.value = productsStore.selectedMin
   }
 }
 
@@ -61,8 +69,8 @@ const rangeBackground = computed(() => {
   const min = minPrice.value
   const max = maxPrice.value
   const range = max - min || 1
-  const minValue = ((selectedMin.value - min) / range) * 100
-  const maxValue = ((selectedMax.value - min) / range) * 100
+  const minValue = ((productsStore.selectedMin - min) / range) * 100
+  const maxValue = ((productsStore.selectedMax - min) / range) * 100
   return {
     background: `linear-gradient(to right, #e5e7eb ${minValue}% , #14b8a6 ${minValue}%, #14b8a6 ${maxValue}%, #e5e7eb ${maxValue}%)`,
   }
@@ -72,54 +80,100 @@ const rangeBackground = computed(() => {
 <template>
   <div class="w-64">
     <div class="flex flex-col w-full gap-2">
-      <div v-if="categoryStore.childCategoriesData.length">
-        <h3 class="text-sm font-medium uppercase border-b-2 border-teal-600 mb-2">Categories</h3>
+      <div v-if="categoryStore.childCategoriesData.length" class="">
+        <div class="flex justify-between items-center w-full border-b-2 border-teal-600 mb-2">
+          <h3 class="text-sm font-medium uppercase">Categories</h3>
+          <Icon
+            :icon="expand.categories ? 'line-md:minus' : 'line-md:plus'"
+            width="22"
+            height="22"
+            class="text-teal-700 cursor-pointer transition"
+            @click="handleExpand('categories')"
+          />
+        </div>
         <div
-          v-for="category of categoryStore.childCategoriesData"
-          :key="category._id"
-          class="flex items-center gap-2"
+          :class="expand.categories ? 'max-h-96' : 'max-h-0'"
+          class="overflow-hidden transition-all duration-500"
         >
-          <CustomCheckBox
-            v-model:selectedItem="productsStore.selectedCategories"
-            :name="category.name"
-            :item="category"
-          />
-        </div>
-      </div>
-      <div v-if="brandStore.brandData.length">
-        <h3 class="text-sm font-medium uppercase border-b-2 border-teal-600 mb-2">Brands</h3>
-        <div v-for="brand in brandStore.brandData" :key="brand._id" class="flex items-center gap-2">
-          <CustomCheckBox
-            v-model:selectedItem="productsStore.selectedBrands"
-            :name="brand.name"
-            :item="brand"
-          />
-        </div>
-      </div>
-      <div class="w-full">
-        <h3 class="text-sm font-medium uppercase border-b-2 border-teal-600 mb-2">Price</h3>
-        <div class="flex flex-col">
-          <div class="relative h-10 w-full">
-            <input
-              type="range"
-              :min="minPrice"
-              :max="maxPrice"
-              v-model="selectedMin"
-              @input="validateMin"
-              class="input-range absolute top-0 left-0 w-full z-40"
-              :style="rangeBackground"
-            />
-            <input
-              type="range"
-              :min="minPrice"
-              :max="maxPrice"
-              v-model="selectedMax"
-              @input="validateMax"
-              class="input-range absolute top-0 left-0 w-full z-50"
+          <div
+            v-for="category in categoryStore.childCategoriesData"
+            :key="category._id"
+            class="flex items-center gap-2"
+          >
+            <CustomCheckBox
+              v-model:selectedItem="productsStore.selectedCategories"
+              :name="category.name"
+              :item="category"
             />
           </div>
         </div>
-        <p class="font-medium">{{ selectedMin }}€ - {{ selectedMax }}€</p>
+      </div>
+      <div v-if="brandStore.brandData.length">
+        <div class="flex justify-between items-center w-full border-b-2 border-teal-600 mb-2">
+          <h3 class="text-sm font-medium uppercase">Brands</h3>
+          <Icon
+            :icon="expand.brands ? 'line-md:minus' : 'line-md:plus'"
+            width="22"
+            height="22"
+            class="text-teal-700 cursor-pointer"
+            @click="handleExpand('brands')"
+          />
+        </div>
+
+        <div
+          :class="expand.brands ? 'max-h-96' : 'max-h-0'"
+          class="overflow-auto transition-all duration-500"
+        >
+          <div
+            v-for="brand in brandStore.brandData"
+            :key="brand._id"
+            class="flex items-center gap-2"
+          >
+            <CustomCheckBox
+              v-model:selectedItem="productsStore.selectedBrands"
+              :name="brand.name"
+              :item="brand"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="w-full">
+        <div class="flex justify-between items-center w-full border-b-2 border-teal-600 mb-2">
+          <h3 class="text-sm font-medium uppercase">Price</h3>
+          <Icon
+            :icon="expand.price ? 'line-md:minus' : 'line-md:plus'"
+            width="22"
+            height="22"
+            class="text-teal-700 cursor-pointer"
+            @click="handleExpand('price')"
+          />
+        </div>
+        <div :class="expand.price ? 'max-h-96' : 'max-h-0'" class="overflow-hidden transition-all duration-500">
+          <div class="flex flex-col">
+            <div class="relative w-full mt-2">
+              <input
+                type="range"
+                :min="minPrice"
+                :max="maxPrice"
+                v-model="productsStore.selectedMin"
+                @input="validateMin"
+                class="input-range absolute top-0 left-0 w-full z-40"
+                :style="rangeBackground"
+              />
+              <input
+                type="range"
+                :min="minPrice"
+                :max="maxPrice"
+                v-model="productsStore.selectedMax"
+                @input="validateMax"
+                class="input-range absolute top-0 left-0 w-full z-50"
+              />
+            </div>
+          </div>
+          <p class="font-medium pt-4">
+            {{ productsStore.selectedMin }}€ - {{ productsStore.selectedMax }}€
+          </p>
+        </div>
       </div>
     </div>
   </div>
