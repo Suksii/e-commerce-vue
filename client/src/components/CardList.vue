@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="flex justify-center flex-wrap gap-4 py-12">
+  <div class="flex justify-center h-fit flex-wrap gap-4">
     <div
       v-if="data && data.length"
       v-for="item of data"

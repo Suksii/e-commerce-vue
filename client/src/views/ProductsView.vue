@@ -7,8 +7,8 @@ const productsStore = useProductsStore()
 </script>
 
 <template>
-  <div class="flex gap-6 py-20">
+  <div class="flex gap-6 py-20 w-full">
     <FilterSidebar />
-    <CardList :data="productsStore.productsData" />
+    <CardList :data="productsStore.productsData" class="w-full"/>
   </div>
 </template>

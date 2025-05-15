@@ -15,6 +15,7 @@ const expand = reactive({
   brands: false,
   price: false,
 })
+const isOverflowVisible = ref(false)
 
 const handleExpand = (item) => {
   expand[item] = !expand[item]
@@ -121,8 +122,13 @@ const rangeBackground = computed(() => {
         </div>
 
         <div
-          :class="expand.brands ? 'max-h-96' : 'max-h-0'"
-          class="overflow-auto transition-all duration-500"
+          @mouseenter="isOverflowVisible = true"
+          @mouseleave="isOverflowVisible = false"
+          :class="[
+            expand.brands ? 'max-h-96' : 'max-h-0',
+            isOverflowVisible ? 'overflow-auto' : 'overflow-hidden',
+          ]"
+          class="transition-all duration-500"
         >
           <div
             v-for="brand in brandStore.brandData"
@@ -148,7 +154,10 @@ const rangeBackground = computed(() => {
             @click="handleExpand('price')"
           />
         </div>
-        <div :class="expand.price ? 'max-h-96' : 'max-h-0'" class="overflow-hidden transition-all duration-500">
+        <div
+          :class="expand.price ? 'max-h-96' : 'max-h-0'"
+          class="overflow-hidden transition-all duration-500"
+        >
           <div class="flex flex-col">
             <div class="relative w-full mt-2">
               <input
