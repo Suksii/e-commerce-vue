@@ -24,17 +24,6 @@ const maxPrice = computed(() => {
   return Math.ceil(Math.max(...productsStore.allProductsData.map((product) => product.price)))
 })
 
-const expand = reactive({
-  categories: false,
-  brands: false,
-  price: false,
-})
-const isOverflowVisible = ref(false)
-
-const handleExpand = (item) => {
-  expand[item] = !expand[item]
-}
-
 onMounted(() => {
   brandStore.fetchBrands()
   categoryStore.getChildCategories()
@@ -83,7 +72,7 @@ const rangeBackground = computed(() => {
         </div>
       </SingleFilter>
       <SingleFilter name="Price" item="price">
-        <div class="flex flex-col">
+        <div class="flex flex-col w-full px-0.5">
           <div class="relative w-full mt-2">
             <input
               type="range"

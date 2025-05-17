@@ -20,7 +20,7 @@ const sidebarMenu = [
   {
     id: 3,
     name: 'Products',
-    icon: 'ant-design:product-filled',
+    icon: 'tabler:square-rounded-letter-p-filled',
     options: [
       {
         name: 'Add Product',
@@ -35,7 +35,7 @@ const sidebarMenu = [
   {
     id: 4,
     name: 'Categories',
-    icon: 'material-symbols:category-rounded',
+    icon: 'tabler:square-rounded-letter-c-filled',
     link: '/categories',
   },
   {
@@ -47,7 +47,7 @@ const sidebarMenu = [
   {
     id: 6,
     name: 'Featured',
-    icon: 'material-symbols-light:featured-video',
+    icon: 'tabler:square-rounded-letter-f-filled',
     link: '/featured',
   },
 ]

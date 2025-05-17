@@ -32,7 +32,7 @@ const handleExpand = (item) => {
     @mouseleave="isOverflowVisible = false"
     :class="[
       expand[item] ? 'max-h-96' : 'max-h-0',
-      isOverflowVisible ? 'overflow-auto' : 'overflow-hidden',
+      isOverflowVisible ? 'overflow-y-auto' : 'overflow-y-hidden',
     ]"
     class="transition-all duration-500"
   >
