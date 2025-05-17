@@ -5,10 +5,13 @@ import { computed, onMounted, reactive, ref, watch } from 'vue'
 import CustomCheckBox from './CustomCheckBox.vue'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
+import { useValidation } from '@/composables/useValidation'
 
 const brandStore = useBrandStore()
 const categoryStore = useCategoryStore()
 const productsStore = useProductsStore()
+
+const { validateMin, validateMax } = useValidation()
 
 const minPrice = computed(() => {
   if (productsStore.allProductsData.length === 0) return 0
@@ -19,23 +22,6 @@ const maxPrice = computed(() => {
   if (productsStore.allProductsData.length === 0) return 300
   return Math.ceil(Math.max(...productsStore.allProductsData.map((product) => product.price)))
 })
-
-const validateMin = (e) => {
-  const value = +e.target.value
-  if (value + 10 <= productsStore.selectedMax) {
-    productsStore.selectedMin = value
-  } else {
-    productsStore.selectedMin = productsStore.selectedMax - 10
-  }
-}
-const validateMax = (e) => {
-  const value = +e.target.value
-  if (value - 10 >= productsStore.selectedMin) {
-    productsStore.selectedMax = value
-  } else {
-    productsStore.selectedMax = productsStore.selectedMin + 10
-  }
-}
 
 const expand = reactive({
   categories: false,
