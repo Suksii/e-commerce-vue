@@ -7,21 +7,23 @@ import qs from 'qs'
 
 export const useProductsStore = defineStore('products', () => {
   const productsData = ref([])
+  const allProductsData = ref([])
   const singleProduct = ref({})
   const selectedImage = ref('')
   const selectedBrands = ref([])
   const selectedCategories = ref([])
+  const searchQuery = ref('')
   const selectedMin = ref(null)
   const selectedMax = ref(null)
-  const searchQuery = ref('')
+
   const router = useRouter()
   const route = useRoute()
 
   const debouncedSearch = useDebounce(searchQuery, 1000)
   const debouncedCategories = useDebounce(selectedCategories, 1000)
   const debouncedBrands = useDebounce(selectedBrands, 1000)
-  const debouncedMin = useDebounce(selectedMin, 1000)
-  const debouncedMax = useDebounce(selectedMax, 1000)
+  const debouncedMinPrice = useDebounce(selectedMin, 1000)
+  const debouncedMaxPrice = useDebounce(selectedMax, 1000)
 
   async function getProducts(sortBy = 'name', order = 'desc') {
     try {
@@ -32,6 +34,7 @@ export const useProductsStore = defineStore('products', () => {
         },
       })
       productsData.value = data
+      allProductsData.value = [...data]
     } catch (error) {
       console.error('Failed to fetch products:', error)
     }
@@ -44,8 +47,8 @@ export const useProductsStore = defineStore('products', () => {
       category: selectedCategories.value?.length
         ? selectedCategories.value.map((c) => c._id)
         : undefined,
-      minPrice: selectedMin.value != null ? selectedMin.value : undefined,
-      maxPrice: selectedMax.value != null ? selectedMax.value : undefined,
+      minPrice: selectedMin.value,
+      maxPrice: selectedMax.value,
     }
 
     try {
@@ -54,7 +57,7 @@ export const useProductsStore = defineStore('products', () => {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
       })
       productsData.value = data
-      console.log('Params', params.minPrice, params.maxPrice)
+      console.log('Params', params)
     } catch (error) {
       console.error(error)
     }
@@ -73,19 +76,21 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   watch(
-    [debouncedSearch, debouncedBrands, debouncedCategories],
-    async ([newSearch, newBrands, newCategories]) => {
+    [debouncedSearch, debouncedBrands, debouncedCategories, debouncedMinPrice, debouncedMaxPrice],
+    async ([newSearch, newBrands, newCategories, newMinPrice, newMaxPrice]) => {
       const hasSearch = newSearch && newSearch.length >= 2
       const hasFilters =
-        (newBrands && newBrands.length > 0) || (newCategories && newCategories.length > 0)
+        (newBrands && newBrands.length > 0) ||
+        (newCategories && newCategories.length > 0) ||
+        (newMinPrice !== null && newMaxPrice !== null)
 
       if (hasSearch || hasFilters) {
         const query = {
           ...(hasSearch ? { name: newSearch } : {}),
           ...(newBrands ? { brand: newBrands.map((b) => b.name) } : {}),
           ...(newCategories ? { category: newCategories.map((c) => c.name) } : {}),
-          // ...(newMinPrice != null ? { minPrice: newMinPrice } : {}),
-          // ...(newMaxPrice != null ? { maxPrice: newMaxPrice } : {}),
+          ...(newMinPrice ? { minPrice: newMinPrice } : {}),
+          ...(newMaxPrice ? { maxPrice: newMaxPrice } : {}),
         }
 
         if (JSON.stringify(route.query) !== JSON.stringify(query)) {
@@ -105,6 +110,7 @@ export const useProductsStore = defineStore('products', () => {
   return {
     getProducts,
     productsData,
+    allProductsData,
     getProduct,
     singleProduct,
     selectedImage,
