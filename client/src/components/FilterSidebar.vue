@@ -1,7 +1,7 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
 import { useCategoryStore } from '@/stores/categories'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import CustomCheckBox from './CustomCheckBox.vue'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
@@ -10,19 +10,32 @@ const brandStore = useBrandStore()
 const categoryStore = useCategoryStore()
 const productsStore = useProductsStore()
 
-const discountedPrice = productsStore.allProductsData.map(
-  (product) => product.price - (product.price * product.discount) / 100,
-)
-// const minPrice = Math.floor(Math.min(...discountedPrice))
-const minPrice = Math.floor(
-  Math.min(...productsStore.allProductsData.map((product) => product.price)),
-)
-const maxPrice = Math.ceil(
-  Math.max(...productsStore.allProductsData.map((product) => product.price)),
-)
-// const maxPrice = Math.ceil(Math.max(...discountedPrice))
+const minPrice = computed(() => {
+  if (productsStore.allProductsData.length === 0) return 0
+  return Math.floor(Math.min(...productsStore.allProductsData.map((product) => product.price)))
+})
 
-console.log(minPrice, maxPrice)
+const maxPrice = computed(() => {
+  if (productsStore.allProductsData.length === 0) return 300
+  return Math.ceil(Math.max(...productsStore.allProductsData.map((product) => product.price)))
+})
+
+const validateMin = (e) => {
+  const value = +e.target.value
+  if (value + 10 <= productsStore.selectedMax) {
+    productsStore.selectedMin = value
+  } else {
+    productsStore.selectedMin = productsStore.selectedMax - 10
+  }
+}
+const validateMax = (e) => {
+  const value = +e.target.value
+  if (value - 10 >= productsStore.selectedMin) {
+    productsStore.selectedMax = value
+  } else {
+    productsStore.selectedMax = productsStore.selectedMin + 10
+  }
+}
 
 const expand = reactive({
   categories: false,
@@ -38,12 +51,15 @@ const handleExpand = (item) => {
 onMounted(() => {
   brandStore.fetchBrands()
   categoryStore.getChildCategories()
-  productsStore.getProducts()
+  productsStore.getProducts().then(() => {
+    productsStore.selectedMin = minPrice.value
+    productsStore.selectedMax = maxPrice.value
+  })
 })
 
 const rangeBackground = computed(() => {
-  const min = minPrice
-  const max = maxPrice
+  const min = minPrice.value
+  const max = maxPrice.value
   const range = max - min || 1
   const minValue = ((productsStore.selectedMin - min) / range) * 100
   const maxValue = ((productsStore.selectedMax - min) / range) * 100
@@ -140,6 +156,7 @@ const rangeBackground = computed(() => {
                 :min="minPrice"
                 :max="maxPrice"
                 v-model="productsStore.selectedMin"
+                @input="validateMin"
                 class="input-range absolute top-0 left-0 w-full z-40"
                 :style="rangeBackground"
               />
@@ -147,6 +164,7 @@ const rangeBackground = computed(() => {
                 type="range"
                 :min="minPrice"
                 :max="maxPrice"
+                @input="validateMax"
                 v-model="productsStore.selectedMax"
                 class="input-range absolute top-0 left-0 w-full z-50"
               />
