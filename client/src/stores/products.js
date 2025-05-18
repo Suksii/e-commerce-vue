@@ -15,7 +15,7 @@ export const useProductsStore = defineStore('products', () => {
   const selectedImage = ref('')
   const selectedBrands = ref([])
   const selectedCategories = ref([])
-  const selectedSeasons = ref([])
+  const selectedSeason = ref([])
   const selectedGender = ref([])
   const searchQuery = ref('')
   const selectedMin = ref(null)
@@ -31,6 +31,8 @@ export const useProductsStore = defineStore('products', () => {
   const debouncedBrands = useDebounce(selectedBrands, 1000)
   const debouncedMinPrice = useDebounce(selectedMin, 1000)
   const debouncedMaxPrice = useDebounce(selectedMax, 1000)
+  const debouncedGender = useDebounce(selectedGender, 1000)
+  const debouncedSeason = useDebounce(selectedSeason, 1000)
 
   const fetchProductOptions = async () => {
     try {
@@ -68,7 +70,7 @@ export const useProductsStore = defineStore('products', () => {
         : undefined,
       minPrice: selectedMin.value,
       maxPrice: selectedMax.value,
-      season: selectedSeasons.value,
+      season: selectedSeason.value,
       gender: selectedGender.value,
     }
 
@@ -97,14 +99,31 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   watch(
-    [debouncedSearch, debouncedBrands, debouncedCategories, debouncedMinPrice, debouncedMaxPrice],
-    async ([newSearch, newBrands, newCategories, newMinPrice, newMaxPrice]) => {
+    [
+      debouncedSearch,
+      debouncedBrands,
+      debouncedCategories,
+      debouncedMinPrice,
+      debouncedMaxPrice,
+      debouncedGender,
+      debouncedSeason,
+    ],
+    async ([
+      newSearch,
+      newBrands,
+      newCategories,
+      newMinPrice,
+      newMaxPrice,
+      newGender,
+      newSeason,
+    ]) => {
       const hasSearch = newSearch && newSearch.length >= 2
       const hasFilters =
         (newBrands && newBrands.length > 0) ||
         (newCategories && newCategories.length > 0) ||
-        (newMinPrice !== null && newMaxPrice !== null)
-
+        (newMinPrice !== null && newMaxPrice !== null) ||
+        (newSeason && newSeason.length > 0) ||
+        (newGender && newGender.length > 0)
       if (hasSearch || hasFilters) {
         const query = {
           ...(hasSearch ? { name: newSearch } : {}),
@@ -112,6 +131,8 @@ export const useProductsStore = defineStore('products', () => {
           ...(newCategories ? { category: newCategories.map((c) => c.name) } : {}),
           ...(newMinPrice ? { minPrice: newMinPrice } : {}),
           ...(newMaxPrice ? { maxPrice: newMaxPrice } : {}),
+          ...(newSeason ? { season: newSeason } : {}),
+          ...(newGender ? { gender: newGender } : {}),
         }
 
         if (JSON.stringify(route.query) !== JSON.stringify(query)) {
@@ -140,6 +161,8 @@ export const useProductsStore = defineStore('products', () => {
     searchQuery,
     selectedBrands,
     selectedCategories,
+    selectedSeason,
+    selectedGender,
     selectedMin,
     selectedMax,
     fetchProductOptions,

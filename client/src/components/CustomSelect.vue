@@ -3,7 +3,7 @@ import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
 const props = defineProps({
-  options: Array,
+  options: Array | String,
   selectedOption: [String, Number],
 })
 const emit = defineEmits(['update:selectedOption'])

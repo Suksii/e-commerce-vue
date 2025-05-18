@@ -1,12 +1,12 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
 import { useCategoryStore } from '@/stores/categories'
-import { onMounted } from 'vue'
-import CustomCheckBox from './CustomCheckBox.vue'
 import { useProductsStore } from '@/stores/products'
 import { useValidation } from '@/composables/useValidation'
-import SingleFilter from './SingleFilter.vue'
 import { usePriceRange } from '@/composables/usePriceRange'
+import { onMounted } from 'vue'
+import CustomCheckBox from './CustomCheckBox.vue'
+import SingleFilter from './SingleFilter.vue'
 
 const brandStore = useBrandStore()
 const categoryStore = useCategoryStore()
@@ -17,6 +17,7 @@ const { minPrice, maxPrice, rangeBackground } = usePriceRange()
 
 onMounted(() => {
   brandStore.fetchBrands()
+  productsStore.fetchProductOptions()
   categoryStore.getChildCategories()
   productsStore.getProducts().then(() => {
     productsStore.selectedMin = minPrice.value
@@ -76,6 +77,19 @@ onMounted(() => {
         <p class="font-medium pt-4">
           {{ productsStore.selectedMin }}€ - {{ productsStore.selectedMax }}€
         </p>
+      </SingleFilter>
+      <SingleFilter name="Season" item="season">
+        <div
+          v-for="season in productsStore.seasonOptions"
+          :key="season"
+          class="flex items-center gap-2"
+        >
+          <CustomCheckBox
+            v-model:selectedItem="productsStore.selectedSeason"
+            :name="season"
+            :item="season"
+          />
+        </div>
       </SingleFilter>
     </div>
   </div>
