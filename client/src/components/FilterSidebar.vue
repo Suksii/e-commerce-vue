@@ -1,10 +1,9 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
 import { useCategoryStore } from '@/stores/categories'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted } from 'vue'
 import CustomCheckBox from './CustomCheckBox.vue'
 import { useProductsStore } from '@/stores/products'
-import { Icon } from '@iconify/vue'
 import { useValidation } from '@/composables/useValidation'
 import SingleFilter from './SingleFilter.vue'
 
@@ -46,7 +45,7 @@ const rangeBackground = computed(() => {
 </script>
 
 <template>
-  <div class="w-64">
+  <div class="w-64 hidden md:block">
     <div class="flex flex-col w-full gap-1">
       <SingleFilter name="Categories" item="categories">
         <div
