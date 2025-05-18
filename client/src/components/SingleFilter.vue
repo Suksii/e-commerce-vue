@@ -16,13 +16,13 @@ const handleExpand = (item) => {
 </script>
 
 <template>
-  <div class="flex justify-between items-center w-full border-b-2 border-teal-600 mb-2">
-    <h3 class="text-sm font-medium uppercase">{{ name }}</h3>
+  <div class="flex justify-between items-center w-full border-b-2 border-teal-600 mb-2 p-4 md:p-0">
+    <h3 class="text-sm font-medium uppercase text-white md:text-black">{{ name }}</h3>
     <Icon
       :icon="expand[item] ? 'line-md:minus' : 'line-md:plus'"
       width="22"
       height="22"
-      class="text-teal-700 cursor-pointer"
+      class="text-white md:text-teal-700 cursor-pointer"
       @click="handleExpand(item)"
     />
   </div>

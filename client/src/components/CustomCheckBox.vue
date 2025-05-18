@@ -20,10 +20,10 @@ const selected = computed({
 </script>
 
 <template>
-  <label class="flex items-center gap-2 cursor-pointer">
+  <label class="flex flex-row-reverse md:flex-row justify-between w-full md:w-fit items-center gap-2 cursor-pointer p-2 md:p-0">
     <input type="checkbox" class="input-checkbox" :value="item" v-model="selected" />
     <span class="custom-checkbox"></span>
-    <p class="text-gray-800">{{ name }}</p>
+    <p class="text-white md:text-gray-800">{{ name }}</p>
   </label>
 </template>
 
