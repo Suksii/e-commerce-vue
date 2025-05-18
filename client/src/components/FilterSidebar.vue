@@ -1,7 +1,7 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
 import { useCategoryStore } from '@/stores/categories'
-import { computed, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import CustomCheckBox from './CustomCheckBox.vue'
 import { useProductsStore } from '@/stores/products'
 import { useValidation } from '@/composables/useValidation'

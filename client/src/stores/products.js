@@ -4,17 +4,24 @@ import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import qs from 'qs'
+import { useNotificationStore } from './notification'
 
 export const useProductsStore = defineStore('products', () => {
+  const notificationStore = useNotificationStore()
+
   const productsData = ref([])
   const allProductsData = ref([])
   const singleProduct = ref({})
   const selectedImage = ref('')
   const selectedBrands = ref([])
   const selectedCategories = ref([])
+  const selectedSeasons = ref([])
+  const selectedGender = ref([])
   const searchQuery = ref('')
   const selectedMin = ref(null)
   const selectedMax = ref(null)
+  const genderOptions = ref([])
+  const seasonOptions = ref([])
 
   const router = useRouter()
   const route = useRoute()
@@ -24,6 +31,18 @@ export const useProductsStore = defineStore('products', () => {
   const debouncedBrands = useDebounce(selectedBrands, 1000)
   const debouncedMinPrice = useDebounce(selectedMin, 1000)
   const debouncedMaxPrice = useDebounce(selectedMax, 1000)
+
+  const fetchProductOptions = async () => {
+    try {
+      const { data } = await request.get('/api/products/options')
+      genderOptions.value = data.gender
+      seasonOptions.value = data.season
+    } catch (error) {
+      notificationStore.isError = true
+      notificationStore.showNotification('Error while fetching data')
+      console.error('Error while fetching data:', error)
+    }
+  }
 
   async function getProducts(sortBy = 'name', order = 'desc') {
     try {
@@ -49,6 +68,8 @@ export const useProductsStore = defineStore('products', () => {
         : undefined,
       minPrice: selectedMin.value,
       maxPrice: selectedMax.value,
+      season: selectedSeasons.value,
+      gender: selectedGender.value,
     }
 
     try {
@@ -121,5 +142,8 @@ export const useProductsStore = defineStore('products', () => {
     selectedCategories,
     selectedMin,
     selectedMax,
+    fetchProductOptions,
+    genderOptions,
+    seasonOptions,
   }
 })

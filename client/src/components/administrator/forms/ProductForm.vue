@@ -81,18 +81,6 @@ async function uploadImage(event) {
   }
 }
 
-const fetchProductOptions = async () => {
-  try {
-    const { data } = await request.get('/api/products/options')
-    productData.gender = data.gender
-    productData.season = data.season
-  } catch (error) {
-    notificationStore.isError = true
-    notificationStore.showNotification('Error while fetching data')
-    console.error('Error while fetching data:', error)
-  }
-}
-
 function removeImage(imageIndex) {
   productData.images = productData.images.filter((_, index) => index !== imageIndex)
 }
@@ -105,7 +93,9 @@ async function nestedCategories() {
   }
 }
 onMounted(async () => {
-  fetchProductOptions()
+  productStore.fetchProductOptions()
+  productData.gender = productStore.genderOptions
+  productData.season = productStore.seasonOptions
   brandStore.fetchBrands()
   nestedCategories()
   if (id) {
@@ -137,7 +127,9 @@ onMounted(async () => {
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
     >
       <div class="flex flex-col gap-1 w-full">
-        <label class="text-xl font-medium">Upload images<span class="text-red-600 px-0.5">*</span></label>
+        <label class="text-xl font-medium"
+          >Upload images<span class="text-red-600 px-0.5">*</span></label
+        >
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div
             class="w-32 md:w-36 aspect-square relative"
@@ -208,14 +200,14 @@ onMounted(async () => {
           <label>Gender<span class="text-red-600 px-0.5">*</span></label>
           <CustomSelect
             v-model:selectedOption="productData.selectedGender"
-            :options="productData.gender"
+            :options="productStore.genderOptions"
           />
         </div>
         <div class="flex flex-col w-full">
           <label>Season</label>
           <CustomSelect
             v-model:selectedOption="productData.selectedSeason"
-            :options="productData.season"
+            :options="productStore.seasonOptions"
           />
         </div>
       </div>
