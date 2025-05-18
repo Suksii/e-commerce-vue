@@ -91,6 +91,19 @@ onMounted(() => {
           />
         </div>
       </SingleFilter>
+      <SingleFilter name="Season" item="season">
+        <div
+          v-for="gender in productsStore.genderOptions"
+          :key="gender"
+          class="flex items-center gap-2"
+        >
+          <CustomCheckBox
+            v-model:selectedItem="productsStore.selectedGender"
+            :name="gender"
+            :item="gender"
+          />
+        </div>
+      </SingleFilter>
     </div>
   </div>
 </template>
