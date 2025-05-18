@@ -1,8 +1,10 @@
 import { useProductsStore } from '@/stores/products'
+import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 
-export const usePricePrange = () => {
+export const usePriceRange = () => {
   const productsStore = useProductsStore()
+  const isSmallScreen = useMediaQuery('(max-width: 768px)')
 
   const minPrice = computed(() => {
     if (productsStore.allProductsData.length === 0) return 0
@@ -21,7 +23,7 @@ export const usePricePrange = () => {
     const minValue = ((productsStore.selectedMin - min) / range) * 100
     const maxValue = ((productsStore.selectedMax - min) / range) * 100
     return {
-      background: `linear-gradient(to right, #e5e7eb ${minValue}% , #14b8a6 ${minValue}%, #14b8a6 ${maxValue}%, #e5e7eb ${maxValue}%)`,
+      background: `linear-gradient(to right, #e5e7eb ${minValue}% , ${isSmallScreen.value ? '#5eead4' : '#14b8a6'} ${minValue}%, ${isSmallScreen.value ? '#5eead4' : '#14b8a6'} ${maxValue}%, #e5e7eb ${maxValue}%)`,
     }
   })
 
@@ -29,5 +31,6 @@ export const usePricePrange = () => {
     minPrice,
     maxPrice,
     rangeBackground,
+    isSmallScreen,
   }
 }

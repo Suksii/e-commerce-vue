@@ -16,7 +16,9 @@ const handleExpand = (item) => {
 </script>
 
 <template>
-  <div class="flex justify-between items-center w-full border-b-2 border-teal-600 mb-2 p-4 md:p-0">
+  <div
+    class="flex justify-between items-center w-full md:border-b-2 md:border-teal-600 border-transparent md:mb-2 p-4 md:p-0"
+  >
     <h3 class="text-sm font-medium uppercase text-white md:text-black">{{ name }}</h3>
     <Icon
       :icon="expand[item] ? 'line-md:minus' : 'line-md:plus'"

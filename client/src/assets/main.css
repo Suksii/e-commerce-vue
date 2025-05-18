@@ -28,5 +28,93 @@
   @apply bg-gray-200 rounded-md outline-none focus:ring-2 placeholder:text-gray-500 focus:ring-teal-500 transition duration-200;
 }
 label {
-  @apply text-base font-medium
+  @apply text-base font-medium;
+}
+
+.input-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.input-range::-webkit-slider-runnable-track {
+  height: 6px;
+  background: transparent;
+  border-radius: 3px;
+}
+
+.input-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  background-color: #ffffff;
+  border: 3px solid #0d9488;
+  border-radius: 50%;
+  margin-top: -6px;
+  z-index: 3;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.2s ease,
+    background-color 0.3s ease;
+}
+
+.input-range::-webkit-slider-thumb:hover,
+.input-range::-webkit-slider-thumb:focus {
+  background-color: #f0fdfa;
+  transform: scale(1.1);
+  border-color: #0f766e;
+}
+
+.input-range::-moz-range-track {
+  height: 6px;
+  background: transparent;
+  border-radius: 3px;
+}
+
+.input-range::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  background-color: #ffffff;
+  border: 3px solid #0d9488;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.2s ease,
+    background-color 0.3s ease;
+}
+
+.input-range::-moz-range-thumb:hover,
+.input-range::-moz-range-thumb:focus {
+  background-color: #f0fdfa;
+  transform: scale(1.1);
+  border-color: #0f766e;
+}
+@media (max-width: 768px) {
+  .input-range::-webkit-slider-thumb {
+    background-color: #0f766e;
+    border: 3px solid #ffffff;
+  }
+
+  .input-range::-webkit-slider-thumb:hover,
+  .input-range::-webkit-slider-thumb:focus {
+    background-color: #115e59;
+    border-color: #e0f2f1;
+  }
+
+  .input-range::-moz-range-thumb {
+    background-color: #0f766e;
+    border: 3px solid #ffffff;
+  }
+
+  .input-range::-moz-range-thumb:hover,
+  .input-range::-moz-range-thumb:focus {
+    background-color: #115e59;
+    border-color: #e0f2f1;
+  }
 }
