@@ -9,12 +9,15 @@ const { minPrice, maxPrice } = usePriceRange()
 const resetAll = () => {
   productsStore.selectedBrands = []
   productsStore.selectedCategories = []
+  productsStore.selectedGender = []
+  productsStore.selectedSeason = []
+  ;(productsStore.selectedMin = minPrice.value), (productsStore.selectedMax = maxPrice.value)
 }
 </script>
 
 <template>
-  <div class="border-b-4 border-teal-600 h-9">
-    <div class="flex flex-wrap gap-2">
+  <div class="border-b-4 border-teal-600 min-h-9">
+    <div class="flex flex-wrap gap-2 mb-1">
       <div v-if="productsStore.selectedBrands?.length" class="flex flex-wrap gap-2">
         <p
           v-for="brand of productsStore.selectedBrands"
@@ -33,6 +36,24 @@ const resetAll = () => {
           {{ category.name }}
         </p>
       </div>
+      <div v-if="productsStore.selectedGender?.length" class="flex flex-wrap gap-2">
+        <p
+          v-for="gender of productsStore.selectedGender"
+          :key="gender"
+          class="py-1 px-3 rounded-full bg-teal-600 text-white text-sm font-medium"
+        >
+          {{ gender }}
+        </p>
+      </div>
+      <div v-if="productsStore.selectedSeason?.length" class="flex flex-wrap gap-2">
+        <p
+          v-for="season of productsStore.selectedSeason"
+          :key="season"
+          class="py-1 px-3 rounded-full bg-teal-600 text-white text-sm font-medium"
+        >
+          {{ season }}
+        </p>
+      </div>
       <p
         v-if="
           productsStore.selectedMax &&
@@ -44,7 +65,14 @@ const resetAll = () => {
         {{ productsStore.selectedMin }}€ - {{ productsStore.selectedMax }}€
       </p>
       <button
-        v-if="productsStore.selectedCategories?.length || productsStore.selectedBrands?.length"
+        v-if="
+          productsStore.selectedCategories?.length ||
+          productsStore.selectedBrands?.length ||
+          productsStore.selectedGender?.length ||
+          productsStore.selectedSeason?.length ||
+          productsStore.selectedMin !== minPrice ||
+          productsStore.selectedMax !== maxPrice
+        "
         class="flex items-center gap-2 py-1 px-3 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm cursor-pointer transition"
         @click="resetAll"
       >

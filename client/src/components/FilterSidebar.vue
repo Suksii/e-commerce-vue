@@ -91,7 +91,7 @@ onMounted(() => {
           />
         </div>
       </SingleFilter>
-      <SingleFilter name="Season" item="season">
+      <SingleFilter name="Gender" item="gender">
         <div
           v-for="gender in productsStore.genderOptions"
           :key="gender"

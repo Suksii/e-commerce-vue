@@ -13,7 +13,7 @@ const { isSmallScreen } = usePriceRange()
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 py-20 w-full relative">
+  <div class="flex flex-col gap-4 py-6 w-full relative">
     <div v-if="isSmallScreen">
       <FilterContent v-model:showFilters="showFilters" />
     </div>

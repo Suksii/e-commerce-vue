@@ -65,7 +65,7 @@ const { validateMin, validateMax } = useValidation()
         </div>
       </SingleFilter>
       <SingleFilter name="Price" item="price">
-        <div class="flex flex-col w-full px-2 py-8">
+        <div class="flex flex-col w-full px-2 pt-2 pb-4">
           <div class="relative w-full">
             <input
               type="range"
@@ -86,7 +86,7 @@ const { validateMin, validateMax } = useValidation()
             />
           </div>
         </div>
-        <p class="font-medium text-white">
+        <p class="font-medium text-white py-2">
           {{ productsStore.selectedMin }}€ - {{ productsStore.selectedMax }}€
         </p>
       </SingleFilter>
@@ -103,7 +103,7 @@ const { validateMin, validateMax } = useValidation()
           />
         </div>
       </SingleFilter>
-      <SingleFilter name="Season" item="season">
+      <SingleFilter name="Gender" item="gender">
         <div
           v-for="gender in productsStore.genderOptions"
           :key="gender"
