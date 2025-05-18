@@ -5,11 +5,19 @@ import Filters from '@/components/Filters.vue'
 import FilterSidebar from '@/components/FilterSidebar.vue'
 import { usePriceRange } from '@/composables/usePriceRange'
 import { useProductsStore } from '@/stores/products'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const productsStore = useProductsStore()
 const showFilters = ref(false)
 const { isSmallScreen } = usePriceRange()
+
+watch(showFilters, (show) => {
+  if (show) {
+    document.body.classList.add('overflow-y-hidden')
+  } else {
+    document.body.classList.remove('overflow-y-hidden')
+  }
+})
 </script>
 
 <template>
