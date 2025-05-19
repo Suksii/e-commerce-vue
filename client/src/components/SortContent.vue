@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import CustomRadio from './CustomRadio.vue'
 
 const sortOptions = [
   { value: 'price-asc', label: 'Price: Low to High' },
@@ -13,13 +14,6 @@ const selectedOption = ref(null)
 
 <template>
   <div class="flex flex-col gap-1 bg-teal-600 w-fit px-4 py-2 rounded-md">
-    <div
-      v-for="option in sortOptions"
-      :key="value"
-      class="flex items-center gap-4 justify-between w-64"
-    >
-      <p class="text-sm text-white">{{ option.label }}</p>
-      <input type="radio" v-model="selectedOption" />
-    </div>
+    <CustomRadio v-for="option in sortOptions" :label="option.label" />
   </div>
 </template>
