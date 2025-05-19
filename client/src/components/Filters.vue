@@ -89,7 +89,7 @@ const resetAll = () => {
 
       <div
         @click="showSortModal = !showSortModal"
-        class="relative flex items-center gap-2 justify-self-end ml-4 mr-12 px-4 border-2 border-teal-600 rounded-full cursor-pointer"
+        class="hidden relative md:flex items-center gap-2 justify-self-end ml-4 mr-12 px-4 border-2 border-teal-600 rounded-full cursor-pointer"
       >
         Sort by
         <Icon
@@ -102,7 +102,7 @@ const resetAll = () => {
       </div>
       <Modal
         v-if="showSortModal"
-        :custom-class="'bg-teal-700 fixed lg:absolute top-10 right-1/2 lg:right-0 translate-x-1/2 lg:translate-x-0'"
+        :custom-class="'hidden md:block bg-teal-700 fixed md:absolute top-10 right-1/2 md:right-0 translate-x-1/2 md:translate-x-0'"
       >
         <SortContent />
       </Modal>
