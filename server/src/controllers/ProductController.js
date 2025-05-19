@@ -106,7 +106,10 @@ export const getSearchedProduct = async (req, res) => {
     brand,
     minPrice,
     maxPrice,
+    sortBy = "name",
+    order,
   } = req.query;
+  const sortOrder = order === "desc" ? -1 : 1;
 
   try {
     const filter = {};
@@ -131,7 +134,7 @@ export const getSearchedProduct = async (req, res) => {
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
-    const products = await Product.find(filter).sort();
+    const products = await Product.find(filter).sort({ [sortBy]: sortOrder });
 
     res.status(200).json(products);
   } catch (error) {

@@ -1,11 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 
-defineProps({
+const props = defineProps({
   label: String,
+  modelValue: String,
+  value: String,
 })
 
-const selected = ref(false)
+const emit = defineEmits(['update:modelValue'])
+
+const isChecked = computed(() => props.modelValue === props.value)
 </script>
 
 <template>
@@ -15,21 +19,18 @@ const selected = ref(false)
     <input
       type="radio"
       class="sr-only"
-      @click="selected = !selected"
-      :aria-checked="selected"
+      :aria-checked="isChecked"
       role="radio"
+      :checked="isChecked"
+      @change="emit('update:modelValue', props.value)"
     />
 
     <div
       class="relative w-5 h-5 rounded-full border-2 flex items-center justify-center transition duration-300 ease-in-out"
-      :class="
-        selected
-          ? 'border-teal-200'
-          : 'border-white/90 hover:border-teal-200'
-      "
+      :class="isChecked ? 'border-teal-200' : 'border-white/90 hover:border-teal-200'"
     >
       <div
-        v-if="selected"
+        v-if="isChecked"
         class="w-3 h-3 bg-teal-200 rounded-full transition-all duration-300"
       ></div>
     </div>

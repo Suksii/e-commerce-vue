@@ -89,7 +89,7 @@ const resetAll = () => {
 
       <div
         @click="showSortModal = !showSortModal"
-        class="hidden relative md:flex items-center gap-2 justify-self-end ml-4 mr-12 px-4 border-2 border-teal-600 rounded-full cursor-pointer"
+        class="hidden relative md:flex items-center gap-2 ml-4 mr-12 px-4 border-2 border-teal-600 rounded-full cursor-pointer"
       >
         Sort by
         <Icon

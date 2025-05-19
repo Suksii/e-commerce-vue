@@ -1,10 +1,10 @@
 import { request } from '@/api'
 import { useDebounce } from '@/composables/useDebounce'
 import { defineStore } from 'pinia'
+import { useNotificationStore } from './notification'
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import qs from 'qs'
-import { useNotificationStore } from './notification'
 
 export const useProductsStore = defineStore('products', () => {
   const notificationStore = useNotificationStore()
@@ -23,8 +23,8 @@ export const useProductsStore = defineStore('products', () => {
   const genderOptions = ref([])
   const seasonOptions = ref([])
 
-  const sortBy = ref('')
-  const order = ref('')
+  const selectedSortBy = ref('name')
+  const selectedOrder = ref('desc')
 
   const router = useRouter()
   const route = useRoute()
@@ -75,6 +75,8 @@ export const useProductsStore = defineStore('products', () => {
       maxPrice: selectedMax.value,
       season: selectedSeason.value,
       gender: selectedGender.value,
+      sortBy: selectedSortBy.value,
+      order: selectedOrder.value,
     }
 
     try {
@@ -110,6 +112,8 @@ export const useProductsStore = defineStore('products', () => {
       debouncedMaxPrice,
       debouncedGender,
       debouncedSeason,
+      selectedSortBy,
+      selectedOrder,
     ],
     async ([
       newSearch,
@@ -119,6 +123,8 @@ export const useProductsStore = defineStore('products', () => {
       newMaxPrice,
       newGender,
       newSeason,
+      newSortBy,
+      newOrder,
     ]) => {
       const hasSearch = newSearch && newSearch.length >= 2
       const hasFilters =
@@ -126,7 +132,9 @@ export const useProductsStore = defineStore('products', () => {
         (newCategories && newCategories.length > 0) ||
         (newMinPrice !== null && newMaxPrice !== null) ||
         (newSeason && newSeason.length > 0) ||
-        (newGender && newGender.length > 0)
+        (newGender && newGender.length > 0) ||
+        newSortBy ||
+        newOrder
       if (hasSearch || hasFilters) {
         const query = {
           ...(hasSearch ? { name: newSearch } : {}),
@@ -171,5 +179,7 @@ export const useProductsStore = defineStore('products', () => {
     fetchProductOptions,
     genderOptions,
     seasonOptions,
+    selectedSortBy,
+    selectedOrder,
   }
 })
