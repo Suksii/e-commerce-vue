@@ -98,8 +98,15 @@ export const updateProduct = async (req, res) => {
 };
 
 export const getSearchedProduct = async (req, res) => {
-  const { name, gender, season, category, brand, minPrice, maxPrice } =
-    req.query;
+  const {
+    name,
+    gender,
+    season,
+    category,
+    brand,
+    minPrice,
+    maxPrice,
+  } = req.query;
 
   try {
     const filter = {};
@@ -124,7 +131,7 @@ export const getSearchedProduct = async (req, res) => {
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
-    const products = await Product.find(filter);
+    const products = await Product.find(filter).sort();
 
     res.status(200).json(products);
   } catch (error) {

@@ -23,6 +23,9 @@ export const useProductsStore = defineStore('products', () => {
   const genderOptions = ref([])
   const seasonOptions = ref([])
 
+  const sortBy = ref('')
+  const order = ref('')
+
   const router = useRouter()
   const route = useRoute()
 

@@ -22,7 +22,7 @@ const { validateMin, validateMax } = useValidation()
 
 <template>
   <div
-    class="bg-teal-700 fixed inset-0 z-30 transition duration-300 transform overflow-y-auto"
+    class="bg-teal-700 fixed inset-0 z-30 transition duration-300 transform overflow-y-auto scrollbar-none scrollbar-hidden"
     :class="showFilters ? 'translate-x-0' : 'translate-x-full'"
   >
     <div class="bg-white flex items-center justify-between p-4">

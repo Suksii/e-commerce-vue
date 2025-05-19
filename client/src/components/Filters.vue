@@ -2,6 +2,7 @@
 import { usePriceRange } from '@/composables/usePriceRange'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
+import SortContent from './SortContent.vue'
 
 const productsStore = useProductsStore()
 const { minPrice, maxPrice } = usePriceRange()
@@ -80,5 +81,6 @@ const resetAll = () => {
         Resset All
       </button>
     </div>
+    <SortContent />
   </div>
 </template>
