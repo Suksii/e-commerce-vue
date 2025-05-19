@@ -13,7 +13,7 @@ const selectedOption = ref(null)
 </script>
 
 <template>
-  <div class="flex flex-col gap-1 bg-teal-600 w-fit px-4 py-2 rounded-md">
+  <div class="flex flex-col gap-2 w-full rounded-md">
     <CustomRadio v-for="option in sortOptions" :label="option.label" />
   </div>
 </template>

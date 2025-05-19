@@ -24,13 +24,13 @@ const selected = ref(false)
       class="relative w-5 h-5 rounded-full border-2 flex items-center justify-center transition duration-300 ease-in-out"
       :class="
         selected
-          ? 'border-teal-300'
-          : 'border-white/90 hover:border-teal-300'
+          ? 'border-teal-200'
+          : 'border-white/90 hover:border-teal-200'
       "
     >
       <div
         v-if="selected"
-        class="w-3 h-3 bg-teal-300 rounded-full transition-all duration-300"
+        class="w-3 h-3 bg-teal-200 rounded-full transition-all duration-300"
       ></div>
     </div>
   </label>
