@@ -49,7 +49,7 @@ function prev() {
       <div class="relative flex items-center mx-auto overflow-x-hidden">
         <div
           v-for="brand of brandsStore.brandData"
-          class="flex justify-center transition duration-1000 shrink-0 w-[50%] md:w-[33%] xl:w-[20%] cursor-pointer"
+          class="flex justify-center transition duration-1000 shrink-0 cursor-pointer"
           :style="{
             transform: `translateX(-${currentBrandIndex * 100}%)`,
             width: `${100 / visibleBrands}%`,

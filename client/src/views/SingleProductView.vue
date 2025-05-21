@@ -1,4 +1,5 @@
 <script setup>
+import FullScreenImages from '@/components/FullScreenImages.vue'
 import { useBrandStore } from '@/stores/brands'
 import { useCartStore } from '@/stores/carts'
 import { useProductsStore } from '@/stores/products'
@@ -9,6 +10,8 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const baseImgUrl = 'http://localhost:3000/uploads/'
 const quantity = ref(1)
+const showFullScreen = ref(false)
+
 const cartStore = useCartStore()
 const productStore = useProductsStore()
 const brandStore = useBrandStore()
@@ -54,10 +57,17 @@ function decreaseQuantity() {
             :key="productStore.selectedImage"
             :src="baseImgUrl + 'products/' + productStore.selectedImage"
             :alt="productStore.selectedImage"
-            class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
+            class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300 cursor-pointer"
+            @click="showFullScreen = true"
           />
         </Transition>
       </div>
+      <FullScreenImages
+        v-if="showFullScreen"
+        v-model:showFullScreen="showFullScreen"
+        :data="productStore.singleProduct.images"
+        :showFullScreen="showFullScreen"
+      />
       <div class="grid grid-cols-4 gap-2 pt-2">
         <div
           v-for="image of productStore.singleProduct.images"

@@ -10,8 +10,6 @@ const sortOptions = [
   { value: 'price-desc', label: 'Price: High to Low' },
   { value: 'name-asc', label: 'Name: A-Z' },
   { value: 'name-desc', label: 'Name: Z-A' },
-  { value: 'gender-desc', label: 'Gender: Z-A' },
-  { value: 'gender-asc', label: 'Gender: A-Z' },
   { value: 'season-desc', label: 'Season: Z-A' },
   { value: 'season-asc', label: 'Season: A-Z' },
 ]
