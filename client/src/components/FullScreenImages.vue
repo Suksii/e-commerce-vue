@@ -43,6 +43,16 @@ const next = () => {
     >
       <Icon icon="streamline:delete-1-solid" width="14" height="14" />
     </button>
+    <div class="hidden md:flex gap-2 absolute bottom-0 left-0 m-12">
+      <div
+        v-for="(image, index) in props.data"
+        :key="image"
+        @click="currentImageIndex = index"
+        class="shrink-0 w-24 h-24 border border-teal-600/20 rounded-md cursor-pointer"
+      >
+        <img :src="baseImgUrl + 'products/' + image" :alt="image" class="object-cover w-full" />
+      </div>
+    </div>
     <div class="absolute bottom-0 right-0 flex gap-2 m-12 items-center">
       <button @click="prev()" class="p-3 bg-teal-500 rounded-full cursor-pointer">
         <Icon icon="ep:arrow-left" width="20" height="20" class="text-white" />
