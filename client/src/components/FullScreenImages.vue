@@ -48,10 +48,21 @@ const next = () => {
         v-for="(image, index) in props.data"
         :key="image"
         @click="currentImageIndex = index"
-        class="shrink-0 w-24 h-24 border border-teal-600/20 rounded-md cursor-pointer"
+        class="shrink-0 w-24 h-24 border-teal-600/20 rounded-md cursor-pointer"
+        :class="
+          currentImageIndex === index ? 'border-4 border-teal-700' : 'border border-teal-600/20'
+        "
       >
         <img :src="baseImgUrl + 'products/' + image" :alt="image" class="object-cover w-full" />
       </div>
+    </div>
+    <div class="absolute left-0 top-0 flex items-center gap-2 m-4">
+      <button class="p-3 bg-teal-500 rounded-full cursor-pointer">
+        <Icon icon="lucide:minus" width="24" height="24" class="text-white" />
+      </button>
+      <button class="p-3 bg-teal-500 rounded-full cursor-pointer">
+        <Icon icon="lucide:plus" width="24" height="24" class="text-white" />
+      </button>
     </div>
     <div class="absolute bottom-0 right-0 flex gap-2 m-12 items-center">
       <button @click="prev()" class="p-3 bg-teal-500 rounded-full cursor-pointer">
