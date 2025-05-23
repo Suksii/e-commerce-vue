@@ -5,14 +5,28 @@ import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useNotificationStore } from '@/stores/notification'
 import { request } from '@/api'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as zod from 'zod'
+import { useField, useForm } from 'vee-validate'
 
 const router = useRouter()
 const isPasswordVisible = ref(false)
-const username = ref('')
-const password = ref('')
 const notificationStore = useNotificationStore()
 
-async function handleLogin() {
+const loginSchema = zod.object({
+  username: zod.string().min(1, { message: 'Username is required' }),
+  password: zod
+    .string()
+    .min(1, { message: 'Password is required' })
+    .min(6, { message: 'Password must be at least 6 letters' }),
+})
+
+const { errors, handleSubmit } = useForm({ validationSchema: toTypedSchema(loginSchema) })
+
+const { value: username } = useField('username')
+const { value: password } = useField('password')
+
+const handleLogin = handleSubmit(async () => {
   try {
     const response = await request.post('/api/users/login', {
       username: username.value,
@@ -27,7 +41,7 @@ async function handleLogin() {
     notificationStore.showNotification(error.response.data.message || 'Login failed')
     console.error('Login error', error.response.data.message)
   }
-}
+})
 </script>
 
 <template>
@@ -49,27 +63,37 @@ async function handleLogin() {
           class="flex flex-col items-center justify-center gap-4 w-full"
           @submit.prevent="handleLogin"
         >
-          <input
-            type="text"
-            v-model="username"
-            placeholder="Type username"
-            class="py-3 px-4 w-full custom-input"
-          />
-          <div class="relative w-full">
+          <div class="w-full">
             <input
-              :type="isPasswordVisible ? 'text' : 'password'"
-              v-model="password"
-              placeholder="Type password"
-              class="py-3 px-4 w-full custom-input inset-0"
+              type="text"
+              v-model="username"
+              placeholder="Type username"
+              class="py-3 px-4 w-full custom-input"
             />
-            <Icon
-              :icon="isPasswordVisible ? 'mdi:eye' : 'mdi:eye-off'"
-              width="24"
-              height="24"
-              class="absolute top-1/2 -translate-y-1/2 right-4 cursor-pointer text-gray-500"
-              @click="isPasswordVisible = !isPasswordVisible"
-              v-if="password"
-            />
+            <p v-if="errors.username" class="text-red-500 text-sm mt-1">
+              {{ errors.username }}
+            </p>
+          </div>
+          <div class="w-full">
+            <div class="relative w-full">
+              <input
+                :type="isPasswordVisible ? 'text' : 'password'"
+                v-model="password"
+                placeholder="Type password"
+                class="py-3 px-4 w-full custom-input inset-0"
+              />
+              <Icon
+                :icon="isPasswordVisible ? 'mdi:eye' : 'mdi:eye-off'"
+                width="24"
+                height="24"
+                class="absolute top-1/2 -translate-y-1/2 right-4 cursor-pointer text-gray-500"
+                @click="isPasswordVisible = !isPasswordVisible"
+                v-if="password"
+              />
+            </div>
+            <p v-if="errors.password" class="text-red-500 text-sm mt-1">
+              {{ errors.password }}
+            </p>
           </div>
           <button class="register-button group">
             <span class=""></span>
