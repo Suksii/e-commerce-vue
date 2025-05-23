@@ -10,18 +10,34 @@ const props = defineProps({
 const emit = defineEmits(['update:showFullScreen'])
 
 const currentImageIndex = ref(0)
+const scale = ref(1)
 const baseImgUrl = 'http://localhost:3000/uploads/'
 
 const prev = () => {
+  scale.value = 1
   currentImageIndex.value > 0
     ? currentImageIndex.value--
     : (currentImageIndex.value = props.data.length - 1)
 }
 
 const next = () => {
+  scale.value = 1
   currentImageIndex.value < props.data.length - 1
     ? currentImageIndex.value++
     : (currentImageIndex.value = 0)
+}
+
+const showSelectedImage = (imgIndex) => {
+  scale.value = 1
+  currentImageIndex.value = imgIndex
+}
+
+const zoomOut = () => {
+  if (scale.value > 0.5) scale.value -= 0.1
+}
+
+const zoomIn = () => {
+  if (scale.value < 3) scale.value += 0.1
 }
 </script>
 
@@ -34,20 +50,25 @@ const next = () => {
         :style="{ transform: `translateX(-${currentImageIndex * 100}%)` }"
         :key="index"
       >
-        <img :src="baseImgUrl + 'products/' + image" :alt="image" class="w-fit object-cover" />
+        <img
+          :src="baseImgUrl + 'products/' + image"
+          :alt="image"
+          class="w-fit h-full object-cover transform transition-transform"
+          :style="{ transform: `scale(${scale})` }"
+        />
       </div>
     </div>
     <button
       @click="emit('update:showFullScreen', false)"
-      class="absolute top-0 right-0 p-3 bg-teal-500 text-white rounded-full m-4 cursor-pointer"
+      class="fixed top-0 right-0 p-3 bg-teal-500 text-white rounded-full m-4 cursor-pointer"
     >
       <Icon icon="streamline:delete-1-solid" width="14" height="14" />
     </button>
-    <div class="hidden md:flex gap-2 absolute bottom-0 left-0 m-12">
+    <div class="hidden md:flex gap-2 fixed bottom-0 left-0 m-12">
       <div
         v-for="(image, index) in props.data"
         :key="image"
-        @click="currentImageIndex = index"
+        @click="showSelectedImage(index)"
         class="shrink-0 w-24 h-24 border-teal-600/20 rounded-md cursor-pointer"
         :class="
           currentImageIndex === index ? 'border-4 border-teal-700' : 'border border-teal-600/20'
@@ -56,15 +77,15 @@ const next = () => {
         <img :src="baseImgUrl + 'products/' + image" :alt="image" class="object-cover w-full" />
       </div>
     </div>
-    <div class="absolute left-0 top-0 flex items-center gap-2 m-4">
-      <button class="p-3 bg-teal-500 rounded-full cursor-pointer">
-        <Icon icon="lucide:minus" width="24" height="24" class="text-white" />
+    <div class="hidden md:flex items-center gap-2 fixed left-0 top-0 m-4">
+      <button @click="zoomOut" class="p-3 bg-teal-500 rounded-full cursor-pointer">
+        <Icon icon="lucide:minus" width="20" height="20" class="text-white" />
       </button>
-      <button class="p-3 bg-teal-500 rounded-full cursor-pointer">
-        <Icon icon="lucide:plus" width="24" height="24" class="text-white" />
+      <button @click="zoomIn" class="p-3 bg-teal-500 rounded-full cursor-pointer">
+        <Icon icon="lucide:plus" width="20" height="20" class="text-white" />
       </button>
     </div>
-    <div class="absolute bottom-0 right-0 flex gap-2 m-12 items-center">
+    <div class="fixed bottom-0 right-0 flex gap-2 m-12 items-center">
       <button @click="prev()" class="p-3 bg-teal-500 rounded-full cursor-pointer">
         <Icon icon="ep:arrow-left" width="20" height="20" class="text-white" />
       </button>
