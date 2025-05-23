@@ -4,15 +4,23 @@ import onlineShoping from '@/assets/onlineShoping.jpg'
 import { ref } from 'vue'
 import { useNotificationStore } from '@/stores/notification'
 import { request } from '@/api'
+import { useValidation } from '@/composables/useValidation'
+import { useField, useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
 
 const router = useRouter()
-const username = ref('')
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
 const notificationStore = useNotificationStore()
 
-async function handleRegister() {
+const { registerSchema } = useValidation()
+
+const { errors, handleSubmit } = useForm({ validationSchema: toTypedSchema(registerSchema) })
+
+const { value: email, errorMessage: emailError } = useField('email')
+const { value: username, errorMessage: usernameError } = useField('username')
+const { value: password, errorMessage: passwordError } = useField('password')
+const { value: confirmPassword, errorMessage: confirmPasswordError } = useField('confirmPassword')
+
+const handleRegister = handleSubmit(async () => {
   try {
     const response = await request.post('/api/users/register', {
       username: username.value,
@@ -28,7 +36,7 @@ async function handleRegister() {
     notificationStore.isError = true
     console.error('Registration error:', error.response.data.message)
   }
-}
+})
 </script>
 
 <template>
@@ -50,30 +58,50 @@ async function handleRegister() {
           class="flex flex-col items-center justify-center gap-4 w-full"
           @submit.prevent="handleRegister"
         >
-          <input
-            type="text"
-            placeholder="Type username"
-            v-model="username"
-            class="py-3 px-4 w-full custom-input"
-          />
-          <input
-            type="email"
-            placeholder="Type email"
-            v-model="email"
-            class="py-3 px-4 w-full custom-input"
-          />
-          <input
-            type="password"
-            placeholder="Type password"
-            v-model="password"
-            class="py-3 px-4 w-full custom-input"
-          />
-          <input
-            type="password"
-            v-model="confirmPassword"
-            placeholder="Confirm password"
-            class="py-3 px-4 w-full custom-input"
-          />
+          <div class="w-full">
+            <input
+              type="text"
+              placeholder="Type username"
+              v-model="username"
+              class="py-3 px-4 w-full custom-input"
+            />
+            <p v-if="usernameError" class="text-red-500 text-sm mt-1">
+              {{ usernameError }}
+            </p>
+          </div>
+          <div class="w-full">
+            <input
+              type="email"
+              placeholder="Type email"
+              v-model="email"
+              class="py-3 px-4 w-full custom-input"
+            />
+            <p v-if="emailError" class="text-red-500 text-sm mt-1">
+              {{ emailError }}
+            </p>
+          </div>
+          <div class="w-full">
+            <input
+              type="password"
+              placeholder="Type password"
+              v-model="password"
+              class="py-3 px-4 w-full custom-input"
+            />
+            <p v-if="passwordError" class="text-red-500 text-sm mt-1">
+              {{ passwordError }}
+            </p>
+          </div>
+          <div class="w-full">
+            <input
+              type="password"
+              v-model="confirmPassword"
+              placeholder="Confirm password"
+              class="py-3 px-4 w-full custom-input"
+            />
+            <p v-if="confirmPasswordError" class="text-red-500 text-sm mt-1">
+              {{ confirmPasswordError }}
+            </p>
+          </div>
           <button class="register-button group">
             <span class=""></span>
             <span class=""></span>

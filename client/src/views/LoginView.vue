@@ -17,8 +17,8 @@ const { loginSchema } = useValidation()
 
 const { errors, handleSubmit } = useForm({ validationSchema: toTypedSchema(loginSchema) })
 
-const { value: username } = useField('username')
-const { value: password } = useField('password')
+const { value: username, errorMessage: usernameError } = useField('username')
+const { value: password, errorMessage: passwordError } = useField('password')
 
 const handleLogin = handleSubmit(async () => {
   try {
@@ -64,8 +64,8 @@ const handleLogin = handleSubmit(async () => {
               placeholder="Type username"
               class="py-3 px-4 w-full custom-input"
             />
-            <p v-if="errors.username" class="text-red-500 text-sm mt-1">
-              {{ errors.username }}
+            <p v-if="usernameError" class="text-red-500 text-sm mt-1">
+              {{ usernameError }}
             </p>
           </div>
           <div class="w-full">
@@ -85,8 +85,8 @@ const handleLogin = handleSubmit(async () => {
                 v-if="password"
               />
             </div>
-            <p v-if="errors.password" class="text-red-500 text-sm mt-1">
-              {{ errors.password }}
+            <p v-if="passwordError" class="text-red-500 text-sm mt-1">
+              {{ passwordError }}
             </p>
           </div>
           <button class="register-button group">
