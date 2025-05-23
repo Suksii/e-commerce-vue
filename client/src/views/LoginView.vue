@@ -1,25 +1,19 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import cartImage from '@/assets/cartImage.jpg'
 import { ref } from 'vue'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useField, useForm } from 'vee-validate'
 import { Icon } from '@iconify/vue'
 import { useNotificationStore } from '@/stores/notification'
 import { request } from '@/api'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as zod from 'zod'
-import { useField, useForm } from 'vee-validate'
+import cartImage from '@/assets/cartImage.jpg'
+import { useValidation } from '@/composables/useValidation'
 
 const router = useRouter()
 const isPasswordVisible = ref(false)
 const notificationStore = useNotificationStore()
 
-const loginSchema = zod.object({
-  username: zod.string().min(1, { message: 'Username is required' }),
-  password: zod
-    .string()
-    .min(1, { message: 'Password is required' })
-    .min(6, { message: 'Password must be at least 6 letters' }),
-})
+const { loginSchema } = useValidation()
 
 const { errors, handleSubmit } = useForm({ validationSchema: toTypedSchema(loginSchema) })
 

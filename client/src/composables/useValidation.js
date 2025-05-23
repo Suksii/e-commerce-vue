@@ -1,7 +1,16 @@
 import { useProductsStore } from '@/stores/products'
+import * as zod from 'zod'
 
 export const useValidation = () => {
   const productsStore = useProductsStore()
+
+  const loginSchema = zod.object({
+    username: zod.string().min(1, { message: 'Username is required' }),
+    password: zod
+      .string()
+      .min(1, { message: 'Password is required' })
+      .min(6, { message: 'Password must be at least 6 letters' }),
+  })
 
   const validateMin = (e) => {
     const value = +e.target.value
@@ -19,5 +28,6 @@ export const useValidation = () => {
       productsStore.selectedMax = productsStore.selectedMin + 10
     }
   }
-  return { validateMin, validateMax }
+
+  return { loginSchema, validateMin, validateMax }
 }
