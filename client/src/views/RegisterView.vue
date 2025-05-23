@@ -1,12 +1,12 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import onlineShoping from '@/assets/onlineShoping.jpg'
-import { ref } from 'vue'
 import { useNotificationStore } from '@/stores/notification'
 import { request } from '@/api'
 import { useValidation } from '@/composables/useValidation'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
+import FormError from '@/components/FormError.vue'
 
 const router = useRouter()
 const notificationStore = useNotificationStore()
@@ -65,9 +65,7 @@ const handleRegister = handleSubmit(async () => {
               v-model="username"
               class="py-3 px-4 w-full custom-input"
             />
-            <p v-if="usernameError" class="text-red-500 text-sm mt-1">
-              {{ usernameError }}
-            </p>
+            <FormError :error="usernameError" />
           </div>
           <div class="w-full">
             <input
@@ -76,9 +74,7 @@ const handleRegister = handleSubmit(async () => {
               v-model="email"
               class="py-3 px-4 w-full custom-input"
             />
-            <p v-if="emailError" class="text-red-500 text-sm mt-1">
-              {{ emailError }}
-            </p>
+            <FormError :error="emailError" />
           </div>
           <div class="w-full">
             <input
@@ -87,9 +83,7 @@ const handleRegister = handleSubmit(async () => {
               v-model="password"
               class="py-3 px-4 w-full custom-input"
             />
-            <p v-if="passwordError" class="text-red-500 text-sm mt-1">
-              {{ passwordError }}
-            </p>
+            <FormError :error="passwordError" />
           </div>
           <div class="w-full">
             <input
@@ -98,9 +92,7 @@ const handleRegister = handleSubmit(async () => {
               placeholder="Confirm password"
               class="py-3 px-4 w-full custom-input"
             />
-            <p v-if="confirmPasswordError" class="text-red-500 text-sm mt-1">
-              {{ confirmPasswordError }}
-            </p>
+            <FormError :error="confirmPasswordError" />
           </div>
           <button class="register-button group">
             <span class=""></span>

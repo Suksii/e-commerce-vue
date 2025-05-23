@@ -8,6 +8,7 @@ import { useNotificationStore } from '@/stores/notification'
 import { request } from '@/api'
 import cartImage from '@/assets/cartImage.jpg'
 import { useValidation } from '@/composables/useValidation'
+import FormError from '@/components/FormError.vue'
 
 const router = useRouter()
 const isPasswordVisible = ref(false)
@@ -64,9 +65,7 @@ const handleLogin = handleSubmit(async () => {
               placeholder="Type username"
               class="py-3 px-4 w-full custom-input"
             />
-            <p v-if="usernameError" class="text-red-500 text-sm mt-1">
-              {{ usernameError }}
-            </p>
+            <FormError :error="usernameError" />
           </div>
           <div class="w-full">
             <div class="relative w-full">
@@ -85,9 +84,7 @@ const handleLogin = handleSubmit(async () => {
                 v-if="password"
               />
             </div>
-            <p v-if="passwordError" class="text-red-500 text-sm mt-1">
-              {{ passwordError }}
-            </p>
+            <FormError :error="passwordError" />
           </div>
           <button class="register-button group">
             <span class=""></span>
