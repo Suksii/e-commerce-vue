@@ -5,7 +5,11 @@ const BrandModel = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: [String, null],
+  image: {
+    type: String,
+    required: false,
+    default: null,
+  },
 });
 
 export const Brand = mongoose.model("Brand", BrandModel);

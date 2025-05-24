@@ -31,7 +31,8 @@ export const useValidation = () => {
   })
 
   const brandSchema = zod.object({
-    name: zod.string().min(1, { message: 'Brand name is required' }),
+    name: zod.string().min(2, { message: 'Brand name is required' }),
+    image: zod.string().min(2, { message: 'Brand image is required' }),
   })
 
   const validateMin = (e) => {

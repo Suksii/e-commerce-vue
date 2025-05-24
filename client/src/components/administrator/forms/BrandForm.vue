@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { reactive, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { useBrandStore } from '@/stores/brands'
@@ -16,11 +16,14 @@ const { id: brandId, cancel: brandCancel } = useEditActions()
 const { brandSchema } = useValidation()
 
 const imageRef = ref(null)
-const image = ref('')
 
-const { errors, handleSubmit } = useForm({ validationSchema: toTypedSchema(brandSchema) })
+const { errors, handleSubmit, submitCount } = useForm({
+  validationSchema: toTypedSchema(brandSchema),
+  validateOnMount: false,
+})
 
 const { value: name, errorMessage: nameError } = useField('name')
+const { value: image, errorMessage: imageError } = useField('image')
 
 function resetForm() {
   name.value = ''
@@ -37,7 +40,7 @@ async function uploadImage(event) {
       },
     })
 
-    image = data[1]
+    image.value = data[1]
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification('Image upload failed')
@@ -45,7 +48,7 @@ async function uploadImage(event) {
   }
 }
 
-async function handleBrand() {
+const handleBrand = handleSubmit(async () => {
   try {
     const response = brandId.value
       ? await request.put('/api/brand/update/' + brandId.value, {
@@ -58,9 +61,8 @@ async function handleBrand() {
         })
     notificationStore.isError = false
     notificationStore.showNotification(
-      response.data.message || brandId.value
-        ? 'Brand edited successfully'
-        : 'Brand successfully added',
+      response.data.message ||
+        (brandId.value ? 'Brand edited successfully' : 'Brand successfully added'),
     )
     brandStore.fetchBrands()
     resetForm()
@@ -70,7 +72,7 @@ async function handleBrand() {
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
   }
-}
+})
 
 watch(
   brandId,
@@ -97,14 +99,15 @@ watch(
     </h2>
     <form
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
-      @submit.prevent="handleSubmit(handleBrand)"
+      @submit.prevent="handleBrand"
     >
       <div class="flex flex-col gap-1 w-full">
-        <label>Upload image</label>
+        <label>Upload image<span class="text-red-600 px-0.5">*</span></label>
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div v-if="image" class="w-32 md:w-36 aspect-square relative">
             <img
               :src="'http://localhost:3000/uploads/brands/' + image"
+              :alt="image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
           </div>
@@ -123,14 +126,20 @@ watch(
             </div>
           </div>
         </div>
+        <FormError v-if="submitCount > 0" :error="imageError" />
       </div>
       <div class="flex flex-col w-full">
         <label>Name<span class="text-red-600 px-0.5">*</span></label>
         <input v-model="name" class="custom-input w-full px-3 py-2.5" />
-        <FormError :error="nameError" />
+        <FormError v-if="submitCount > 0" :error="nameError" />
       </div>
       <div class="flex justify-between gap-2 w-full transition-all">
-        <button v-if="brandId" @click="brandCancel" class="min-w-42 w-full my-4 h-11 save-button">
+        <button
+          v-if="brandId"
+          type="button"
+          @click="brandCancel"
+          class="min-w-42 w-full my-4 h-11 save-button"
+        >
           Cancel
         </button>
         <button class="min-w-42 w-full my-4 h-11 save-button">
