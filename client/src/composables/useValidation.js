@@ -35,6 +35,19 @@ export const useValidation = () => {
     image: zod.string().min(2, { message: 'Brand image is required' }),
   })
 
+  const productSchema = zod.object({
+    name: zod.string().min(1, { message: 'Product name is required' }),
+    price: zod.number().min(1, { message: 'Product price is required' }),
+    images: zod
+      .array(zod.string())
+      .min(1, { message: 'At least one image is required' })
+      .max(5, { message: 'You can upload a maximum of 5 images' }),
+    category: zod.string().min(1, { message: 'Product category is required' }),
+    gender: zod.string().min(1, { message: 'Product gender is required' }),
+    description: zod.string().min(1, { message: 'Product description is required' }),
+    brand: zod.string().min(1, { message: 'Product brand is required' }),
+  })
+
   const validateMin = (e) => {
     const value = +e.target.value
     if (value + 10 <= productsStore.selectedMax) {
@@ -52,5 +65,5 @@ export const useValidation = () => {
     }
   }
 
-  return { loginSchema, registerSchema, brandSchema, validateMin, validateMax }
+  return { loginSchema, registerSchema, brandSchema, productSchema, validateMin, validateMax }
 }

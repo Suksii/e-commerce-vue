@@ -1,64 +1,76 @@
 <script setup>
 import { request } from '@/api'
 import { Icon } from '@iconify/vue'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import { useBrandStore } from '@/stores/brands.js'
 import { useNotificationStore } from '@/stores/notification'
 import { useProductsStore } from '@/stores/products'
 import CustomSelect from '@/components/CustomSelect.vue'
+import { useValidation } from '@/composables/useValidation'
+import { useField, useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import FormError from '@/components/FormError.vue'
 
 const route = useRoute()
 const notificationStore = useNotificationStore()
 const brandStore = useBrandStore()
+const { productSchema } = useValidation()
 
 const productData = reactive({
-  name: '',
-  description: '',
-  price: '',
   discount: '',
-  category: '',
+  category: [],
   gender: [],
   season: [],
   brand: [],
-  images: [],
-  selectedGender: '',
   selectedSeason: '',
-  selectedBrand: '',
-  selectedCategory: '',
 })
+
+const { errors, handleSubmit } = useForm({
+  validationSchema: toTypedSchema(productSchema),
+})
+
+const { value: name, errorMessage: nameError } = useField('name')
+const { value: price, errorMessage: priceError } = useField('price')
+const { value: images, errorMessage: imageError } = useField('images')
+const { value: description, errorMessage: descriptionError } = useField('description')
+const { value: selectedCategory, errorMessage: categoryError } = useField('category')
+const { value: selectedGender, errorMessage: genderError } = useField('gender')
+const { value: selectedBrand, errorMessage: brandError } = useField('brand')
+images.value = []
+
 const inputRef = ref(null)
 const { id } = route.params
 const productStore = useProductsStore()
 
-async function addProduct() {
+const handleProduct = handleSubmit(async () => {
   try {
     const payload = {
-      name: productData.name,
-      description: productData.description,
-      price: productData.price,
+      name: name.value,
+      description: description.value,
+      price: price.value,
       discount: productData.discount,
-      category: productData.selectedCategory,
-      images: productData.images,
-      gender: productData.selectedGender,
+      category: selectedCategory.value,
+      images: images.value,
+      gender: selectedGender.value,
       season: productData.selectedSeason,
-      brand: productData.selectedBrand,
+      brand: selectedBrand.value,
     }
     const response = id
       ? await request.put('/api/products/update/' + id, payload)
       : await request.post('/api/products/add', payload)
     notificationStore.isError = false
     notificationStore.showNotification(response.data?.message)
-    router.push(`/product/${id}`)
+    router.push(id ? `/product/${id}` : '/all-products')
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data?.message)
     console.error(error)
   }
-}
+})
 async function uploadImage(event) {
-  if (productData.images.length < 5) {
+  if (images.value.length < 5) {
     const file = event.target.files[0]
     const formData = new FormData()
     formData.append('photos', file)
@@ -68,7 +80,7 @@ async function uploadImage(event) {
           'Content-Type': 'multipart/form-data',
         },
       })
-      productData.images.push(data[1])
+      images.value.push(data[1])
     } catch (error) {
       notificationStore.isError = true
       notificationStore.showNotification('Image upload failed')
@@ -82,7 +94,7 @@ async function uploadImage(event) {
 }
 
 function removeImage(imageIndex) {
-  productData.images = productData.images.filter((_, index) => index !== imageIndex)
+  images.value = images.value.filter((_, index) => index !== imageIndex)
 }
 async function nestedCategories() {
   try {
@@ -103,17 +115,21 @@ onMounted(async () => {
     const product = productStore.singleProduct
 
     if (product) {
-      productData.name = product.name
-      productData.description = product.description
-      productData.price = product.price
+      name.value = product.name
+      description.value = product.description
+      price.value = product.price
       productData.discount = product.discount
-      productData.images = product.images
-      productData.selectedCategory = product.category
-      productData.selectedGender = product.gender
+      images.value = product.images
+      selectedCategory.value = product.category
+      selectedGender.value = product.gender
       productData.selectedSeason = product.season
-      productData.selectedBrand = product.brand
+      selectedBrand.value = product.brand
     }
   }
+})
+
+watch(nameError, (val) => {
+  console.log('nameError:', val)
 })
 </script>
 
@@ -123,7 +139,7 @@ onMounted(async () => {
       {{ id ? 'Edit this product' : 'Add new product' }}
     </h2>
     <form
-      @submit.prevent="addProduct"
+      @submit.prevent="handleProduct"
       class="flex flex-col items-center justify-center w-full gap-4 py-12"
     >
       <div class="flex flex-col gap-1 w-full">
@@ -133,7 +149,7 @@ onMounted(async () => {
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div
             class="w-32 md:w-36 aspect-square relative"
-            v-for="(image, index) of productData.images"
+            v-for="(image, index) of images"
             :key="index"
           >
             <img
@@ -162,10 +178,12 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+        <FormError :error="imageError" />
       </div>
       <div class="flex flex-col w-full">
         <label>Name<span class="text-red-600 px-0.5">*</span></label>
-        <input class="custom-input w-full px-3 py-2.5" v-model="productData.name" />
+        <input class="custom-input w-full px-3 py-2.5" v-model="name" />
+        <FormError :error="nameError" />
       </div>
       <div class="w-full flex gap-2 items-center">
         <div class="flex flex-col w-full">
@@ -174,8 +192,9 @@ onMounted(async () => {
             type="number"
             min="1"
             class="custom-input w-full px-3 py-2.5"
-            v-model="productData.price"
+            v-model.number="price"
           />
+          <FormError :error="priceError" />
         </div>
         <div class="flex flex-col w-full">
           <label>Discount<span class="text-gray-700 px-0.5">(optional)</span></label>
@@ -190,18 +209,17 @@ onMounted(async () => {
 
       <div class="flex flex-col w-full">
         <label>Category<span class="text-red-600 px-0.5">*</span></label>
-        <CustomSelect
-          v-model:selectedOption="productData.selectedCategory"
-          :options="productData.category"
-        />
+        <CustomSelect v-model:selectedOption="selectedCategory" :options="productData.category" />
+        <FormError :error="categoryError" />
       </div>
       <div class="w-full flex gap-2 items-center">
         <div class="flex flex-col w-full">
           <label>Gender<span class="text-red-600 px-0.5">*</span></label>
           <CustomSelect
-            v-model:selectedOption="productData.selectedGender"
+            v-model:selectedOption="selectedGender"
             :options="productStore.genderOptions"
           />
+          <FormError :error="genderError" />
         </div>
         <div class="flex flex-col w-full">
           <label>Season</label>
@@ -215,15 +233,14 @@ onMounted(async () => {
         <label>Description<span class="text-red-600 px-0.5">*</span></label>
         <textarea
           class="custom-input w-full px-3 py-2.5 min-h-52 max-h-[500px]"
-          v-model="productData.description"
+          v-model="description"
         ></textarea>
+        <FormError :error="descriptionError" />
       </div>
       <div class="flex flex-col w-full">
-        <label>Brand</label>
-        <CustomSelect
-          v-model:selectedOption="productData.selectedBrand"
-          :options="brandStore.brandData"
-        />
+        <label>Brand<span class="text-red-600 px-0.5">*</span></label>
+        <CustomSelect v-model:selectedOption="selectedBrand" :options="brandStore.brandData" />
+        <FormError :error="brandError" />
       </div>
 
       <button class="min-w-42 w-full my-4 h-14 save-button">
