@@ -53,7 +53,7 @@ const handleProduct = handleSubmit(async () => {
       category: selectedCategory.value,
       images: images.value,
       gender: selectedGender.value,
-      season: productData.selectedSeason,
+      ...(productData.selectedSeason ? { season: productData.selectedSeason } : {}),
       brand: selectedBrand.value,
     }
     const response = id
@@ -217,6 +217,7 @@ onMounted(async () => {
             <CustomSelect
               v-model:selectedOption="productData.selectedSeason"
               :options="productStore.seasonOptions"
+              :showDiselect="true"
             />
           </div>
         </div>

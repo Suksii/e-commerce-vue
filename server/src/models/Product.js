@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-export const genderOptions = ["Male", "Female", "Unisex"];
+export const genderOptions = ["Male", "Female", "Kids", "Unisex"];
 export const seasonOptions = ["Summer", "Winter", "Autumn", "Spring"];
 
 const ProductSchema = new mongoose.Schema({
@@ -10,7 +10,7 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     enum: genderOptions,
   },
-  season: { type: String, enum: seasonOptions },
+  season: { type: String, enum: seasonOptions, default: undefined },
   discount: { type: Number },
   category: {
     type: mongoose.Schema.Types.ObjectId,

@@ -5,6 +5,7 @@ import { ref } from 'vue'
 const props = defineProps({
   options: Array | String,
   selectedOption: [String, Number],
+  showDiselect: { type: Boolean, default: false },
 })
 const emit = defineEmits(['update:selectedOption'])
 const showOptions = ref(false)
@@ -30,6 +31,11 @@ function selectOption(option) {
   showOptions.value = false
   showSubOptions.value = null
 }
+function deselectOption() {
+  showOptions.value = false
+  showSubOptions.value = null
+  emit('update:selectedOption', null)
+}
 function selectSubOption(suboption) {
   emit('update:selectedOption', suboption._id)
   showOptions.value = false
@@ -44,7 +50,7 @@ function selectSubOption(suboption) {
         @click="toggleOptions"
         class="flex justify-between items-center px-3 py-2.5 cursor-pointer bg-gray-100"
       >
-        <span class="text-gray-800 font-medium">{{ selectedOption || 'Select option' }}</span>
+        <span class="text-gray-800 font-medium">{{ props.selectedOption || 'Select option' }}</span>
         <Icon
           icon="simple-line-icons:arrow-down"
           width="12"
@@ -57,6 +63,13 @@ function selectSubOption(suboption) {
         v-if="showOptions"
         class="absolute top-full w-full bg-white divide-y divide-gray-200 border border-gray-300 rounded-md duration-300 z-20"
       >
+        <p
+          v-if="showDiselect"
+          @click="deselectOption"
+          class="px-4 py-3 text-gray-500 italic cursor-pointer hover:bg-red-100 hover:text-red-600"
+        >
+          Deselect
+        </p>
         <div class="max-h-[400px] overflow-y-auto">
           <div
             v-for="(option, index) in props.options"
