@@ -52,6 +52,10 @@ export const useValidation = () => {
     name: zod.string().min(1, { message: 'Category name is required' }),
   })
 
+  const featuredSchema = zod.object({
+    image: zod.string().min(1, { message: 'Featured image is required' }),
+  })
+
   const validateMin = (e) => {
     const value = +e.target.value
     if (value + 10 <= productsStore.selectedMax) {
@@ -75,6 +79,7 @@ export const useValidation = () => {
     brandSchema,
     productSchema,
     categorySchema,
+    featuredSchema,
     validateMin,
     validateMax,
   }

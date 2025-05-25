@@ -1,21 +1,32 @@
 <script setup>
 import { request } from '@/api'
+import FormError from '@/components/FormError.vue'
 import { useEditActions } from '@/composables/useEditActions'
+import { useValidation } from '@/composables/useValidation'
 import { useFeaturedStore } from '@/stores/featured'
 import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useField, useForm } from 'vee-validate'
 import { reactive, ref, watch } from 'vue'
 
 const notificationStore = useNotificationStore()
 const featuredStore = useFeaturedStore()
 const { id: featuredId, cancel: featuredCancel } = useEditActions()
+const { featuredSchema } = useValidation()
 
 const imageRef = ref(null)
-const featuredData = reactive({ title: '', image: '', description: '' })
+const featuredData = reactive({ title: '', description: '' })
+
+const { errors, handleSubmit, submitCount } = useForm({
+  validationSchema: toTypedSchema(featuredSchema),
+})
+
+const { value: image, errorMessage: imageError } = useField('image')
 
 const resetForm = () => {
   featuredData.title = ''
-  featuredData.image = ''
+  image.value = ''
   featuredData.description = ''
 }
 
@@ -27,7 +38,7 @@ async function uploadImage(event) {
     const { data } = await request.post('/api/featured/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
-    featuredData.image = data[1]
+    image.value = data[1]
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification('Image upload failed')
@@ -35,12 +46,12 @@ async function uploadImage(event) {
   }
 }
 
-async function handleFeatured() {
+const handleFeatured = handleSubmit(async () => {
   try {
     const payload = {
       title: featuredData.title,
       description: featuredData.description,
-      image: featuredData.image,
+      image: image.value,
     }
     const response = featuredId.value
       ? await request.put('/api/featured/update/' + featuredId.value, payload)
@@ -59,7 +70,7 @@ async function handleFeatured() {
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
   }
-}
+})
 
 watch(
   featuredId,
@@ -70,7 +81,7 @@ watch(
       if (featured) {
         featuredData.title = featured.title
         featuredData.description = featured.description
-        featuredData.image = featured.image
+        image.value = featured.image
       }
     } else {
       resetForm()
@@ -80,7 +91,7 @@ watch(
 )
 
 const removeImage = () => {
-  return (featuredData.image = '')
+  return (image.value = '')
 }
 </script>
 
@@ -94,10 +105,10 @@ const removeImage = () => {
       @submit.prevent="handleFeatured"
     >
       <div class="flex flex-col gap-1 w-full">
-        <label>Upload image</label>
-        <div v-if="featuredData.image" class="w-full h-[300px] shrink-0 relative">
+        <label>Upload image<span class="text-red-600 px-0.5">*</span></label>
+        <div v-if="image" class="w-full h-[300px] shrink-0 relative">
           <img
-            :src="'http://localhost:3000/uploads/featured/' + featuredData.image"
+            :src="'http://localhost:3000/uploads/featured/' + image"
             class="w-full h-full border border-gray-300 rounded-md object-cover"
           />
           <div @click="removeImage" class="absolute right-0 top-0 p-2">
@@ -118,9 +129,10 @@ const removeImage = () => {
             <Icon icon="fluent:add-24-filled" width="40" height="40" class="text-gray-500" />
           </div>
         </div>
+        <FormError v-if="submitCount > 0" :error="imageError" />
       </div>
       <div class="flex flex-col w-full">
-        <label>Title<span class="text-red-600 px-0.5">*</span></label>
+        <label>Title</label>
         <input v-model="featuredData.title" class="custom-input w-full px-3 py-2.5" />
       </div>
       <div class="flex flex-col w-full">

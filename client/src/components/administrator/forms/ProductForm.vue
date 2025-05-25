@@ -30,7 +30,7 @@ const { productSchema } = useValidation()
 const notificationStore = useNotificationStore()
 const brandStore = useBrandStore()
 
-const { errors, handleSubmit } = useForm({
+const { errors, handleSubmit, submitCount } = useForm({
   validationSchema: toTypedSchema(productSchema),
 })
 
@@ -126,10 +126,6 @@ onMounted(async () => {
     }
   }
 })
-
-watch(errors, (val) => {
-  console.log('errors:', val)
-})
 </script>
 
 <template>
@@ -177,23 +173,18 @@ watch(errors, (val) => {
             </div>
           </div>
         </div>
-        <FormError :error="imageError" />
+        <FormError v-if="submitCount > 0" :error="imageError" />
       </div>
       <div class="flex flex-col w-full">
         <label>Name<span class="text-red-600 px-0.5">*</span></label>
         <input class="custom-input w-full px-3 py-2.5" v-model="name" />
-        <FormError :error="nameError" />
+        <FormError v-if="submitCount > 0" :error="nameError" />
       </div>
       <div class="flex flex-col w-full">
         <div class="w-full flex gap-2 items-center">
           <div class="flex flex-col w-full">
             <label>Price<span class="text-red-600 px-0.5">*</span></label>
-            <input
-              type="number"
-              min="1"
-              class="custom-input w-full px-3 py-2.5"
-              v-model.number="price"
-            />
+            <input type="number" min="1" class="custom-input w-full px-3 py-2.5" v-model="price" />
           </div>
           <div class="flex flex-col w-full">
             <label>Discount<span class="text-gray-700 px-0.5">(optional)</span></label>
@@ -205,12 +196,12 @@ watch(errors, (val) => {
             />
           </div>
         </div>
-        <FormError :error="priceError" />
+        <FormError v-if="submitCount > 0" :error="priceError" />
       </div>
       <div class="flex flex-col w-full">
         <label>Category<span class="text-red-600 px-0.5">*</span></label>
         <CustomSelect v-model:selectedOption="selectedCategory" :options="productData.category" />
-        <FormError :error="categoryError" />
+        <FormError v-if="submitCount > 0" :error="categoryError" />
       </div>
       <div class="flex flex-col w-full">
         <div class="w-full flex gap-2 items-center">
@@ -224,12 +215,12 @@ watch(errors, (val) => {
           <div class="flex flex-col w-full">
             <label>Season</label>
             <CustomSelect
-            v-model:selectedOption="productData.selectedSeason"
-            :options="productStore.seasonOptions"
+              v-model:selectedOption="productData.selectedSeason"
+              :options="productStore.seasonOptions"
             />
           </div>
         </div>
-        <FormError :error="genderError" />
+        <FormError v-if="submitCount > 0" :error="genderError" />
       </div>
       <div class="flex flex-col w-full">
         <label>Description<span class="text-red-600 px-0.5">*</span></label>
@@ -237,12 +228,12 @@ watch(errors, (val) => {
           class="custom-input w-full px-3 py-2.5 min-h-52 max-h-[500px]"
           v-model="description"
         ></textarea>
-        <FormError :error="descriptionError" />
+        <FormError v-if="submitCount > 0" :error="descriptionError" />
       </div>
       <div class="flex flex-col w-full">
         <label>Brand<span class="text-red-600 px-0.5">*</span></label>
         <CustomSelect v-model:selectedOption="selectedBrand" :options="brandStore.brandData" />
-        <FormError :error="brandError" />
+        <FormError v-if="submitCount > 0" :error="brandError" />
       </div>
 
       <button class="min-w-42 w-full my-4 h-14 save-button">
