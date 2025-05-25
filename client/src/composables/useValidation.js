@@ -48,6 +48,10 @@ export const useValidation = () => {
     brand: zod.string().min(1, { message: 'Product brand is required' }),
   })
 
+  const categorySchema = zod.object({
+    name: zod.string().min(1, { message: 'Category name is required' }),
+  })
+
   const validateMin = (e) => {
     const value = +e.target.value
     if (value + 10 <= productsStore.selectedMax) {
@@ -65,5 +69,13 @@ export const useValidation = () => {
     }
   }
 
-  return { loginSchema, registerSchema, brandSchema, productSchema, validateMin, validateMax }
+  return {
+    loginSchema,
+    registerSchema,
+    brandSchema,
+    productSchema,
+    categorySchema,
+    validateMin,
+    validateMax,
+  }
 }

@@ -6,20 +6,30 @@ import { useNotificationStore } from '@/stores/notification'
 import { useEditActions } from '@/composables/useEditActions'
 import { useCategoryStore } from '@/stores/categories'
 import CustomSelect from '@/components/CustomSelect.vue'
+import { useValidation } from '@/composables/useValidation'
+import { useField, useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import FormError from '@/components/FormError.vue'
 
 const notificationStore = useNotificationStore()
 const categoryStore = useCategoryStore()
+const { categorySchema } = useValidation()
 const imageRef = ref(null)
 const { id: categoryId, cancel: categoryCancel } = useEditActions()
 const categoryData = reactive({
-  name: '',
   slug: '',
   image: '',
   parentCategory: [],
   selectedCategory: '',
 })
+
+const { errors, handleSubmit, submitCount } = useForm({
+  validationSchema: toTypedSchema(categorySchema),
+})
+
+const { value: name, errorMessage: nameError } = useField('name')
 function resetForm() {
-  categoryData.name = ''
+  name.value = ''
   categoryData.image = ''
   categoryData.selectedCategory = ''
   categoryData.slug = ''
@@ -60,12 +70,12 @@ async function uploadImage(event) {
   }
 }
 
-async function handleCategory() {
+const handleCategory = handleSubmit(async () => {
   try {
     const payload = {
-      name: categoryData.name,
+      name: name.value,
       image: categoryData.image,
-      slug: categoryData.name.toLowerCase().replaceAll(' ', '-'),
+      slug: name.value.toLowerCase().replaceAll(' ', '-'),
       parentCategory: categoryData.selectedCategory || null,
     }
     const response = categoryId.value
@@ -85,7 +95,7 @@ async function handleCategory() {
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
   }
-}
+})
 
 watch(
   categoryId,
@@ -94,7 +104,7 @@ watch(
       await categoryStore.getSingleCategory(newId)
       const category = categoryStore.singleCategoryData
       if (category) {
-        categoryData.name = category.name
+        name.value = category.name
         categoryData.image = category.image
         categoryData.selectedCategory = category.parentCategory || ''
       }
@@ -145,7 +155,8 @@ watch(
       </div>
       <div class="flex flex-col w-full">
         <label>Name<span class="text-red-600 px-0.5">*</span></label>
-        <input v-model="categoryData.name" class="custom-input w-full px-3 py-2.5" />
+        <input v-model="name" class="custom-input w-full px-3 py-2.5" />
+        <FormError v-if="submitCount > 0" :error="nameError" />
       </div>
       <div class="flex flex-col w-full">
         <label>Main Category</label>
@@ -155,7 +166,11 @@ watch(
         />
       </div>
       <div class="flex justify-between gap-2 w-full transition-all">
-        <button v-if="categoryId" @click="categoryCancel" class="min-w-42 w-full my-4 h-11 save-button">
+        <button
+          v-if="categoryId"
+          @click="categoryCancel"
+          class="min-w-42 w-full my-4 h-11 save-button"
+        >
           Cancel
         </button>
         <button class="min-w-42 w-full my-4 h-11 save-button">
