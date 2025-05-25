@@ -9,14 +9,11 @@ import { useNotificationStore } from '@/stores/notification'
 import { useProductsStore } from '@/stores/products'
 import CustomSelect from '@/components/CustomSelect.vue'
 import { useValidation } from '@/composables/useValidation'
+import FormError from '@/components/FormError.vue'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import FormError from '@/components/FormError.vue'
 
 const route = useRoute()
-const notificationStore = useNotificationStore()
-const brandStore = useBrandStore()
-const { productSchema } = useValidation()
 
 const productData = reactive({
   discount: '',
@@ -26,6 +23,12 @@ const productData = reactive({
   brand: [],
   selectedSeason: '',
 })
+const inputRef = ref(null)
+const { id } = route.params
+const productStore = useProductsStore()
+const { productSchema } = useValidation()
+const notificationStore = useNotificationStore()
+const brandStore = useBrandStore()
 
 const { errors, handleSubmit } = useForm({
   validationSchema: toTypedSchema(productSchema),
@@ -39,10 +42,6 @@ const { value: selectedCategory, errorMessage: categoryError } = useField('categ
 const { value: selectedGender, errorMessage: genderError } = useField('gender')
 const { value: selectedBrand, errorMessage: brandError } = useField('brand')
 images.value = []
-
-const inputRef = ref(null)
-const { id } = route.params
-const productStore = useProductsStore()
 
 const handleProduct = handleSubmit(async () => {
   try {
@@ -128,8 +127,8 @@ onMounted(async () => {
   }
 })
 
-watch(nameError, (val) => {
-  console.log('nameError:', val)
+watch(errors, (val) => {
+  console.log('errors:', val)
 })
 </script>
 
@@ -185,49 +184,52 @@ watch(nameError, (val) => {
         <input class="custom-input w-full px-3 py-2.5" v-model="name" />
         <FormError :error="nameError" />
       </div>
-      <div class="w-full flex gap-2 items-center">
-        <div class="flex flex-col w-full">
-          <label>Price<span class="text-red-600 px-0.5">*</span></label>
-          <input
-            type="number"
-            min="1"
-            class="custom-input w-full px-3 py-2.5"
-            v-model.number="price"
-          />
-          <FormError :error="priceError" />
+      <div class="flex flex-col w-full">
+        <div class="w-full flex gap-2 items-center">
+          <div class="flex flex-col w-full">
+            <label>Price<span class="text-red-600 px-0.5">*</span></label>
+            <input
+              type="number"
+              min="1"
+              class="custom-input w-full px-3 py-2.5"
+              v-model.number="price"
+            />
+          </div>
+          <div class="flex flex-col w-full">
+            <label>Discount<span class="text-gray-700 px-0.5">(optional)</span></label>
+            <input
+              type="number"
+              min="0"
+              class="custom-input w-full px-3 py-2.5"
+              v-model="productData.discount"
+            />
+          </div>
         </div>
-        <div class="flex flex-col w-full">
-          <label>Discount<span class="text-gray-700 px-0.5">(optional)</span></label>
-          <input
-            type="number"
-            min="0"
-            class="custom-input w-full px-3 py-2.5"
-            v-model="productData.discount"
-          />
-        </div>
+        <FormError :error="priceError" />
       </div>
-
       <div class="flex flex-col w-full">
         <label>Category<span class="text-red-600 px-0.5">*</span></label>
         <CustomSelect v-model:selectedOption="selectedCategory" :options="productData.category" />
         <FormError :error="categoryError" />
       </div>
-      <div class="w-full flex gap-2 items-center">
-        <div class="flex flex-col w-full">
-          <label>Gender<span class="text-red-600 px-0.5">*</span></label>
-          <CustomSelect
-            v-model:selectedOption="selectedGender"
-            :options="productStore.genderOptions"
-          />
-          <FormError :error="genderError" />
-        </div>
-        <div class="flex flex-col w-full">
-          <label>Season</label>
-          <CustomSelect
+      <div class="flex flex-col w-full">
+        <div class="w-full flex gap-2 items-center">
+          <div class="flex flex-col w-full">
+            <label>Gender<span class="text-red-600 px-0.5">*</span></label>
+            <CustomSelect
+              v-model:selectedOption="selectedGender"
+              :options="productStore.genderOptions"
+            />
+          </div>
+          <div class="flex flex-col w-full">
+            <label>Season</label>
+            <CustomSelect
             v-model:selectedOption="productData.selectedSeason"
             :options="productStore.seasonOptions"
-          />
+            />
+          </div>
         </div>
+        <FormError :error="genderError" />
       </div>
       <div class="flex flex-col w-full">
         <label>Description<span class="text-red-600 px-0.5">*</span></label>
