@@ -5,7 +5,7 @@ import Filters from '@/components/Filters.vue'
 import FilterSidebar from '@/components/FilterSidebar.vue'
 import { usePriceRange } from '@/composables/usePriceRange'
 import { useProductsStore } from '@/stores/products'
-import { ref, watch } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 
 const productsStore = useProductsStore()
 const showFilters = ref(false)

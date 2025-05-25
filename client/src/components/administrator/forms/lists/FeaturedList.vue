@@ -1,12 +1,15 @@
 <script setup>
+import { request } from '@/api'
 import DeleteContent from '@/components/DeleteContent.vue'
 import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
 import { useFeaturedStore } from '@/stores/featured'
+import { useNotificationStore } from '@/stores/notification'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 
 const featuredStore = useFeaturedStore()
+const notificationStore = useNotificationStore()
 const { handleEdit: handleFeaturedEdit } = useEditActions()
 const displayedAction = ref(null)
 const { showModal, handleShowModal, handleCloseModal } = useModal()
@@ -16,6 +19,19 @@ const showActions = (id) => {
 }
 const hideAction = () => {
   displayedAction.value = null
+}
+
+const handleDelete = async (id) => {
+  try {
+    const response = await request.delete('/api/featured/delete/' + id)
+    notificationStore.isError = false
+    notificationStore.showNotification(response.data?.message || 'Featured deleted successfully')
+    featuredStore.getFeatured()
+  } catch (error) {
+    notificationStore.isError = true
+    notificationStore.showNotification(error.response?.data?.message || 'Failed to delete featured')
+    console.error(error)
+  }
 }
 
 onMounted(() => {
@@ -32,9 +48,15 @@ onMounted(() => {
         :key="featured._id"
         @mouseenter="showActions(featured._id)"
         @mouseleave="hideAction"
-        class="relative flex justify-center gap-2 w-full bg-white overflow-hidden transition group"
+        class="relative flex justify-center gap-2 w-full max-h-[350px] bg-white overflow-hidden transition group"
       >
-        <div class="flex items-center justify-center flex-1">
+        <div
+          v-if="
+            (featured.title && featured.title.length > 0) ||
+            (featured.description && featured.description.length > 0)
+          "
+          class="flex items-center justify-center flex-1"
+        >
           <div class="flex flex-col items-center justify-center">
             <h2 class="text-2xl font-medium">{{ featured.title }}</h2>
             <p class="">{{ featured.description }}</p>

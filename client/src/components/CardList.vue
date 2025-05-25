@@ -4,6 +4,7 @@ import Card from './Card.vue'
 defineProps({
   data: Array,
 })
+
 </script>
 
 <template>

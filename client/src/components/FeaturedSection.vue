@@ -1,7 +1,7 @@
 <script setup>
 import { useFeaturedStore } from '@/stores/featured'
 import { Icon } from '@iconify/vue'
-import { onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 const featuredStore = useFeaturedStore()
 const currentIndex = ref(0)
@@ -54,7 +54,13 @@ onUnmounted(() => {
           :key="featured._id"
           class="flex items-center w-full h-auto max-h-[500px] relative shrink-0"
         >
-          <div class="flex items-center justify-center flex-1 h-full bg-gray-100">
+          <div
+            v-if="
+              (featured.title && featured.title.length > 0) ||
+              (featured.description && featured.description.length > 0)
+            "
+            class="flex items-center justify-center flex-1 h-full bg-gray-100"
+          >
             <div class="flex flex-col items-center justify-center h-fit">
               <h2 class="text-2xl font-medium">{{ featured.title }}</h2>
               <p>{{ featured.description }}</p>
