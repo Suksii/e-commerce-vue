@@ -163,6 +163,7 @@ watch(
         <CustomSelect
           v-model:selectedOption="categoryData.selectedCategory"
           :options="categoryData.parentCategory"
+          :showDiselect="true"
         />
       </div>
       <div class="flex justify-between gap-2 w-full transition-all">

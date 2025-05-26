@@ -34,11 +34,13 @@ const router = createRouter({
       path: '/add-product',
       name: 'addProduct',
       component: ProductForm,
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: '/update-product/:id',
       name: 'updateProduct',
       component: ProductForm,
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: '/product/:id',
@@ -49,11 +51,13 @@ const router = createRouter({
       path: '/users',
       name: 'users',
       component: UsersTable,
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: '/products',
       name: 'products',
       component: ProductsTable,
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: '/all-products',
@@ -64,17 +68,20 @@ const router = createRouter({
       path: '/categories',
       name: 'categories',
       component: Categories,
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: '/brands',
       name: 'brands',
       component: Brands,
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
 
     {
       path: '/featured',
       name: 'featured',
       component: Featured,
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
   ],
 })
@@ -82,6 +89,12 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const profileStore = useProfile()
   await profileStore.userProfile()
+  if (to.meta.requiresAuth && !profileStore.currentUser) {
+    return next('/login')
+  }
+  if (to.meta.requiresAdmin && !profileStore.currentUser?.isAdmin) {
+    return next('/')
+  }
   next()
 })
 export default router
