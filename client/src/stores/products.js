@@ -149,6 +149,8 @@ export const useProductsStore = defineStore('products', () => {
           ...(newMaxPrice !== maxPrice.value ? { maxPrice: newMaxPrice } : {}),
           ...(newSeason ? { season: newSeason } : {}),
           ...(newGender ? { gender: newGender } : {}),
+          ...(newSortBy ? { sortBy: newSortBy } : {}),
+          ...(newOrder ? { order: newOrder } : {}),
         }
 
         if (JSON.stringify(route.query) !== JSON.stringify(query)) {

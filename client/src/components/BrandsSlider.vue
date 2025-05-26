@@ -1,5 +1,6 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
+import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -7,6 +8,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const brandsStore = useBrandStore()
+const productsStore = useProductsStore()
 
 const currentBrandIndex = ref(0)
 const containerRef = ref(null)
@@ -46,7 +48,12 @@ function prev() {
   if (currentBrandIndex.value > 0) currentBrandIndex.value--
 }
 
-function goToPage(brandName) {
+async function goToPage(brandName) {
+  const selectedBrand = brandsStore.brandData.find((brand) => brand.name === brandName)
+  if (selectedBrand) {
+    productsStore.selectedBrands = [selectedBrand]
+    await productsStore.searchProducts()
+  }
   router.push({
     name: 'allProducts',
     query: { brand: brandName },
