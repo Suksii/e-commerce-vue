@@ -44,13 +44,13 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
-      path: '/products',
-      name: 'products',
+      path: '/products-table',
+      name: 'productsTable',
       component: () => import('@/views/administrator/ProductsTable.vue'),
       meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
-      path: '/all-products',
+      path: '/products',
       name: 'allProducts',
       component: () => import('@/views/ProductsView.vue'),
     },

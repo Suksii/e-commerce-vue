@@ -1,12 +1,18 @@
-import { request } from '@/api'
-import { useDebounce } from '@/composables/useDebounce'
-import { defineStore } from 'pinia'
-import { useNotificationStore } from './notification'
+import qs from 'qs'
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import qs from 'qs'
+import { defineStore } from 'pinia'
+import { request } from '@/api'
+import { useDebounce } from '@/composables/useDebounce'
+import { useNotificationStore } from './notification'
+import { usePriceRange } from '@/composables/usePriceRange'
 
 export const useProductsStore = defineStore('products', () => {
+  const router = useRouter()
+  const route = useRoute()
+
+  const { minPrice, maxPrice } = usePriceRange()
+
   const notificationStore = useNotificationStore()
 
   const productsData = ref([])
@@ -25,9 +31,6 @@ export const useProductsStore = defineStore('products', () => {
 
   const selectedSortBy = ref('name')
   const selectedOrder = ref('desc')
-
-  const router = useRouter()
-  const route = useRoute()
 
   const debouncedSearch = useDebounce(searchQuery, 1000)
   const debouncedCategories = useDebounce(selectedCategories, 1000)
@@ -85,7 +88,6 @@ export const useProductsStore = defineStore('products', () => {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
       })
       productsData.value = data
-      console.log('Params', params)
     } catch (error) {
       console.error(error)
     }
@@ -132,7 +134,8 @@ export const useProductsStore = defineStore('products', () => {
       const hasFilters =
         (newBrands && newBrands.length > 0) ||
         (newCategories && newCategories.length > 0) ||
-        (newMinPrice !== null && newMaxPrice !== null) ||
+        newMinPrice !== minPrice.value ||
+        newMaxPrice !== maxPrice.value ||
         (newSeason && newSeason.length > 0) ||
         (newGender && newGender.length > 0) ||
         newSortBy ||
@@ -142,8 +145,8 @@ export const useProductsStore = defineStore('products', () => {
           ...(hasSearch ? { name: newSearch } : {}),
           ...(newBrands ? { brand: newBrands.map((b) => b.name) } : {}),
           ...(newCategories ? { category: newCategories.map((c) => c.name) } : {}),
-          ...(newMinPrice ? { minPrice: newMinPrice } : {}),
-          ...(newMaxPrice ? { maxPrice: newMaxPrice } : {}),
+          ...(newMinPrice !== minPrice.value ? { minPrice: newMinPrice } : {}),
+          ...(newMaxPrice !== maxPrice.value ? { maxPrice: newMaxPrice } : {}),
           ...(newSeason ? { season: newSeason } : {}),
           ...(newGender ? { gender: newGender } : {}),
         }

@@ -1,7 +1,10 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
 import { Icon } from '@iconify/vue'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const brandsStore = useBrandStore()
 
@@ -42,6 +45,13 @@ function next() {
 function prev() {
   if (currentBrandIndex.value > 0) currentBrandIndex.value--
 }
+
+function goToPage(brandName) {
+  router.push({
+    name: 'allProducts',
+    query: { brand: brandName },
+  })
+}
 </script>
 <template>
   <div class="relative w-full py-12" ref="containerRef">
@@ -49,6 +59,7 @@ function prev() {
       <div class="relative flex items-center mx-auto overflow-x-hidden">
         <div
           v-for="brand of brandsStore.brandData"
+          @click="goToPage(brand.name)"
           class="flex justify-center transition duration-1000 shrink-0 cursor-pointer"
           :style="{
             transform: `translateX(-${currentBrandIndex * 100}%)`,

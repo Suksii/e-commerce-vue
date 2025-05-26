@@ -61,7 +61,7 @@ const handleProduct = handleSubmit(async () => {
       : await request.post('/api/products/add', payload)
     notificationStore.isError = false
     notificationStore.showNotification(response.data?.message)
-    router.push(id ? `/product/${id}` : '/all-products')
+    router.push(id ? `/product/${id}` : '/products')
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data?.message)

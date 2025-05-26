@@ -2,7 +2,6 @@
 import BrandsSlider from '@/components/BrandsSlider.vue'
 import CategorySection from '@/components/CategorySection.vue'
 import FeaturedSection from '@/components/FeaturedSection.vue'
-import FilterSidebar from '@/components/FilterSidebar.vue'
 import FooterSection from '@/components/FooterSection.vue'
 </script>
 
