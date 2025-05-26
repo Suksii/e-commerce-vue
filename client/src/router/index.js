@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useProfile } from '@/stores/profile'
+import PageNotFound from '@/views/PageNotFound.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,6 +72,11 @@ const router = createRouter({
       name: 'featured',
       component: () => import('@/views/administrator/Featured.vue'),
       meta: { requiresAuth: true, requiresAdmin: true },
+    },
+    {
+      path: '/:catchAll(.*)*',
+      name: 'PageNotFound',
+      component: () => import('@/views/PageNotFound.vue'),
     },
   ],
 })
