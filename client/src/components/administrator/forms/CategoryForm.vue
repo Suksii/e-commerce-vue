@@ -16,12 +16,6 @@ const categoryStore = useCategoryStore()
 const { categorySchema } = useValidation()
 const imageRef = ref(null)
 const { id: categoryId, cancel: categoryCancel } = useEditActions()
-const categoryData = reactive({
-  slug: '',
-  image: '',
-  parentCategory: [],
-  selectedCategory: '',
-})
 
 const { errors, handleSubmit, submitCount } = useForm({
   validationSchema: toTypedSchema(categorySchema),
@@ -30,14 +24,14 @@ const { errors, handleSubmit, submitCount } = useForm({
 const { value: name, errorMessage: nameError } = useField('name')
 function resetForm() {
   name.value = ''
-  categoryData.image = ''
-  categoryData.selectedCategory = ''
-  categoryData.slug = ''
+  categoryStore.categoryData.image = ''
+  categoryStore.categoryData.selectedCategory = ''
+  categoryStore.categoryData.slug = ''
 }
 const fetchParentCategories = async () => {
   try {
     const { data } = await request.get('/api/category/parent')
-    categoryData.parentCategory = data.map((category) => ({
+    categoryStore.categoryData.parentCategory = data.map((category) => ({
       name: category.name,
       _id: category._id,
     }))
@@ -105,8 +99,8 @@ watch(
       const category = categoryStore.singleCategoryData
       if (category) {
         name.value = category.name
-        categoryData.image = category.image
-        categoryData.selectedCategory = category.parentCategory || ''
+        categoryStore.categoryData.image = category.image
+        categoryStore.categoryData.selectedCategory = category.parentCategory || ''
       }
     } else {
       resetForm()
@@ -129,7 +123,7 @@ watch(
         <label>Upload image</label>
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div
-            v-if="categoryData.image && categoryData.image.length"
+            v-if="categoryStore.categoryData.image && categoryStore.categoryData.image.length"
             class="w-32 md:w-36 aspect-square relative"
           >
             <img
@@ -161,8 +155,8 @@ watch(
       <div class="flex flex-col w-full">
         <label>Main Category</label>
         <CustomSelect
-          v-model:selectedOption="categoryData.selectedCategory"
-          :options="categoryData.parentCategory"
+          v-model:selectedOption="categoryStore.categoryData.selectedCategory"
+          :options="categoryStore.categoryData.parentCategory"
           :showDiselect="true"
         />
       </div>

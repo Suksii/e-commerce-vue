@@ -1,11 +1,17 @@
 import { request } from '@/api'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 export const useCategoryStore = defineStore('category', () => {
   const categoriesData = ref([])
   const singleCategoryData = ref([])
   const childCategoriesData = ref([])
+  const categoryData = reactive({
+    slug: '',
+    image: '',
+    parentCategory: [],
+    selectedCategory: '',
+  })
 
   async function fetchCategories() {
     try {
@@ -33,6 +39,21 @@ export const useCategoryStore = defineStore('category', () => {
     }
   }
 
+  const fetchParentCategories = async () => {
+    try {
+      const { data } = await request.get('/api/category/parent')
+      categoryData.parentCategory = data.map((category) => ({
+        name: category.name,
+        _id: category._id,
+      }))
+      console.log(categoriesData.parentCategory)
+    } catch (error) {
+      notificationStore.isError = true
+      notificationStore.showNotification('Error while fetching data')
+      console.error('Error while fetching data:', error)
+    }
+  }
+
   return {
     fetchCategories,
     categoriesData,
@@ -40,5 +61,7 @@ export const useCategoryStore = defineStore('category', () => {
     childCategoriesData,
     getSingleCategory,
     singleCategoryData,
+    categoryData,
+    fetchParentCategories,
   }
 })

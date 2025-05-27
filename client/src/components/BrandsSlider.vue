@@ -48,11 +48,15 @@ function prev() {
   if (currentBrandIndex.value > 0) currentBrandIndex.value--
 }
 
-async function goToPage(brandName) {
-  const selectedBrand = brandsStore.brandData.find((brand) => brand.name === brandName)
+function goToPage(brandName) {
+  const selectedBrand = brandsStore.brandData.find(
+    (brand) => brand.name.toLowerCase() === brandName.toLowerCase(),
+  )
+  console.log(selectedBrand)
+
   if (selectedBrand) {
     productsStore.selectedBrands = [selectedBrand]
-    await productsStore.searchProducts()
+    productsStore.searchProducts()
   }
   router.push({
     name: 'allProducts',
