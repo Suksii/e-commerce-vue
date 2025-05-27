@@ -12,6 +12,7 @@ import { useValidation } from '@/composables/useValidation'
 import FormError from '@/components/FormError.vue'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
+import { getImageUrl } from '@/utils/helpers'
 
 const route = useRoute()
 
@@ -148,7 +149,7 @@ onMounted(async () => {
             :key="index"
           >
             <img
-              :src="'http://localhost:3000/uploads/products/' + image"
+              :src="getImageUrl('products', image)"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
             <div

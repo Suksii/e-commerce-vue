@@ -128,7 +128,7 @@ watch(
             class="w-32 md:w-36 aspect-square relative"
           >
             <img
-              :src="'http://localhost:3000/uploads/categories/' + categoryStore.categoryData.image"
+              :src="getImageUrl('categories', categoryStore.categoryData.image)"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
           </div>

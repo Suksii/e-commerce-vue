@@ -9,6 +9,7 @@ import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useValidation } from '@/composables/useValidation'
 import FormError from '@/components/FormError.vue'
+import { getImageUrl } from '@/utils/helpers'
 
 const notificationStore = useNotificationStore()
 const brandStore = useBrandStore()
@@ -106,7 +107,7 @@ watch(
         <div class="flex gap-2 flex-wrap items-center w-full">
           <div v-if="image" class="w-32 md:w-36 aspect-square relative">
             <img
-              :src="'http://localhost:3000/uploads/brands/' + image"
+              :src="getImageUrl('brands', image)"
               :alt="image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />

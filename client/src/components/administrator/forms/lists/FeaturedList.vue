@@ -5,6 +5,7 @@ import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
 import { useFeaturedStore } from '@/stores/featured'
 import { useNotificationStore } from '@/stores/notification'
+import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 
@@ -64,7 +65,7 @@ onMounted(() => {
         </div>
         <div class="flex-2">
           <img
-            :src="'http://localhost:3000/uploads/featured/' + featured.image"
+            :src="getImageUrl('featured', featured.image)"
             :alt="featured.name"
             class="text-center w-full object-contain"
           />

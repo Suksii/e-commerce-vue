@@ -2,6 +2,7 @@
 import { request } from '@/api'
 import { useCartStore } from '@/stores/carts'
 import { useNotificationStore } from '@/stores/notification'
+import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { computed, watch } from 'vue'
 const props = defineProps({
@@ -61,7 +62,7 @@ const totalCartPrice = computed(() => {
       />
 
       <img
-        :src="'http://localhost:3000/uploads/products/' + cart.product?.images[0]"
+        :src="getImageUrl('products', cart.product?.images[0])"
         class="max-w-[60px] h-[110px] md:max-w-[80px] md:h-[140px] object-contain flex-2"
       />
       <div class="flex flex-col gap-2 overflow-hidden">
@@ -80,7 +81,9 @@ const totalCartPrice = computed(() => {
       <span class="font-medium">€{{ Number(cart.totalPrice).toFixed(2) }}</span>
     </div>
   </div>
-  <div class="flex flex-col md:flex-row items-center justify-between mt-4 p-4 bg-gray-100 shadow-sm rounded-lg gap-2 md:gap-8">
+  <div
+    class="flex flex-col md:flex-row items-center justify-between mt-4 p-4 bg-gray-100 shadow-sm rounded-lg gap-2 md:gap-8"
+  >
     <div class="flex items-center gap-2">
       <p class="text-sm text-gray-500 uppercase tracking-wide">Total</p>
       <p class="text-teal-600 font-bold text-2xl">€{{ totalCartPrice.toFixed(2) }}</p>

@@ -1,4 +1,5 @@
 <script setup>
+import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
@@ -11,7 +12,6 @@ const emit = defineEmits(['update:showFullScreen'])
 
 const currentImageIndex = ref(0)
 const scale = ref(1)
-const baseImgUrl = 'http://localhost:3000/uploads/'
 
 const prev = () => {
   scale.value = 1
@@ -51,7 +51,7 @@ const zoomIn = () => {
         :key="index"
       >
         <img
-          :src="baseImgUrl + 'products/' + image"
+          :src="getImageUrl('products', image)"
           :alt="image"
           class="w-fit h-full object-cover transform transition-transform"
           :style="{ transform: `scale(${scale})` }"
@@ -74,7 +74,7 @@ const zoomIn = () => {
           currentImageIndex === index ? 'border-4 border-teal-700' : 'border border-teal-600/20'
         "
       >
-        <img :src="baseImgUrl + 'products/' + image" :alt="image" class="object-cover w-full" />
+        <img :src="getImageUrl('products', image)" :alt="image" class="object-cover w-full" />
       </div>
     </div>
     <div class="hidden md:flex items-center gap-2 fixed left-0 top-0 m-4">

@@ -1,5 +1,6 @@
 <script setup>
 import { useFeaturedStore } from '@/stores/featured'
+import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 
@@ -68,7 +69,7 @@ onUnmounted(() => {
           </div>
           <div class="flex-2 w-full h-full">
             <img
-              :src="'http://localhost:3000/uploads/featured/' + featured.image"
+              :src="getImageUrl('featured', featured.image)"
               :alt="featured.name"
               class="w-full h-full object-cover object-center"
             />

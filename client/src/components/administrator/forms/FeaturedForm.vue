@@ -5,6 +5,7 @@ import { useEditActions } from '@/composables/useEditActions'
 import { useValidation } from '@/composables/useValidation'
 import { useFeaturedStore } from '@/stores/featured'
 import { useNotificationStore } from '@/stores/notification'
+import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useField, useForm } from 'vee-validate'
@@ -108,7 +109,7 @@ const removeImage = () => {
         <label>Upload image<span class="text-red-600 px-0.5">*</span></label>
         <div v-if="image" class="w-full h-[300px] shrink-0 relative">
           <img
-            :src="'http://localhost:3000/uploads/featured/' + image"
+            :src="getImageUrl('featured', image)"
             class="w-full h-full border border-gray-300 rounded-md object-cover"
           />
           <div @click="removeImage" class="absolute right-0 top-0 p-2">

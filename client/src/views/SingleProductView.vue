@@ -4,12 +4,12 @@ import { useBrandStore } from '@/stores/brands'
 import { useCartStore } from '@/stores/carts'
 import { useCategoryStore } from '@/stores/categories'
 import { useProductsStore } from '@/stores/products'
+import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const baseImgUrl = 'http://localhost:3000/uploads/'
 const quantity = ref(1)
 const showFullScreen = ref(false)
 
@@ -65,7 +65,7 @@ function decreaseQuantity() {
           <img
             v-if="productStore.selectedImage"
             :key="productStore.selectedImage"
-            :src="baseImgUrl + 'products/' + productStore.selectedImage"
+            :src="getImageUrl('products', productStore.selectedImage)"
             :alt="productStore.selectedImage"
             class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300 cursor-pointer"
             @click="showFullScreen = true"
@@ -84,7 +84,7 @@ function decreaseQuantity() {
           class="w-full border border-teal-600/20 rounded-md group cursor-pointer"
         >
           <img
-            :src="baseImgUrl + 'products/' + image"
+            :src="getImageUrl('products', image)"
             :alt="image"
             @click="productStore.selectedImage = image"
             class="w-full object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
@@ -115,7 +115,7 @@ function decreaseQuantity() {
         </div>
         <img
           v-if="brandStore.singleBrand"
-          :src="baseImgUrl + 'brands/' + brandStore.singleBrand.image"
+          :src="getImageUrl('brands', brandStore.singleBrand.image)"
           class="w-32 lg:w-48"
         />
       </div>

@@ -1,10 +1,10 @@
 <script setup>
+import { getImageUrl } from '@/utils/helpers'
 import Card from './Card.vue'
 
 defineProps({
   data: Array,
 })
-
 </script>
 
 <template>
@@ -17,7 +17,7 @@ defineProps({
     >
       <Card
         :id="item._id"
-        :images="'http://localhost:3000/uploads/products/' + item.images[0]"
+        :images="getImageUrl('products', item.images[0])"
         :name="item.name"
         :price="item.price"
         :category="item.category"

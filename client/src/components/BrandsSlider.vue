@@ -1,6 +1,7 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
 import { useProductsStore } from '@/stores/products'
+import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -52,8 +53,6 @@ function goToPage(brandName) {
   const selectedBrand = brandsStore.brandData.find(
     (brand) => brand.name.toLowerCase() === brandName.toLowerCase(),
   )
-  console.log(selectedBrand)
-
   if (selectedBrand) {
     productsStore.selectedBrands = [selectedBrand]
     productsStore.searchProducts()
@@ -77,10 +76,7 @@ function goToPage(brandName) {
             width: `${100 / visibleBrands}%`,
           }"
         >
-          <img
-            :src="'http://localhost:3000/uploads/brands/' + brand.image"
-            class="w-28 h-28 object-contain"
-          />
+          <img :src="getImageUrl('brands', brand.image)" class="w-28 h-28 object-contain" />
         </div>
       </div>
       <button

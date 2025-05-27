@@ -5,6 +5,7 @@ import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
 import { useCategoryStore } from '@/stores/categories'
 import { useNotificationStore } from '@/stores/notification'
+import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 
@@ -59,7 +60,7 @@ onMounted(async () => {
     >
       <div class="relative">
         <img
-          :src="'http://localhost:3000/uploads/categories/' + category.image"
+          :src="getImageUrl('categories', category.image)"
           :alt="category.name"
           class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
         />
@@ -104,7 +105,7 @@ onMounted(async () => {
               class="relative flex items-center gap-4 bg-white p-3 rounded-lg shadow hover:bg-gray-100 transition z-20"
             >
               <img
-                :src="'http://localhost:3000/uploads/categories/' + subCategory.image"
+                :src="getImageUrl('categories', subCategory.image)"
                 :alt="subCategory.name"
                 class="w-24 h-20 object-cover rounded-md"
               />
