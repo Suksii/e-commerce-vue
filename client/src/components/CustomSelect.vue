@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   options: Array | String,
@@ -10,6 +10,7 @@ const props = defineProps({
 const emit = defineEmits(['update:selectedOption'])
 const showOptions = ref(false)
 const showSubOptions = ref(null)
+const optionName = ref('')
 
 function toggleOptions() {
   if (props.options.length > 0) {
@@ -27,7 +28,6 @@ function toggleSubOptions(suboption) {
 
 function selectOption(option) {
   emit('update:selectedOption', typeof option === 'object' ? option._id : option)
-  console.log(option)
   showOptions.value = false
   showSubOptions.value = null
 }
@@ -41,6 +41,34 @@ function selectSubOption(suboption) {
   showOptions.value = false
   showSubOptions.value = null
 }
+
+watch(
+  () => props.selectedOption,
+  (newVal) => {
+    if (!newVal) {
+      optionName.value = ''
+      return
+    }
+
+    const findOption = (optList) => {
+      for (const option of optList) {
+        if (typeof option === 'object') {
+          if (option._id === newVal) return option.name
+          if (option.subCategories) {
+            for (const sub of option.subCategories) {
+              if (sub._id === newVal) return sub.name
+            }
+          }
+        } else {
+          if (option === newVal) return option
+        }
+      }
+      return ''
+    }
+    optionName.value = findOption(props.options)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -50,7 +78,7 @@ function selectSubOption(suboption) {
         @click="toggleOptions"
         class="flex justify-between items-center px-3 py-2.5 cursor-pointer bg-gray-100"
       >
-        <span class="text-gray-800 font-medium">{{ props.selectedOption || 'Select option' }}</span>
+        <span class="text-gray-800 font-medium">{{ optionName || 'Select option' }}</span>
         <Icon
           icon="simple-line-icons:arrow-down"
           width="12"

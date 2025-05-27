@@ -87,7 +87,6 @@ export const useProductsStore = defineStore('products', () => {
         params,
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
       })
-      console.log(params.category)
 
       productsData.value = data
     } catch (error) {

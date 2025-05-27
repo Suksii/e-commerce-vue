@@ -2,9 +2,10 @@
 import FullScreenImages from '@/components/FullScreenImages.vue'
 import { useBrandStore } from '@/stores/brands'
 import { useCartStore } from '@/stores/carts'
+import { useCategoryStore } from '@/stores/categories'
 import { useProductsStore } from '@/stores/products'
 import { Icon } from '@iconify/vue'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -15,6 +16,7 @@ const showFullScreen = ref(false)
 const cartStore = useCartStore()
 const productStore = useProductsStore()
 const brandStore = useBrandStore()
+const categoryStore = useCategoryStore()
 
 const discountedPrice = (productPrice, productDiscount) => {
   return (productPrice - productPrice * (productDiscount / 100)).toFixed(2)
@@ -23,8 +25,16 @@ const discountedPrice = (productPrice, productDiscount) => {
 onMounted(async () => {
   if (route.params.id) {
     await productStore.getProduct(route.params.id)
+    await categoryStore.fetchCategories()
     await brandStore.fetchSingleBrand(productStore.singleProduct.brand)
   }
+})
+const subCategoryName = computed(() => {
+  const categoryId = productStore.singleProduct.category
+  const allSubCategories = categoryStore.categoriesData.flatMap(
+    (category) => category.subCategories,
+  )
+  return allSubCategories.find((sub) => sub._id === categoryId)
 })
 
 function increaseQuantity() {
@@ -66,7 +76,6 @@ function decreaseQuantity() {
         v-if="showFullScreen"
         v-model:showFullScreen="showFullScreen"
         :data="productStore.singleProduct.images"
-        :showFullScreen="showFullScreen"
       />
       <div class="grid grid-cols-4 gap-2 pt-2">
         <div
@@ -102,7 +111,7 @@ function decreaseQuantity() {
             </p>
           </div>
           <h2 class="text-3xl font-bold">{{ productStore.singleProduct.name }}</h2>
-          <p class="text-gray-700">{{ productStore.singleProduct.category }}</p>
+          <p class="text-gray-700 italic">{{ subCategoryName?.name }}</p>
         </div>
         <img
           v-if="brandStore.singleBrand"

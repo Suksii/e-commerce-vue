@@ -56,7 +56,7 @@ async function uploadImage(event) {
       },
     })
 
-    categoryData.image = data[1]
+    categoryStore.categoryData.image = data[1]
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification('Image upload failed')
@@ -68,9 +68,9 @@ const handleCategory = handleSubmit(async () => {
   try {
     const payload = {
       name: name.value,
-      image: categoryData.image,
+      image: categoryStore.categoryData.image,
       slug: name.value.toLowerCase().replaceAll(' ', '-'),
-      parentCategory: categoryData.selectedCategory || null,
+      parentCategory: categoryStore.categoryData.selectedCategory || null,
     }
     const response = categoryId.value
       ? await request.put('/api/category/update/' + categoryId.value, payload)
@@ -101,6 +101,7 @@ watch(
         name.value = category.name
         categoryStore.categoryData.image = category.image
         categoryStore.categoryData.selectedCategory = category.parentCategory || ''
+        console.log(categoryStore.categoryData.selectedCategory, category.parentCategory)
       }
     } else {
       resetForm()
@@ -127,7 +128,7 @@ watch(
             class="w-32 md:w-36 aspect-square relative"
           >
             <img
-              :src="'http://localhost:3000/uploads/categories/' + categoryData.image"
+              :src="'http://localhost:3000/uploads/categories/' + categoryStore.categoryData.image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
           </div>
