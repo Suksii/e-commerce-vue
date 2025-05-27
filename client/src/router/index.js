@@ -81,6 +81,10 @@ const router = createRouter({
   ],
 })
 
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'instant' })
+}
+
 router.beforeEach(async (to, from, next) => {
   const profileStore = useProfile()
   await profileStore.userProfile()
@@ -90,6 +94,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAdmin && !profileStore.currentUser?.isAdmin) {
     return next('/')
   }
+  scrollToTop()
   next()
 })
 export default router
