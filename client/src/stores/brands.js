@@ -1,8 +1,10 @@
 import { request } from '@/api'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useNotificationStore } from './notification'
 
 export const useBrandStore = defineStore('brands', () => {
+  const notificationStore = useNotificationStore()
   const brandData = ref([])
   const singleBrand = ref([])
 
@@ -24,5 +26,17 @@ export const useBrandStore = defineStore('brands', () => {
     }
   }
 
-  return { fetchBrands, brandData, fetchSingleBrand, singleBrand }
+  async function deleteBrand(id) {
+    try {
+      const response = await request.delete('/api/brand/delete/' + id)
+      notificationStore.isError = false
+      notificationStore.showNotification(response.data?.message || 'Brand deleted successfully')
+      await fetchBrands()
+    } catch (error) {
+      notificationStore.isError = true
+      notificationStore.showNotification(error.response?.data?.message || 'Failed to delete brand')
+      console.error(error)
+    }
+  }
+  return { fetchBrands, brandData, fetchSingleBrand, singleBrand, deleteBrand }
 })

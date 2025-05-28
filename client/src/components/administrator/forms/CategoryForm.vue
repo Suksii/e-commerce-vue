@@ -10,6 +10,7 @@ import { useValidation } from '@/composables/useValidation'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import FormError from '@/components/FormError.vue'
+import { getImageUrl } from '@/utils/helpers'
 
 const notificationStore = useNotificationStore()
 const categoryStore = useCategoryStore()

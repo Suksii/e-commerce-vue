@@ -1,8 +1,10 @@
 import { request } from '@/api'
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
+import { useNotificationStore } from './notification'
 
 export const useCategoryStore = defineStore('category', () => {
+  const notificationStore = useNotificationStore()
   const categoriesData = ref([])
   const singleCategoryData = ref([])
   const childCategoriesData = ref([])
@@ -39,7 +41,7 @@ export const useCategoryStore = defineStore('category', () => {
     }
   }
 
-  const fetchParentCategories = async () => {
+  async function fetchParentCategories() {
     try {
       const { data } = await request.get('/api/category/parent')
       categoryData.parentCategory = data.map((category) => ({
@@ -54,6 +56,19 @@ export const useCategoryStore = defineStore('category', () => {
     }
   }
 
+  async function deleteCategory(id) {
+    try {
+      const response = await request.delete('/api/category/delete/' + id)
+      notificationStore.isError = false
+      notificationStore.showNotification(response.data.message || 'Category deleted successfully')
+      await fetchCategories()
+    } catch (error) {
+      notificationStore.isError = true
+      notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
+      console.error(error)
+    }
+  }
+
   return {
     fetchCategories,
     categoriesData,
@@ -63,5 +78,6 @@ export const useCategoryStore = defineStore('category', () => {
     singleCategoryData,
     categoryData,
     fetchParentCategories,
+    deleteCategory,
   }
 })

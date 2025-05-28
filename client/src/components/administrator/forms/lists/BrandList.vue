@@ -1,32 +1,19 @@
 <script setup>
-import { request } from '@/api'
 import DeleteContent from '@/components/DeleteContent.vue'
 import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
 import { useBrandStore } from '@/stores/brands'
-import { useNotificationStore } from '@/stores/notification'
 import { getImageUrl } from '@/utils/helpers.js'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
+import { lazy } from 'zod'
+
+const displayedAction = ref(null)
 
 const brandStore = useBrandStore()
-const notificationStore = useNotificationStore()
-const displayedAction = ref(null)
 const { handleEdit: handleBrandEdit } = useEditActions()
 const { showModal, handleCloseModal, handleShowModal } = useModal()
 
-const handleDelete = async (id) => {
-  try {
-    const response = await request.delete('/api/brand/delete/' + id)
-    notificationStore.isError = false
-    notificationStore.showNotification(response.data?.message || 'Brand deleted successfully')
-    brandStore.fetchBrands()
-  } catch (error) {
-    notificationStore.isError = true
-    notificationStore.showNotification(error.response?.data?.message || 'Failed to delete brand')
-    console.error(error)
-  }
-}
 const showActions = (id) => {
   displayedAction.value = id
 }
@@ -53,6 +40,7 @@ onMounted(() => {
         <img
           :src="getImageUrl('brands', brand.image)"
           :alt="brand.name"
+          :loading="lazy"
           class="text-center w-54 h-54 object-contain mb-2 p-2"
         />
         <p class="text-3xl font-medium text-center">{{ brand.name }}</p>
@@ -73,7 +61,7 @@ onMounted(() => {
         <DeleteContent
           v-if="showModal === brand._id"
           @cancel="handleCloseModal"
-          @delete="handleDelete(brand._id)"
+          @delete="brandStore.deleteBrand(brand._id)"
           :item="brand.name"
         />
       </div>
