@@ -38,7 +38,7 @@ const { validateMin, validateMax } = useValidation()
     </div>
     <div class="flex flex-col divide-white divide-y px-4">
       <SingleFilter name="Sort" item="sort">
-        <SortContent class="pb-4"/>
+        <SortContent class="pb-4" />
       </SingleFilter>
       <SingleFilter name="Categories" item="categories">
         <div

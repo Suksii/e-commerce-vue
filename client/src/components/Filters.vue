@@ -1,9 +1,9 @@
 <script setup>
-import { usePriceRange } from '@/composables/usePriceRange'
-import { useProductsStore } from '@/stores/products'
-import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
-import SortContent from './SortContent.vue'
+import { Icon } from '@iconify/vue'
+import { useProductsStore } from '@/stores/products'
+import { usePriceRange } from '@/composables/usePriceRange'
+import SortContent from './contents/SortContent.vue'
 import Modal from './Modal.vue'
 
 const productsStore = useProductsStore()

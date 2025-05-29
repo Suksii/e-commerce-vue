@@ -4,7 +4,7 @@ import { useModal } from '@/composables/useModal'
 import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
-import DeleteContent from '../DeleteContent.vue'
+import DeleteContent from '../contents/DeleteContent.vue'
 
 const props = defineProps({
   category: Object,

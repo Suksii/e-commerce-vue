@@ -4,7 +4,7 @@ import { Icon } from '@iconify/vue'
 import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
 import { getImageUrl } from '@/utils/helpers'
-import DeleteContent from '../DeleteContent.vue'
+import DeleteContent from '../contents/DeleteContent.vue'
 
 defineProps({
   featured: Object,

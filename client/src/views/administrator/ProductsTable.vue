@@ -1,6 +1,6 @@
 <script setup>
 import { request } from '@/api'
-import DeleteContent from '@/components/DeleteContent.vue'
+import DeleteContent from '@/components/contents/DeleteContent.vue'
 import { useModal } from '@/composables/useModal'
 import { useNotificationStore } from '@/stores/notification'
 import { useProductsStore } from '@/stores/products'

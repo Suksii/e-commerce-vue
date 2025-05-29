@@ -2,7 +2,7 @@
 import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
 import { getImageUrl } from '@/utils/helpers'
-import DeleteContent from '../DeleteContent.vue'
+import DeleteContent from '../contents/DeleteContent.vue'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
@@ -39,18 +39,22 @@ const hideAction = () => {
     />
     <p class="text-3xl font-medium text-center">{{ brand.name }}</p>
     <div
-      v-if="displayedAction === brand._id"
-      class="absolute left-0 top-0 p-3 m-2 bg-teal-600/80 rounded-full cursor-pointer"
-      @click="handleBrandEdit(brand._id)"
+      v-show="displayedAction === brand._id"
+      class="absolute top-0 m-2 px-2 flex justify-between w-full"
     >
-      <Icon icon="lucide:edit" width="28" height="28" class="text-white" />
-    </div>
-    <div
-      v-if="displayedAction === brand._id"
-      class="absolute right-0 top-0 p-3 m-2 bg-red-600/80 rounded-full cursor-pointer"
-      @click="handleShowModal(brand._id)"
-    >
-      <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-white" />
+      <button
+        @click="handleBrandEdit(brand._id)"
+        class="p-3 bg-teal-600/80 rounded-full cursor-pointer"
+      >
+        <Icon icon="lucide:edit" width="28" height="28" class="text-white" />
+      </button>
+      <button
+        v-if="displayedAction === brand._id"
+        @click="handleShowModal(brand._id)"
+        class="p-3 bg-red-600/80 rounded-full cursor-pointer"
+      >
+        <Icon icon="fluent:delete-28-filled" width="28" height="28" class="text-white" />
+      </button>
     </div>
     <DeleteContent
       v-if="showModal === brand._id"

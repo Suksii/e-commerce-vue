@@ -2,11 +2,11 @@
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 import Modal from './Modal.vue'
-import ProfileContent from './ProfileContent.vue'
-import CartContent from './CartContent.vue'
 import { useCartStore } from '@/stores/carts'
 import SearchInput from './SearchInput.vue'
 import { RouterLink } from 'vue-router'
+import ProfileContent from './contents/ProfileContent.vue'
+import CartContent from './contents/CartContent.vue'
 
 const showProfileModal = ref(false)
 const showCartModal = ref(false)

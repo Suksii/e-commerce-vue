@@ -1,10 +1,9 @@
 <script setup>
 import ProductList from '@/components/administrator/lists/ProductList.vue'
-import FilterContent from '@/components/FilterContent.vue'
+import FilterContent from '@/components/contents/FilterContent.vue'
 import Filters from '@/components/Filters.vue'
 import FilterSidebar from '@/components/FilterSidebar.vue'
 import { usePriceRange } from '@/composables/usePriceRange'
-import { useProductsStore } from '@/stores/products'
 import { ref, watch } from 'vue'
 
 const showFilters = ref(false)
