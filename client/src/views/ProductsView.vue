@@ -1,5 +1,5 @@
 <script setup>
-import CardList from '@/components/CardList.vue'
+import ProductList from '@/components/administrator/lists/ProductList.vue'
 import FilterContent from '@/components/FilterContent.vue'
 import Filters from '@/components/Filters.vue'
 import FilterSidebar from '@/components/FilterSidebar.vue'
@@ -7,7 +7,6 @@ import { usePriceRange } from '@/composables/usePriceRange'
 import { useProductsStore } from '@/stores/products'
 import { ref, watch } from 'vue'
 
-const productsStore = useProductsStore()
 const showFilters = ref(false)
 const { isSmallScreen } = usePriceRange()
 
@@ -34,7 +33,7 @@ watch(showFilters, (show) => {
     <Filters />
     <div class="flex gap-6 w-full">
       <FilterSidebar />
-      <CardList :data="productsStore.productsData" class="w-full" />
+      <ProductList class="w-full" />
     </div>
   </div>
 </template>

@@ -5,7 +5,7 @@ import { useProductsStore } from '@/stores/products'
 import { useValidation } from '@/composables/useValidation'
 import { usePriceRange } from '@/composables/usePriceRange'
 import { onMounted } from 'vue'
-import CustomCheckBox from './CustomCheckBox.vue'
+import CustomCheckBox from './customInputs/CustomCheckBox.vue'
 import SingleFilter from './SingleFilter.vue'
 
 const brandStore = useBrandStore()

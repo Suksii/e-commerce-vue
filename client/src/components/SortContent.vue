@@ -1,6 +1,6 @@
 <script setup>
 import { useProductsStore } from '@/stores/products'
-import CustomRadio from './CustomRadio.vue'
+import CustomRadio from './customInputs/CustomRadio.vue'
 import { ref, watch } from 'vue'
 
 const productsStore = useProductsStore()

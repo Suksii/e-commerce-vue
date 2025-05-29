@@ -1,10 +1,11 @@
 <script setup>
-import { request } from '@/api'
+import { computed, watch } from 'vue'
+import { Icon } from '@iconify/vue'
 import { useCartStore } from '@/stores/carts'
 import { useNotificationStore } from '@/stores/notification'
 import { getImageUrl } from '@/utils/helpers'
-import { Icon } from '@iconify/vue'
-import { computed, watch } from 'vue'
+import { request } from '@/api'
+
 const props = defineProps({
   showCartModal: Boolean,
 })
@@ -63,6 +64,8 @@ const totalCartPrice = computed(() => {
 
       <img
         :src="getImageUrl('products', cart.product?.images[0])"
+        :alt="cart.product?.name"
+        loading="lazy"
         class="max-w-[60px] h-[110px] md:max-w-[80px] md:h-[140px] object-contain flex-2"
       />
       <div class="flex flex-col gap-2 overflow-hidden">

@@ -53,8 +53,9 @@ const zoomIn = () => {
         <img
           :src="getImageUrl('products', image)"
           :alt="image"
-          class="w-fit h-full object-cover transform transition-transform"
           :style="{ transform: `scale(${scale})` }"
+          loading="lazy"
+          class="w-fit h-full object-cover transform transition-transform"
         />
       </div>
     </div>
@@ -74,7 +75,12 @@ const zoomIn = () => {
           currentImageIndex === index ? 'border-4 border-teal-700' : 'border border-teal-600/20'
         "
       >
-        <img :src="getImageUrl('products', image)" :alt="image" class="object-cover w-full" />
+        <img
+          :src="getImageUrl('products', image)"
+          :alt="image"
+          loading="lazy"
+          class="object-cover w-full"
+        />
       </div>
     </div>
     <div class="hidden md:flex items-center gap-2 fixed left-0 top-0 m-4">

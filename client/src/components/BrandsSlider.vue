@@ -76,7 +76,12 @@ function goToPage(brandName) {
             width: `${100 / visibleBrands}%`,
           }"
         >
-          <img :src="getImageUrl('brands', brand.image)" class="w-28 h-28 object-contain" />
+          <img
+            :src="getImageUrl('brands', brand.image)"
+            :alt="brand.name"
+            loading="lazy"
+            class="w-28 h-28 object-contain"
+          />
         </div>
       </div>
       <button

@@ -1,7 +1,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import SingleFilter from './SingleFilter.vue'
-import CustomCheckBox from './CustomCheckBox.vue'
+import CustomCheckBox from './customInputs/CustomCheckBox.vue'
 import { useProductsStore } from '@/stores/products'
 import { useCategoryStore } from '@/stores/categories'
 import { useBrandStore } from '@/stores/brands'

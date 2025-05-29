@@ -1,6 +1,6 @@
 <script setup>
 import BrandForm from '@/components/administrator/forms/BrandForm.vue'
-import BrandList from '@/components/administrator/forms/lists/BrandList.vue'
+import BrandList from '@/components/administrator/lists/BrandList.vue'
 </script>
 
 <template>

@@ -5,12 +5,12 @@ import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import DeleteContent from '../DeleteContent.vue'
-import { lazy } from 'zod'
 
 const props = defineProps({
   category: Object,
-  onDelete: Function,
 })
+
+const emit = defineEmits(['delete'])
 
 const expandCategory = ref(null)
 const displayedAction = ref(null)
@@ -67,7 +67,7 @@ const hideAction = () => {
       <DeleteContent
         v-if="showModal === category._id"
         @cancel="handleCloseModal"
-        @delete="onDelete(category._id)"
+        @delete="emit('delete', category._id)"
         :item="category.name"
       />
       <div

@@ -71,6 +71,7 @@ onUnmounted(() => {
             <img
               :src="getImageUrl('featured', featured.image)"
               :alt="featured.name"
+              loading="lazy"
               class="w-full h-full object-cover object-center"
             />
           </div>
