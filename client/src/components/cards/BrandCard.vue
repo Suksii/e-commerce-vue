@@ -5,6 +5,7 @@ import { getImageUrl } from '@/utils/helpers'
 import DeleteContent from '../contents/DeleteContent.vue'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
+import { useHoverActions } from '@/composables/useHoverActions'
 
 const props = defineProps({
   brand: Object,
@@ -12,23 +13,15 @@ const props = defineProps({
 
 const emit = defineEmits(['delete'])
 
-const displayedAction = ref(null)
-
 const { handleEdit: handleBrandEdit } = useEditActions()
 const { showModal, handleCloseModal, handleShowModal } = useModal()
-
-const showActions = (id) => {
-  displayedAction.value = id
-}
-const hideAction = () => {
-  displayedAction.value = null
-}
+const { displayedAction, showActions, hideActions } = useHoverActions()
 </script>
 
 <template>
   <div
     @mouseenter="showActions(brand._id)"
-    @mouseleave="hideAction"
+    @mouseleave="hideActions"
     class="relative flex flex-col items-center justify-center gap-2 py-2 w-[300px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
   >
     <img

@@ -5,6 +5,7 @@ import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import DeleteContent from '../contents/DeleteContent.vue'
+import { useHoverActions } from '@/composables/useHoverActions'
 
 const props = defineProps({
   category: Object,
@@ -13,9 +14,9 @@ const props = defineProps({
 const emit = defineEmits(['delete'])
 
 const expandCategory = ref(null)
-const displayedAction = ref(null)
 const { handleEdit: handleCategoryEdit } = useEditActions()
 const { showModal, handleCloseModal, handleShowModal } = useModal()
+const { displayedAction, showActions, hideActions } = useHoverActions()
 
 const expand = (cat) => {
   expandCategory.value = cat
@@ -23,18 +24,12 @@ const expand = (cat) => {
 const close = () => {
   expandCategory.value = null
 }
-const displayAction = (id) => {
-  displayedAction.value = id
-}
-const hideAction = () => {
-  displayedAction.value = null
-}
 </script>
 
 <template>
   <div
-    @mouseenter="displayAction(category._id)"
-    @mouseleave="hideAction"
+    @mouseenter="showActions(category._id)"
+    @mouseleave="hideActions"
     @click.stop="expand(category._id)"
     class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-md transition-all duration-300 cursor-pointer group"
   >

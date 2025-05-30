@@ -5,6 +5,7 @@ import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
 import { getImageUrl } from '@/utils/helpers'
 import DeleteContent from '../contents/DeleteContent.vue'
+import { useHoverActions } from '@/composables/useHoverActions'
 
 defineProps({
   featured: Object,
@@ -12,22 +13,15 @@ defineProps({
 
 const emit = defineEmits(['delete'])
 
-const displayedAction = ref(null)
 const { handleEdit: handleFeaturedEdit } = useEditActions()
 const { showModal, handleShowModal, handleCloseModal } = useModal()
-
-const showActions = (id) => {
-  displayedAction.value = id
-}
-const hideAction = () => {
-  displayedAction.value = null
-}
+const { displayedAction, showActions, hideActions } = useHoverActions()
 </script>
 
 <template>
   <div
     @mouseenter="showActions(featured._id)"
-    @mouseleave="hideAction"
+    @mouseleave="hideActions"
     class="relative flex justify-center gap-2 w-full max-h-[350px] bg-white overflow-hidden transition group"
   >
     <div
