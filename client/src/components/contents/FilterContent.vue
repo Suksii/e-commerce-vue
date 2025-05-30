@@ -1,13 +1,13 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import SingleFilter from './SingleFilter.vue'
-import CustomCheckBox from './customInputs/CustomCheckBox.vue'
 import { useProductsStore } from '@/stores/products'
 import { useCategoryStore } from '@/stores/categories'
 import { useBrandStore } from '@/stores/brands'
 import { usePriceRange } from '@/composables/usePriceRange'
 import { useValidation } from '@/composables/useValidation'
 import SortContent from './SortContent.vue'
+import SingleFilter from '../SingleFilter.vue'
+import CustomCheckBox from '../customInputs/CustomCheckBox.vue'
 
 const props = defineProps({
   showFilters: Boolean,

@@ -30,5 +30,26 @@ export const useCartStore = defineStore('carts', () => {
       console.error('Error while fetching carts:', error)
     }
   }
-  return { addCart, getCarts, carts }
+  async function deleteCart(id) {
+    try {
+      const response = await request.delete('/api/cart/delete-cart/' + id)
+      notificationStore.isError = false
+      notificationStore.showNotification(response.data?.message)
+      await getCarts()
+    } catch (error) {
+      console.error('Error while removing the cart:', error)
+      notificationStore.isError = true
+      notificationStore.showNotification(error.response?.message || 'Error while removing the cart')
+    }
+  }
+  async function updateQuantity(id, type) {
+    try {
+      await request.patch('/api/cart/update-cart/' + id, { type })
+      await getCarts()
+    } catch (error) {
+      console.error('Error updating cart quantity:', error)
+    }
+  }
+
+  return { addCart, getCarts, deleteCart, updateQuantity, carts }
 })

@@ -76,8 +76,8 @@ const close = () => {
           <div
             v-for="subCategory in category.subCategories"
             :key="subCategory._id"
-            @mouseenter="displayAction(subCategory._id)"
-            @mouseleave="hideAction"
+            @mouseenter="showActions(subCategory._id)"
+            @mouseleave="hideActions"
             class="relative flex items-center gap-4 bg-white p-3 rounded-lg shadow hover:bg-gray-100 transition z-20"
           >
             <img
