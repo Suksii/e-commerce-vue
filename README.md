@@ -3,8 +3,11 @@
 ## About
 This project is a full-stack rent-a-car application built with Vue.js for the frontend and Node.js, Express and MongoDB for the backend.
 
-### Backend
+## Technical Details
+- **Technologies Used:** Vue, JavaScript
+- **State Managment:** Pinia
 
+### Backend
 - **Node.js**
 - **Express**
 - **MongoDB**
