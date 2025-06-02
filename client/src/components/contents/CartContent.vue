@@ -2,6 +2,7 @@
 import { computed, watch } from 'vue'
 import { useCartStore } from '@/stores/carts'
 import CartCard from '../cards/CartCard.vue'
+import ButtonLoading from '@/loading/ButtonLoading.vue'
 
 const props = defineProps({
   showCartModal: Boolean,

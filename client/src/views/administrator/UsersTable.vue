@@ -1,28 +1,14 @@
 <script setup>
-import { request } from '@/api'
+import { useProfile } from '@/stores/profile'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 
-const usersData = ref([])
 const sortBy = ref('username')
 const order = ref('desc')
-
-async function fetchUsers(sortField, sortOrder) {
-  try {
-    const { data } = await request.get('/api/users', {
-      params: {
-        sortBy: sortField,
-        order: sortOrder,
-      },
-    })
-    usersData.value = data
-  } catch (error) {
-    console.error(error)
-  }
-}
+const profileStore = useProfile()
 
 onMounted(async () => {
-  fetchUsers(sortBy.value, order.value)
+  profileStore.fetchUsers(sortBy.value, order.value)
 })
 
 const handleSort = (newSort) => {
@@ -32,7 +18,7 @@ const handleSort = (newSort) => {
     sortBy.value = newSort
     order.value = 'desc'
   }
-  fetchUsers(sortBy.value, order.value)
+  profileStore.fetchUsers(sortBy.value, order.value)
 }
 </script>
 
@@ -78,7 +64,11 @@ const handleSort = (newSort) => {
         </tr>
       </thead>
       <tbody class="w-full">
-        <tr v-for="(user, index) of usersData" :key="user._id" class="text-center even:bg-teal-100">
+        <tr
+          v-for="(user, index) of profileStore.usersData"
+          :key="user._id"
+          class="text-center even:bg-teal-100"
+        >
           <td>{{ index + 1 }}.</td>
           <td>{{ user._id }}</td>
           <td>{{ user.username }}</td>

@@ -106,6 +106,19 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
+  async function deleteProduct(id) {
+    try {
+      const response = await request.delete('/api/products/delete/' + id)
+      notificationStore.isError = false
+      notificationStore.showNotification(response.data.message || 'Product successfully deleted')
+      await getProducts(selectedSortBy.value, selectedOrder.value)
+    } catch (error) {
+      console.error('Failed to delete product:', error)
+      notificationStore.isError = true
+      notificationStore.showNotification(error.response?.message || 'Failed to delete product')
+    }
+  }
+
   watch(
     [
       debouncedSearch,
@@ -173,6 +186,7 @@ export const useProductsStore = defineStore('products', () => {
     productsData,
     allProductsData,
     getProduct,
+    deleteProduct,
     singleProduct,
     selectedImage,
     searchProducts,

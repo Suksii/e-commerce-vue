@@ -1,15 +1,12 @@
 <script setup>
-import { request } from '@/api'
-import DeleteContent from '@/components/contents/DeleteContent.vue'
-import { useModal } from '@/composables/useModal'
-import { useNotificationStore } from '@/stores/notification'
-import { useProductsStore } from '@/stores/products'
-import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { Icon } from '@iconify/vue'
+import { useModal } from '@/composables/useModal'
+import { useProductsStore } from '@/stores/products'
+import DeleteContent from '@/components/contents/DeleteContent.vue'
 
 const productStore = useProductsStore()
-const notificationStore = useNotificationStore()
 const router = useRouter()
 const { showModal, handleCloseModal, handleShowModal } = useModal()
 
@@ -22,19 +19,6 @@ onMounted(() => {
 
 const discountedPrice = (product) => {
   return (product.price - (product.price * product.discount) / 100).toFixed(2)
-}
-
-async function deleteProduct(id) {
-  try {
-    const response = await request.delete('/api/products/delete/' + id)
-    notificationStore.isError = false
-    notificationStore.showNotification(response.data.message || 'Product successfully deleted')
-    productStore.getProducts(sortBy.value, order.value)
-  } catch (error) {
-    console.error('Failed to delete product:', error)
-    notificationStore.isError = true
-    notificationStore.showNotification(error.response?.message || 'Failed to delete product')
-  }
 }
 
 const handleSort = (newSort) => {
@@ -144,7 +128,7 @@ const handleSort = (newSort) => {
             <DeleteContent
               v-if="showModal === product._id"
               @cancel="handleCloseModal"
-              @delete="deleteProduct(product._id)"
+              @delete="productStore.deleteProduct(product._id)"
               :item="product.name"
             />
             <Icon
