@@ -1,6 +1,9 @@
 <script setup>
+import ButtonLoading from '@/loading/ButtonLoading.vue'
+
 defineProps({
   item: String,
+  loading: Boolean,
 })
 
 defineEmits(['cancel', 'delete'])
@@ -16,7 +19,14 @@ defineEmits(['cancel', 'delete'])
       </p>
       <div class="flex justify-end space-x-4">
         <button @click="$emit('cancel')" class="px-4 py-2 close-button">Cancel</button>
-        <button @click="$emit('delete')" class="px-4 py-2 delete-button">Delete</button>
+        <button
+          :disabled="loading"
+          @click="$emit('delete')"
+          class="px-4 py-2 delete-button min-w-28"
+        >
+          <ButtonLoading v-if="loading" />
+          <span v-else>Delete</span>
+        </button>
       </div>
     </div>
   </div>

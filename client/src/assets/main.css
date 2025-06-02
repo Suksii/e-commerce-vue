@@ -4,16 +4,16 @@
   @apply min-h-screen w-full relative bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 flex justify-center items-center;
 }
 .save-button {
-  @apply bg-teal-600 px-4 py-2 rounded-md cursor-pointer text-white font-medium shadow-md transition-all duration-200 hover:bg-teal-700 hover:shadow-lg;
+  @apply bg-teal-600 flex justify-center items-center px-4 py-2 rounded-md cursor-pointer text-white font-medium shadow-md transition-all duration-200 hover:bg-teal-700 hover:shadow-lg;
 }
 .delete-button {
-  @apply bg-red-600 text-white rounded-md hover:bg-red-700 font-medium cursor-pointer;
+  @apply bg-red-600 flex justify-center items-center text-white rounded-md hover:bg-red-700 font-medium cursor-pointer;
 }
 .close-button {
   @apply md:min-w-24 border-2 border-gray-500 px-4 py-2 rounded-md cursor-pointer text-gray-700 font-medium shadow-md transition-all duration-200 hover:bg-gray-600 hover:text-white hover:border-gray-700;
 }
 .register-button {
-  @apply w-full py-3 px-4 rounded-md cursor-pointer bg-teal-600 relative overflow-hidden;
+  @apply w-full flex justify-center items-center py-3 px-4 rounded-md cursor-pointer bg-teal-600 relative overflow-hidden;
 }
 .register-button span:nth-child(1) {
   @apply absolute inset-0 w-16 h-16 bg-teal-400 opacity-50 blur-md rotate-45 transition-all duration-500 ease-out group-hover:w-[300%] group-hover:h-[300%];

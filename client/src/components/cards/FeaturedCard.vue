@@ -9,6 +9,7 @@ import { useHoverActions } from '@/composables/useHoverActions'
 
 defineProps({
   featured: Object,
+  loading: Boolean,
 })
 
 const emit = defineEmits(['delete'])
@@ -63,6 +64,7 @@ const { displayedAction, showActions, hideActions } = useHoverActions()
       @cancel="handleCloseModal"
       @delete="emit('delete', featured._id)"
       :item="featured.name"
+      :loading="loading"
     />
   </div>
 </template>

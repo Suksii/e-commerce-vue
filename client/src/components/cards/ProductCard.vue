@@ -1,4 +1,5 @@
 <script setup>
+import ButtonLoading from '@/loading/ButtonLoading.vue'
 import { useCartStore } from '@/stores/carts'
 import { getImageUrl } from '@/utils/helpers'
 
@@ -36,7 +37,10 @@ const cartStore = useCartStore()
           <span class="text-lg font-bold text-gray-900">€{{ product.price }}</span>
           <span v-if="product.discount" class="text-sm text-red-500">-{{ product.discount }}%</span>
         </div>
-        <button class="save-button" @click="cartStore.addCart(product._id, 1)">Add to Cart</button>
+        <button class="save-button min-w-32" @click="cartStore.addCart(product._id, 1)">
+          <ButtonLoading v-if="cartStore.loadingCart === product._id" />
+          <span v-else>Add to Cart</span>
+        </button>
       </div>
     </div>
   </div>

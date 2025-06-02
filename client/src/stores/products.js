@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { request } from '@/api'
@@ -29,6 +29,15 @@ export const useProductsStore = defineStore('products', () => {
   const genderOptions = ref([])
   const seasonOptions = ref([])
 
+  const loading = reactive({
+    getProducts: false,
+    searchProducts: false,
+    deleteProduct: false,
+    getProduct: false,
+    updateProduct: false,
+    addProduct: false,
+  })
+
   const selectedSortBy = ref('name')
   const selectedOrder = ref('desc')
 
@@ -53,6 +62,7 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   async function getProducts(sortBy = 'name', order = 'desc') {
+    loading.getProducts = true
     try {
       const { data } = await request.get('/api/products', {
         params: {
@@ -64,10 +74,13 @@ export const useProductsStore = defineStore('products', () => {
       allProductsData.value = [...data]
     } catch (error) {
       console.error('Failed to fetch products:', error)
+    } finally {
+      loading.getProducts = false
     }
   }
 
   async function searchProducts() {
+    loading.searchProducts = true
     const params = {
       name: debouncedSearch.value || undefined,
       brand: selectedBrands.value?.length ? selectedBrands.value.map((b) => b._id) : undefined,
@@ -91,9 +104,12 @@ export const useProductsStore = defineStore('products', () => {
       productsData.value = data
     } catch (error) {
       console.error(error)
+    } finally {
+      loading.searchProducts = false
     }
   }
   async function getProduct(id) {
+    loading.getProduct = true
     try {
       const { data } = await request.get('/api/products/' + id)
 
@@ -103,10 +119,13 @@ export const useProductsStore = defineStore('products', () => {
       singleProduct.value = data
     } catch (error) {
       console.error('Error fetching specific product', error)
+    } finally {
+      loading.getProduct = false
     }
   }
 
   async function deleteProduct(id) {
+    loading.deleteProduct = true
     try {
       const response = await request.delete('/api/products/delete/' + id)
       notificationStore.isError = false
@@ -116,6 +135,8 @@ export const useProductsStore = defineStore('products', () => {
       console.error('Failed to delete product:', error)
       notificationStore.isError = true
       notificationStore.showNotification(error.response?.message || 'Failed to delete product')
+    } finally {
+      loading.deleteProduct = false
     }
   }
 
@@ -203,5 +224,6 @@ export const useProductsStore = defineStore('products', () => {
     seasonOptions,
     selectedSortBy,
     selectedOrder,
+    loading,
   }
 })

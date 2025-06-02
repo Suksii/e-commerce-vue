@@ -9,9 +9,11 @@ import { request } from '@/api'
 import cartImage from '@/assets/cartImage.jpg'
 import { useValidation } from '@/composables/useValidation'
 import FormError from '@/components/FormError.vue'
+import ButtonLoading from '@/loading/ButtonLoading.vue'
 
 const router = useRouter()
 const isPasswordVisible = ref(false)
+const loading = ref(false)
 const notificationStore = useNotificationStore()
 
 const { loginSchema } = useValidation()
@@ -22,6 +24,7 @@ const { value: username, errorMessage: usernameError } = useField('username')
 const { value: password, errorMessage: passwordError } = useField('password')
 
 const handleLogin = handleSubmit(async () => {
+  loading.value = true
   try {
     const response = await request.post('/api/users/login', {
       username: username.value,
@@ -35,6 +38,8 @@ const handleLogin = handleSubmit(async () => {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Login failed')
     console.error('Login error', error.response.data.message)
+  } finally {
+    loading.value = false
   }
 })
 </script>
@@ -87,9 +92,12 @@ const handleLogin = handleSubmit(async () => {
             <FormError :error="passwordError" />
           </div>
           <button class="register-button group">
-            <span class=""></span>
-            <span class=""></span>
-            <span class="">Login</span>
+            <ButtonLoading v-if="loading" />
+            <p v-else>
+              <span class=""></span>
+              <span class=""></span>
+              <span class="">Login</span>
+            </p>
           </button>
         </form>
       </div>

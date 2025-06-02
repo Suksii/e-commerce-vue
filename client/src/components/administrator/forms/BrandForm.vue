@@ -10,6 +10,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useValidation } from '@/composables/useValidation'
 import FormError from '@/components/FormError.vue'
 import { getImageUrl } from '@/utils/helpers'
+import ButtonLoading from '@/loading/ButtonLoading.vue'
 
 const notificationStore = useNotificationStore()
 const brandStore = useBrandStore()
@@ -50,6 +51,7 @@ async function uploadImage(event) {
 }
 
 const handleBrand = handleSubmit(async () => {
+  brandId ? (brandStore.loading.updateBrand = true) : (brandStore.loading.addBrand = true)
   try {
     const response = brandId.value
       ? await request.put('/api/brand/update/' + brandId.value, {
@@ -72,6 +74,8 @@ const handleBrand = handleSubmit(async () => {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
+  } finally {
+    brandId ? (brandStore.loading.updateBrand = false) : (brandStore.loading.addBrand = false)
   }
 })
 
@@ -143,8 +147,15 @@ watch(
         >
           Cancel
         </button>
-        <button class="min-w-42 w-full my-4 h-11 save-button">
-          {{ brandId ? 'Save Changes' : 'Add Brand' }}
+        <button
+          :disabled="brandStore.loading.addBrand || brandStore.loading.updateBrand"
+          class="min-w-42 w-full my-4 h-11 save-button"
+        >
+          <ButtonLoading
+            v-if="brandStore.loading.addBrand || brandStore.loading.updateBrand"
+            :spinnerColor="red"
+          />
+          <span v-else>{{ brandId ? 'Save Changes' : 'Add Brand' }}</span>
         </button>
       </div>
     </form>

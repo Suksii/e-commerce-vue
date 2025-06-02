@@ -3,8 +3,6 @@ import BrandsSlider from '@/components/BrandsSlider.vue'
 import CategorySection from '@/components/CategorySection.vue'
 import FeaturedSection from '@/components/FeaturedSection.vue'
 import FooterSection from '@/components/FooterSection.vue'
-import ButtonLoading from '@/loading/ButtonLoading.vue'
-import Loading from '@/loading/Loading.vue'
 </script>
 
 <template>

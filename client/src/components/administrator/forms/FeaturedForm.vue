@@ -3,6 +3,7 @@ import { request } from '@/api'
 import FormError from '@/components/FormError.vue'
 import { useEditActions } from '@/composables/useEditActions'
 import { useValidation } from '@/composables/useValidation'
+import ButtonLoading from '@/loading/ButtonLoading.vue'
 import { useFeaturedStore } from '@/stores/featured'
 import { useNotificationStore } from '@/stores/notification'
 import { getImageUrl } from '@/utils/helpers'
@@ -48,6 +49,9 @@ async function uploadImage(event) {
 }
 
 const handleFeatured = handleSubmit(async () => {
+  featuredId
+    ? (featuredStore.loading.updateFeatured = true)
+    : (featuredStore.loading.addFeatured = true)
   try {
     const payload = {
       title: featuredData.title,
@@ -70,6 +74,10 @@ const handleFeatured = handleSubmit(async () => {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
+  } finally {
+    featuredId
+      ? (featuredStore.loading.updateFeatured = false)
+      : (featuredStore.loading.addFeatured = false)
   }
 })
 
@@ -154,7 +162,13 @@ const removeImage = () => {
           Cancel
         </button>
         <button class="min-w-42 w-full my-4 h-11 save-button">
-          {{ featuredId ? 'Save Changes' : 'Add Featured' }}
+          <ButtonLoading
+            v-if="featuredStore.loading.addFeatured || featuredStore.loading.updateFeatured"
+            :spinnerColor="red"
+          />
+          <span v-else>
+            {{ featuredId ? 'Save Changes' : 'Add Featured' }}
+          </span>
         </button>
       </div>
     </form>

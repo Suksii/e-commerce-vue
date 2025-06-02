@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { useCategoryStore } from '@/stores/categories'
 import CategoryCard from '@/components/cards/CategoryCard.vue'
+import Loading from '@/loading/Loading.vue'
 
 const categoryStore = useCategoryStore()
 
@@ -17,11 +18,14 @@ onMounted(async () => {
     v-if="categoryStore.categoriesData.length"
     class="container py-10 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8"
   >
+    <Loading v-if="categoryStore.loading.fetchCategories" />
     <CategoryCard
+      v-else
       v-for="category in categoryStore.categoriesData"
       :key="category._id"
       :category="category"
       @delete="categoryStore.deleteCategory"
+      :loading="categoryStore.loading.deleteCategory"
     />
   </div>
 

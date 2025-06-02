@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { request } from '@/api'
 import { useNotificationStore } from '@/stores/notification'
 import { useEditActions } from '@/composables/useEditActions'
@@ -11,6 +11,7 @@ import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import FormError from '@/components/FormError.vue'
 import { getImageUrl } from '@/utils/helpers'
+import ButtonLoading from '@/loading/ButtonLoading.vue'
 
 const notificationStore = useNotificationStore()
 const categoryStore = useCategoryStore()
@@ -66,6 +67,9 @@ async function uploadImage(event) {
 }
 
 const handleCategory = handleSubmit(async () => {
+  categoryId
+    ? (categoryStore.loading.updateCategory = true)
+    : (categoryStore.loading.addCategory = true)
   try {
     const payload = {
       name: name.value,
@@ -89,6 +93,10 @@ const handleCategory = handleSubmit(async () => {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
     console.error(error)
+  } finally {
+    categoryId
+      ? (categoryStore.loading.updateCategory = false)
+      : (categoryStore.loading.addCategory = false)
   }
 })
 
@@ -171,7 +179,10 @@ watch(
           Cancel
         </button>
         <button class="min-w-42 w-full my-4 h-11 save-button">
-          {{ categoryId ? 'Save Changes' : 'Add Category' }}
+          <ButtonLoading
+            v-if="categoryStore.loading.addCategory || categoryStore.loading.updateCategory"
+          />
+          <span v-else>{{ categoryId ? 'Save Changes' : 'Add Category' }}</span>
         </button>
       </div>
     </form>

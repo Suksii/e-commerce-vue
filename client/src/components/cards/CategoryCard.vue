@@ -9,6 +9,7 @@ import { useHoverActions } from '@/composables/useHoverActions'
 
 const props = defineProps({
   category: Object,
+  loading: Boolean,
 })
 
 const emit = defineEmits(['delete'])
@@ -64,6 +65,7 @@ const close = () => {
         @cancel="handleCloseModal"
         @delete="emit('delete', category._id)"
         :item="category.name"
+        :loading="loading"
       />
       <div
         v-if="expandCategory === category._id && category.subCategories.length"
@@ -109,6 +111,7 @@ const close = () => {
               @cancel="handleCloseModal"
               @delete="onDelete(subCategory._id)"
               :item="subCategory.name"
+              :loading="loading"
             />
           </div>
         </div>

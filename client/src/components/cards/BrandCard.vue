@@ -4,11 +4,11 @@ import { useModal } from '@/composables/useModal'
 import { getImageUrl } from '@/utils/helpers'
 import DeleteContent from '../contents/DeleteContent.vue'
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
 import { useHoverActions } from '@/composables/useHoverActions'
 
 const props = defineProps({
   brand: Object,
+  loading: Boolean,
 })
 
 const emit = defineEmits(['delete'])
@@ -42,7 +42,6 @@ const { displayedAction, showActions, hideActions } = useHoverActions()
         <Icon icon="lucide:edit" width="28" height="28" class="text-white" />
       </button>
       <button
-        v-if="displayedAction === brand._id"
         @click="handleShowModal(brand._id)"
         class="p-3 bg-red-600/80 rounded-full cursor-pointer"
       >
@@ -54,6 +53,7 @@ const { displayedAction, showActions, hideActions } = useHoverActions()
       @cancel="handleCloseModal"
       @delete="emit('delete', brand._id)"
       :item="brand.name"
+      :loading="loading"
     />
   </div>
 </template>

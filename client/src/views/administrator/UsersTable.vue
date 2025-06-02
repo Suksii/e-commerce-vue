@@ -1,4 +1,5 @@
 <script setup>
+import Loading from '@/loading/Loading.vue'
 import { useProfile } from '@/stores/profile'
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from 'vue'
@@ -24,7 +25,8 @@ const handleSort = (newSort) => {
 
 <template>
   <div class="overflow-x-auto w-[95%] md:w-[80%] h-fit mx-auto my-12">
-    <table class="w-full table-auto border-collapse border border-gray-200 min-w-[600px]">
+    <Loading v-if="profileStore.loading.getUsers" />
+    <table v-else class="w-full table-auto border-collapse border border-gray-200 min-w-[600px]">
       <thead class="w-full bg-teal-600 text-white">
         <tr>
           <th>#</th>

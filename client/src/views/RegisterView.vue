@@ -7,11 +7,15 @@ import { useValidation } from '@/composables/useValidation'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import FormError from '@/components/FormError.vue'
+import { useProfile } from '@/stores/profile'
+import { ref } from 'vue'
+import ButtonLoading from '@/loading/ButtonLoading.vue'
 
 const router = useRouter()
 const notificationStore = useNotificationStore()
 
 const { registerSchema } = useValidation()
+const loading = ref(false)
 
 const { errors, handleSubmit } = useForm({ validationSchema: toTypedSchema(registerSchema) })
 
@@ -21,6 +25,7 @@ const { value: password, errorMessage: passwordError } = useField('password')
 const { value: confirmPassword, errorMessage: confirmPasswordError } = useField('confirmPassword')
 
 const handleRegister = handleSubmit(async () => {
+  loading.value = true
   try {
     const response = await request.post('/api/users/register', {
       username: username.value,
@@ -35,6 +40,8 @@ const handleRegister = handleSubmit(async () => {
     notificationStore.showNotification(error.response.data.message || 'Registration failed')
     notificationStore.isError = true
     console.error('Registration error:', error.response.data.message)
+  } finally {
+    loading.value = false
   }
 })
 </script>
@@ -95,9 +102,12 @@ const handleRegister = handleSubmit(async () => {
             <FormError :error="confirmPasswordError" />
           </div>
           <button class="register-button group">
-            <span class=""></span>
-            <span class=""></span>
-            <span class="">Register</span>
+            <ButtonLoading v-if="loading" />
+            <p v-else>
+              <span class=""></span>
+              <span class=""></span>
+              <span class="">Register</span>
+            </p>
           </button>
         </form>
       </div>

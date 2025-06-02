@@ -1,5 +1,7 @@
 <script setup>
 import FullScreenImages from '@/components/FullScreenImages.vue'
+import ButtonLoading from '@/loading/ButtonLoading.vue'
+import Loading from '@/loading/Loading.vue'
 import { useBrandStore } from '@/stores/brands'
 import { useCartStore } from '@/stores/carts'
 import { useCategoryStore } from '@/stores/categories'
@@ -50,7 +52,8 @@ function decreaseQuantity() {
 </script>
 
 <template>
-  <div class="flex flex-col xl:flex-row gap-12 w-[90%] xl:w-[80%] mx-auto py-12">
+  <Loading v-if="productStore.loading.getProduct" />
+  <div v-else class="flex flex-col xl:flex-row gap-12 w-[90%] xl:w-[80%] mx-auto py-12">
     <div class="flex-2">
       <div
         class="border border-teal-600/20 flex justify-center items-center group overflow-hidden rounded-md"
@@ -162,7 +165,8 @@ function decreaseQuantity() {
         class="min-w-74 my-4 save-button"
         @click="cartStore.addCart(productStore.singleProduct._id, quantity)"
       >
-        Add to Cart
+        <ButtonLoading v-if="cartStore.loadingCart === productStore.singleProduct._id" />
+        <span v-else> Add to Cart </span>
       </button>
       <div class="flex gap-4 w-full py-4">
         <p

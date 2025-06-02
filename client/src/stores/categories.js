@@ -15,20 +15,34 @@ export const useCategoryStore = defineStore('category', () => {
     selectedCategory: '',
   })
 
+  const loading = reactive({
+    fetchCategories: false,
+    getChildCategories: false,
+    deleteCategory: false,
+    updateCategory: false,
+    addCategory: false,
+  })
+
   async function fetchCategories() {
+    loading.fetchCategories = true
     try {
       const { data } = await request.get('/api/category/nested')
       categoriesData.value = data
     } catch (error) {
       console.error('Failed to fetch categories: ', error)
+    } finally {
+      loading.fetchCategories = false
     }
   }
   async function getChildCategories() {
+    loading.getChildCategories = true
     try {
       const { data } = await request.get('/api/category/child')
       childCategoriesData.value = data
     } catch (error) {
       console.error('Error fetching child categories:', error)
+    } finally {
+      loading.getChildCategories = false
     }
   }
 
@@ -53,10 +67,12 @@ export const useCategoryStore = defineStore('category', () => {
       notificationStore.isError = true
       notificationStore.showNotification('Error while fetching data')
       console.error('Error while fetching data:', error)
+    } finally {
     }
   }
 
   async function deleteCategory(id) {
+    loading.deleteCategory = true
     try {
       const response = await request.delete('/api/category/delete/' + id)
       notificationStore.isError = false
@@ -66,6 +82,8 @@ export const useCategoryStore = defineStore('category', () => {
       notificationStore.isError = true
       notificationStore.showNotification(error.response.data.message || 'Internal Server Error')
       console.error(error)
+    } finally {
+      loading.deleteCategory = false
     }
   }
 
@@ -79,5 +97,6 @@ export const useCategoryStore = defineStore('category', () => {
     categoryData,
     fetchParentCategories,
     deleteCategory,
+    loading,
   }
 })

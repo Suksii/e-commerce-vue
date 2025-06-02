@@ -1,6 +1,6 @@
 import { request } from '@/api'
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useNotificationStore } from './notification'
 import { useRouter } from 'vue-router'
 
@@ -12,6 +12,12 @@ export const useProfile = defineStore('profile', () => {
   const isAdmin = ref(false)
   const username = ref('')
   const usersData = ref([])
+
+  const loading = reactive({
+    getUsers: false,
+    logoutUser: false,
+    updateUser: false,
+  })
 
   const isAuthenticated = computed(() => !!currentUser.value)
 
@@ -29,6 +35,7 @@ export const useProfile = defineStore('profile', () => {
   }
 
   async function handleLogout() {
+    loading.logoutUser = true
     try {
       const response = await request.post('api/users/logout')
       notificationStore.isError = false
@@ -38,11 +45,13 @@ export const useProfile = defineStore('profile', () => {
     } catch (error) {
       notificationStore.isError = true
       notificationStore.showNotification('Failed to logout')
-
       console.error('Failed to logout', error)
+    } finally {
+      loading.logoutUser = false
     }
   }
   async function updateUser(id) {
+    loading.updateUser = true
     try {
       const response = await request.patch('/api/users/update/' + id, {
         username: username.value,
@@ -56,10 +65,13 @@ export const useProfile = defineStore('profile', () => {
       notificationStore.showNotification(
         error.response?.data?.message || 'Failed to update username',
       )
+    } finally {
+      loading.updateUser = false
     }
   }
 
   async function fetchUsers(sortField, sortOrder) {
+    loading.getUsers = true
     try {
       const { data } = await request.get('/api/users', {
         params: {
@@ -70,6 +82,8 @@ export const useProfile = defineStore('profile', () => {
       usersData.value = data
     } catch (error) {
       console.error(error)
+    } finally {
+      loading.getUsers = false
     }
   }
 
@@ -82,5 +96,6 @@ export const useProfile = defineStore('profile', () => {
     isAuthenticated,
     username,
     usersData,
+    loading,
   }
 })

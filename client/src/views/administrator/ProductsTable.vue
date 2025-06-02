@@ -5,6 +5,7 @@ import { Icon } from '@iconify/vue'
 import { useModal } from '@/composables/useModal'
 import { useProductsStore } from '@/stores/products'
 import DeleteContent from '@/components/contents/DeleteContent.vue'
+import Loading from '@/loading/Loading.vue'
 
 const productStore = useProductsStore()
 const router = useRouter()
@@ -34,7 +35,8 @@ const handleSort = (newSort) => {
 
 <template>
   <div class="overflow-x-auto w-[95%] md:w-[80%] h-fit mx-auto my-12">
-    <table class="w-full table-auto border-collapse border border-gray-200 min-w-[600px]">
+    <Loading v-if="productStore.loading.getProducts" />
+    <table v-else class="w-full table-auto border-collapse border border-gray-200 min-w-[600px]">
       <thead class="w-full bg-teal-600 text-white">
         <tr>
           <th>#</th>
@@ -130,6 +132,7 @@ const handleSort = (newSort) => {
               @cancel="handleCloseModal"
               @delete="productStore.deleteProduct(product._id)"
               :item="product.name"
+              :loading="productStore.loading.deleteProduct"
             />
             <Icon
               icon="lucide:edit"

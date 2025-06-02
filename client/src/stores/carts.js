@@ -1,13 +1,16 @@
 import { request } from '@/api'
 import { defineStore } from 'pinia'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useNotificationStore } from './notification'
 
 export const useCartStore = defineStore('carts', () => {
   const carts = reactive([])
   const notificationStore = useNotificationStore()
 
+  const loadingCart = ref(null)
+
   async function addCart(id, quantity) {
+    loadingCart.value = id
     try {
       const response = await request.post('/api/cart/add-cart/' + id, { quantity })
       notificationStore.isError = false
@@ -19,6 +22,8 @@ export const useCartStore = defineStore('carts', () => {
       notificationStore.isError = true
       notificationStore.showNotification(error.response?.data?.message)
       console.error('Error while adding product to cart:', error)
+    } finally {
+      loadingCart.value = null
     }
   }
   async function getCarts() {
@@ -51,5 +56,5 @@ export const useCartStore = defineStore('carts', () => {
     }
   }
 
-  return { addCart, getCarts, deleteCart, updateQuantity, carts }
+  return { addCart, getCarts, deleteCart, updateQuantity, carts, loadingCart }
 })

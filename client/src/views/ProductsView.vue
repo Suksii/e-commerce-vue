@@ -4,10 +4,13 @@ import FilterContent from '@/components/contents/FilterContent.vue'
 import Filters from '@/components/Filters.vue'
 import FilterSidebar from '@/components/FilterSidebar.vue'
 import { usePriceRange } from '@/composables/usePriceRange'
+import Loading from '@/loading/Loading.vue'
+import { useProductsStore } from '@/stores/products'
 import { ref, watch } from 'vue'
 
 const showFilters = ref(false)
 const { isSmallScreen } = usePriceRange()
+const productsStore = useProductsStore()
 
 watch(showFilters, (show) => {
   if (show) {
@@ -32,7 +35,8 @@ watch(showFilters, (show) => {
     <Filters />
     <div class="flex gap-6 w-full">
       <FilterSidebar />
-      <ProductList class="w-full" />
+      <Loading v-if="productsStore.loading.searchProducts" />
+      <ProductList v-else class="w-full" />
     </div>
   </div>
 </template>

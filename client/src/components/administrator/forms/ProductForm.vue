@@ -13,6 +13,7 @@ import FormError from '@/components/FormError.vue'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { getImageUrl } from '@/utils/helpers'
+import ButtonLoading from '@/loading/ButtonLoading.vue'
 
 const route = useRoute()
 
@@ -45,6 +46,7 @@ const { value: selectedBrand, errorMessage: brandError } = useField('brand')
 images.value = []
 
 const handleProduct = handleSubmit(async () => {
+  id ? (productStore.loading.updateProduct = true) : (productStore.loading.addProduct = true)
   try {
     const payload = {
       name: name.value,
@@ -67,6 +69,8 @@ const handleProduct = handleSubmit(async () => {
     notificationStore.isError = true
     notificationStore.showNotification(error.response.data?.message)
     console.error(error)
+  } finally {
+    id ? (productStore.loading.updateProduct = false) : (productStore.loading.addProduct = false)
   }
 })
 async function uploadImage(event) {
@@ -239,7 +243,12 @@ onMounted(async () => {
       </div>
 
       <button class="min-w-42 w-full my-4 h-14 save-button">
-        {{ id ? 'Save Changes' : 'Add Product' }}
+        <ButtonLoading
+          v-if="productStore.loading.addProduct || productStore.loading.updateProduct"
+        />
+        <span v-else>
+          {{ id ? 'Save Changes' : 'Add Product' }}
+        </span>
       </button>
     </form>
   </div>
