@@ -31,8 +31,7 @@ const close = () => {
   <div
     @mouseenter="showActions(category._id)"
     @mouseleave="hideActions"
-    @click.stop="expand(category._id)"
-    class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-md transition-all duration-300 cursor-pointer group"
+    class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-md transition-all duration-300 group"
   >
     <div class="relative">
       <img
@@ -41,7 +40,7 @@ const close = () => {
         loading="lazy"
         class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
       />
-      <div class="p-6 flex flex-col items-center">
+      <div @click.stop="expand(category._id)" class="p-6 flex justify-center items-center cursor-pointer">
         <p class="text-2xl font-semibold text-gray-800 group-hover:text-teal-600 text-center">
           {{ category.name }}
         </p>
