@@ -27,7 +27,7 @@ app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["https://e-commerce-vue.vercel.app"],
     credentials: true,
   })
 );
