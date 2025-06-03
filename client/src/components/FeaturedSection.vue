@@ -53,7 +53,7 @@ onUnmounted(() => {
         <div
           v-for="featured in featuredStore.featuredData"
           :key="featured._id"
-          class="flex items-center w-full h-auto max-h-[500px] relative shrink-0"
+          class="flex items-center w-full max-h-[75vh] aspect-video relative shrink-0"
         >
           <div
             v-if="

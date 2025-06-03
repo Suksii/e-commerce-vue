@@ -12,7 +12,7 @@ export const categoryItems = [
       {
         id: 1,
         title: 'Shoes for men',
-        category: 'Shoes',
+        category: 'Footwear',
         gender: 'Male',
       },
       {
@@ -36,7 +36,7 @@ export const categoryItems = [
       {
         id: 1,
         title: 'Shoes for women',
-        category: 'Shoes',
+        category: 'Footwear',
         gender: 'Female',
       },
       {
@@ -60,7 +60,7 @@ export const categoryItems = [
       {
         id: 1,
         title: 'Shoes for kids',
-        category: 'Shoes',
+        category: 'Footwear',
         gender: 'Kids',
       },
       {

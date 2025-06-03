@@ -22,15 +22,12 @@ watch(showFilters, (show) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 py-6 w-full relative">
+  <div class="flex flex-col gap-4 p-6 w-full relative">
     <div v-if="isSmallScreen">
       <FilterContent v-model:showFilters="showFilters" />
     </div>
     <div class="block md:hidden">
-      <button
-        @click="showFilters = true"
-        class="save-button w-fit mx-auto uppercase text-sm"
-      >
+      <button @click="showFilters = true" class="save-button w-fit mx-auto uppercase text-sm">
         Filter & Sort
       </button>
     </div>

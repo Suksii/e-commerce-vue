@@ -25,7 +25,7 @@ onMounted(() => {
         :loading="featuredStore.loading.deleteFeatured"
       />
     </div>
-    <div v-else class="text-2xl font-medium tracking-wide text-gray-500 py-12">
+    <div v-else class="flex justify-center text-2xl font-medium tracking-wide text-gray-500 py-12">
       No data to display
     </div>
   </div>

@@ -23,11 +23,14 @@ async function goToPage(categoryName, genderName) {
 
   const selectedGender = productsStore.genderOptions.find((gender) => gender === genderName)
 
+  productsStore.selectedCategories = selectedSubCategories
+  productsStore.selectedGender = [selectedGender]
+
   if (selectedSubCategories && selectedGender) {
     productsStore.selectedCategories = [...selectedSubCategories]
     productsStore.selectedGender = [selectedGender]
 
-    productsStore.searchProducts()
+    await productsStore.searchProducts()
   }
   router.push({
     name: 'allProducts',

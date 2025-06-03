@@ -26,7 +26,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <nav class="flex items-center h-14 bg-teal-700">
+  <nav class="flex items-center h-14 bg-teal-700 ">
     <div class="w-[80%] mx-auto flex items-center justify-between">
       <RouterLink to="/" class="relative">
         <Icon icon="mdi:storm-outline" width="62" height="62" class="text-yellow-400" />
@@ -38,12 +38,15 @@ onMounted(() => {
       </RouterLink>
       <div class="flex gap-8 items-center">
         <SearchInput />
+        <RouterLink to="/" class="font-medium text-teal-100">
+          <Icon icon="mdi:home-circle" width="32" height="32" />
+        </RouterLink>
         <div class="relative">
           <Icon
             icon="qlementine-icons:user-24"
             width="26"
             height="26"
-            class="cursor-pointer text-white"
+            class="cursor-pointer text-teal-100"
             @click="toggleProfileModal"
           />
           <Modal
@@ -53,7 +56,7 @@ onMounted(() => {
           /></Modal>
         </div>
         <div class="relative">
-          <div class="cursor-pointer text-white" @click="toggleCartModal">
+          <div class="cursor-pointer text-teal-100" @click="toggleCartModal">
             <Icon icon="mdi:cart" width="26" height="26" />
             <span
               class="absolute -top-2 -right-3 min-h-4.5 min-w-4.5 px-1 flex items-center justify-center bg-red-600 text-white text-[10px] font-semibold rounded-full"
