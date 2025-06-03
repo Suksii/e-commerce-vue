@@ -26,12 +26,14 @@ watch(showFilters, (show) => {
     <div v-if="isSmallScreen">
       <FilterContent v-model:showFilters="showFilters" />
     </div>
-    <button
-      @click="showFilters = true"
-      class="block md:hidden save-button w-fit mx-auto uppercase text-sm"
-    >
-      Filter & Sort
-    </button>
+    <div class="block md:hidden">
+      <button
+        @click="showFilters = true"
+        class="save-button w-fit mx-auto uppercase text-sm"
+      >
+        Filter & Sort
+      </button>
+    </div>
     <Filters />
     <div class="flex gap-6 w-full">
       <FilterSidebar />

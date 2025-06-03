@@ -19,6 +19,10 @@ const categoryStore = useCategoryStore()
 const brandStore = useBrandStore()
 const { minPrice, maxPrice, rangeBackground } = usePriceRange()
 const { validateMin, validateMax } = useValidation()
+
+const closeFilters = () => {
+  emit('update:showFilters', false)
+}
 </script>
 
 <template>
@@ -33,7 +37,7 @@ const { validateMin, validateMax } = useValidation()
         width="16"
         height="16"
         class="cursor-pointer text-teal-700"
-        @click="emit('update:showFilters', false)"
+        @click="closeFilters"
       />
     </div>
     <div class="flex flex-col divide-white divide-y px-4">
@@ -121,5 +125,12 @@ const { validateMin, validateMax } = useValidation()
         </div>
       </SingleFilter>
     </div>
+    <button
+      @click="closeFilters"
+      class="w-[95%] mx-auto my-4 flex items-center justify-center gap-2 bg-white text-teal-700 font-semibold py-2 rounded-lg transition duration-300 ease-in-out shadow-md hover:bg-teal-50 cursor-pointer"
+    >
+      <Icon icon="material-symbols:filter-alt-outline" class="text-teal-700" />
+      Apply Filters
+    </button>
   </div>
 </template>

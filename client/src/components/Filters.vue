@@ -102,7 +102,7 @@ const resetAll = () => {
       </div>
       <Modal
         v-if="showSortModal"
-        :custom-class="'hidden md:block bg-teal-700 fixed md:absolute top-10 right-1/2 md:right-0 translate-x-1/2 md:translate-x-0'"
+        :custom-class="'hidden md:block bg-teal-700 fixed md:absolute -top-4 mx-4 right-1/2 md:right-0 translate-1/2 md:translate-x-0'"
       >
         <SortContent />
       </Modal>
