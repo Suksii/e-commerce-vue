@@ -36,6 +36,8 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/", (req, res) => res.status(200).json({ message: "Hello World" }));
+
 app.use(
   "/uploads",
   express.static(path.join(import.meta.dirname, "./uploads"))
