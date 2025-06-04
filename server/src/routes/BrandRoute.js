@@ -1,4 +1,3 @@
-import multer from "multer";
 import { Router } from "express";
 import {
   addBrand,
@@ -8,10 +7,9 @@ import {
   updateBrand,
 } from "../controllers/BrandController.js";
 import { uploadImage } from "../controllers/UploadController.js";
+import { photoUpload } from "../middleware/multer.js";
 
 const router = Router();
-
-const photoUpload = multer({ dest: "uploads/brands" });
 
 router.post("/upload", photoUpload.single("photo"), uploadImage);
 router.post("/add", addBrand);

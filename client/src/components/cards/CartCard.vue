@@ -1,6 +1,5 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { getImageUrl } from '@/utils/helpers'
 import { useCartStore } from '@/stores/carts'
 
 defineProps({
@@ -22,7 +21,7 @@ const cartStore = useCartStore()
     />
 
     <img
-      :src="getImageUrl('products', cart.product?.images[0])"
+      :src="cart.product?.images[0]"
       :alt="cart.product?.name"
       loading="lazy"
       class="max-w-[60px] h-[110px] md:max-w-[80px] md:h-[140px] object-contain flex-2"

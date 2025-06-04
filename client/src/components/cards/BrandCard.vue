@@ -1,7 +1,6 @@
 <script setup>
 import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
-import { getImageUrl } from '@/utils/helpers'
 import DeleteContent from '../contents/DeleteContent.vue'
 import { Icon } from '@iconify/vue'
 import { useHoverActions } from '@/composables/useHoverActions'
@@ -25,7 +24,7 @@ const { displayedAction, showActions, hideActions } = useHoverActions()
     class="relative flex flex-col items-center justify-center gap-2 py-2 w-[300px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
   >
     <img
-      :src="getImageUrl('brands', brand.image)"
+      :src="brand.image"
       :alt="brand.name"
       loading="lazy"
       class="text-center w-54 h-54 object-contain mb-2 p-2"

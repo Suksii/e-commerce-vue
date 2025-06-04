@@ -1,5 +1,4 @@
 <script setup>
-import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
@@ -51,7 +50,7 @@ const zoomIn = () => {
         :key="index"
       >
         <img
-          :src="getImageUrl('products', image)"
+          :src="image"
           :alt="image"
           :style="{ transform: `scale(${scale})` }"
           loading="lazy"
@@ -75,12 +74,7 @@ const zoomIn = () => {
           currentImageIndex === index ? 'border-4 border-teal-700' : 'border border-teal-600/20'
         "
       >
-        <img
-          :src="getImageUrl('products', image)"
-          :alt="image"
-          loading="lazy"
-          class="object-cover w-full"
-        />
+        <img :src="image" :alt="image" loading="lazy" class="object-cover w-full" />
       </div>
     </div>
     <div class="hidden md:flex items-center gap-2 fixed left-0 top-0 m-4">

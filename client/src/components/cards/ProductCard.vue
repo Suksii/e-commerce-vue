@@ -1,7 +1,6 @@
 <script setup>
 import ButtonLoading from '@/loading/ButtonLoading.vue'
 import { useCartStore } from '@/stores/carts'
-import { getImageUrl } from '@/utils/helpers'
 
 defineProps({
   product: Object,
@@ -16,7 +15,7 @@ const cartStore = useCartStore()
   >
     <RouterLink :to="`/product/${product._id}`" class="flex justify-center w-full">
       <img
-        :src="getImageUrl('products', product.images?.[0])"
+        :src="product.images?.[0]"
         :alt="product.name"
         loading="lazy"
         class="h-60 object-cover scale-90 transition ease-in-out duration-300"

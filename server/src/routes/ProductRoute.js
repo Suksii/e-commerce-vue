@@ -1,4 +1,3 @@
-import multer from "multer";
 import { Router } from "express";
 import {
   addProduct,
@@ -10,10 +9,9 @@ import {
   updateProduct,
 } from "../controllers/ProductController.js";
 import { uploadImages } from "../controllers/UploadController.js";
+import { photoUpload } from "../middleware/multer.js";
 
 const router = Router();
-
-const photoUpload = multer({ dest: "uploads/products" });
 
 router.post("/upload", photoUpload.array("photos", 5), uploadImages);
 router.post("/add", addProduct);

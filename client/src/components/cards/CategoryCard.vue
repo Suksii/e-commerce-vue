@@ -1,7 +1,6 @@
 <script setup>
 import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
-import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import DeleteContent from '../contents/DeleteContent.vue'
@@ -35,7 +34,7 @@ const close = () => {
   >
     <div class="relative">
       <img
-        :src="getImageUrl('categories', category.image)"
+        :src="category.image"
         :alt="category.name"
         loading="lazy"
         class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
@@ -82,7 +81,7 @@ const close = () => {
             class="relative flex items-center gap-4 bg-white p-3 rounded-lg shadow hover:bg-gray-100 transition z-20"
           >
             <img
-              :src="getImageUrl('categories', subCategory.image)"
+              :src="subCategory.image"
               :alt="subCategory.name"
               loading="lazy"
               class="w-24 h-20 object-cover rounded-md"

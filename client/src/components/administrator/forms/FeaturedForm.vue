@@ -6,7 +6,6 @@ import { useValidation } from '@/composables/useValidation'
 import ButtonLoading from '@/loading/ButtonLoading.vue'
 import { useFeaturedStore } from '@/stores/featured'
 import { useNotificationStore } from '@/stores/notification'
-import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useField, useForm } from 'vee-validate'
@@ -40,7 +39,7 @@ async function uploadImage(event) {
     const { data } = await request.post('/api/featured/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
-    image.value = data[1]
+    image.value = data.url
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification('Image upload failed')
@@ -116,10 +115,7 @@ const removeImage = () => {
       <div class="flex flex-col gap-1 w-full">
         <label>Upload image<span class="text-red-600 px-0.5">*</span></label>
         <div v-if="image" class="w-full h-[300px] shrink-0 relative">
-          <img
-            :src="getImageUrl('featured', image)"
-            class="w-full h-full border border-gray-300 rounded-md object-cover"
-          />
+          <img :src="image" class="w-full h-full border border-gray-300 rounded-md object-cover" />
           <div @click="removeImage" class="absolute right-0 top-0 p-2">
             <Icon icon="nimbus:close" width="20" height="20" class="text-red-600 cursor-pointer" />
           </div>

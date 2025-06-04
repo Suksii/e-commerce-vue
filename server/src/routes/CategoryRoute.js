@@ -1,4 +1,3 @@
-import multer from "multer";
 import { Router } from "express";
 import {
   addCategory,
@@ -11,10 +10,9 @@ import {
   updateCategory,
 } from "../controllers/CategoryController.js";
 import { uploadImage } from "../controllers/UploadController.js";
+import { photoUpload } from "../middleware/multer.js";
 
 const router = Router();
-
-const photoUpload = multer({ dest: "uploads/categories" });
 
 router.post("/upload", photoUpload.single("photo"), uploadImage);
 router.post("/add", addCategory);

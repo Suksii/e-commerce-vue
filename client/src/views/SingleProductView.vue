@@ -6,7 +6,6 @@ import { useBrandStore } from '@/stores/brands'
 import { useCartStore } from '@/stores/carts'
 import { useCategoryStore } from '@/stores/categories'
 import { useProductsStore } from '@/stores/products'
-import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -68,7 +67,7 @@ function decreaseQuantity() {
           <img
             v-if="productStore.selectedImage"
             :key="productStore.selectedImage"
-            :src="getImageUrl('products', productStore.selectedImage)"
+            :src="productStore.selectedImage"
             :alt="productStore.selectedImage"
             class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300 cursor-pointer"
             @click="showFullScreen = true"
@@ -87,7 +86,7 @@ function decreaseQuantity() {
           class="w-full border border-teal-600/20 rounded-md group cursor-pointer"
         >
           <img
-            :src="getImageUrl('products', image)"
+            :src="image"
             :alt="image"
             @click="productStore.selectedImage = image"
             class="w-full object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
@@ -118,7 +117,7 @@ function decreaseQuantity() {
         </div>
         <img
           v-if="brandStore.singleBrand"
-          :src="getImageUrl('brands', brandStore.singleBrand.image)"
+          :src="brandStore.singleBrand.image"
           class="w-32 lg:w-48"
         />
       </div>

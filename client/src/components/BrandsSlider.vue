@@ -1,7 +1,6 @@
 <script setup>
 import { useBrandStore } from '@/stores/brands'
 import { useProductsStore } from '@/stores/products'
-import { getImageUrl } from '@/utils/helpers'
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -77,7 +76,7 @@ function goToPage(brandName) {
           }"
         >
           <img
-            :src="getImageUrl('brands', brand.image)"
+            :src="brand.image"
             :alt="brand.name"
             loading="lazy"
             class="w-28 h-28 object-contain"

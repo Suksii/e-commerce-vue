@@ -12,7 +12,6 @@ import { useValidation } from '@/composables/useValidation'
 import FormError from '@/components/FormError.vue'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { getImageUrl } from '@/utils/helpers'
 import ButtonLoading from '@/loading/ButtonLoading.vue'
 
 const route = useRoute()
@@ -75,16 +74,22 @@ const handleProduct = handleSubmit(async () => {
 })
 async function uploadImage(event) {
   if (images.value.length < 5) {
-    const file = event.target.files[0]
+    const files = event.target.files
     const formData = new FormData()
-    formData.append('photos', file)
+    for (let i = 0; i < files.length; i++) {
+      formData.append('photos', files[i])
+    }
     try {
       const { data } = await request.post('/api/products/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
-      images.value.push(data[1])
+      data.forEach((img) => {
+        if (images.value.length < 5) {
+          images.value.push(img.url)
+        }
+      })
     } catch (error) {
       notificationStore.isError = true
       notificationStore.showNotification('Image upload failed')
@@ -153,7 +158,7 @@ onMounted(async () => {
             :key="index"
           >
             <img
-              :src="getImageUrl('products', image)"
+              :src="image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
             <div
@@ -166,6 +171,7 @@ onMounted(async () => {
           <div class="w-32 md:w-36 aspect-square shrink-0 relative" @click="inputRef?.click()">
             <input
               type="file"
+              multiple
               ref="inputRef"
               class="absolute inset-0 hidden"
               accept="image/*"

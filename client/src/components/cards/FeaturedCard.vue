@@ -1,9 +1,7 @@
 <script setup>
-import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useEditActions } from '@/composables/useEditActions'
 import { useModal } from '@/composables/useModal'
-import { getImageUrl } from '@/utils/helpers'
 import DeleteContent from '../contents/DeleteContent.vue'
 import { useHoverActions } from '@/composables/useHoverActions'
 
@@ -39,7 +37,7 @@ const { displayedAction, showActions, hideActions } = useHoverActions()
     </div>
     <div class="flex-2">
       <img
-        :src="getImageUrl('featured', featured.image)"
+        :src="featured.image"
         :alt="featured.name"
         class="text-center w-full object-contain"
       />

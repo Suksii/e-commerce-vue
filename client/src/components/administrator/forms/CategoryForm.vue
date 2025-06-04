@@ -10,7 +10,6 @@ import { useValidation } from '@/composables/useValidation'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import FormError from '@/components/FormError.vue'
-import { getImageUrl } from '@/utils/helpers'
 import ButtonLoading from '@/loading/ButtonLoading.vue'
 
 const notificationStore = useNotificationStore()
@@ -58,7 +57,7 @@ async function uploadImage(event) {
       },
     })
 
-    categoryStore.categoryData.image = data[1]
+    categoryStore.categoryData.image = data.url
   } catch (error) {
     notificationStore.isError = true
     notificationStore.showNotification('Image upload failed')
@@ -137,7 +136,7 @@ watch(
             class="w-32 md:w-36 aspect-square relative"
           >
             <img
-              :src="getImageUrl('categories', categoryStore.categoryData.image)"
+              :src="categoryStore.categoryData.image"
               class="w-full h-full border border-gray-300 rounded-md object-cover"
             />
           </div>
