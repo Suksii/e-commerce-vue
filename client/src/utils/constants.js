@@ -2,7 +2,7 @@ import Woman from '../assets/woman.jpg'
 import Man from '../assets/man.jpg'
 import Kid from '../assets/kid.jpg'
 
-export const BASE_IMAGE_URL = 'http://localhost:3000/uploads/'
+export const BASE_IMAGE_URL = import.meta.env.VITE_BASE_IMAGE_URL
 
 export const categoryItems = [
   {

@@ -15,6 +15,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
+const client_url = process.env.CLIENT_ORIGIN;
 
 mongoose
   .connect(MONGO_URI)
@@ -27,7 +28,7 @@ app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
 app.use(
   cors({
-    origin: ["https://e-commerce-vue-client.vercel.app"],
+    origin: [client_url],
     credentials: true,
   })
 );
