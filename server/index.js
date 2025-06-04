@@ -29,6 +29,7 @@ app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 app.use(
   cors({
     origin: [client_url],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
 );
