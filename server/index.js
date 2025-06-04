@@ -15,7 +15,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
-const client_url = process.env.CLIENT_ORIGIN;
+const CLIENT_URL = process.env.CLIENT_ORIGIN;
 
 mongoose
   .connect(MONGO_URI)
@@ -24,11 +24,17 @@ mongoose
 
 const app = express();
 
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+// app.listen(PORT, () => {
+//   try {
+//     console.log(`✅ Server running on port ${PORT}`);
+//   } catch (error) {
+//     console.log("Error loading server", error);
+//   }
+// });
 
 app.use(
   cors({
-    origin: [client_url],
+    origin: CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
@@ -48,3 +54,5 @@ app.use("/api/category", categoryRoute);
 app.use("/api/brand", brandRoute);
 app.use("/api/products", productRoute);
 app.use("/api/featured", featuredRoute);
+
+export default app;
