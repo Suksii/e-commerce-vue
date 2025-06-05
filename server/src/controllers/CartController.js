@@ -58,7 +58,14 @@ export const addCart = async (req, res) => {
 
 export const getCarts = async (req, res) => {
   try {
-    const carts = await Cart.find().populate("product");
+    const { token } = req.cookies;
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized - No token" });
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userData = await User.findById(decoded.id);
+    const carts = await Cart.find({ user: userData._id }).populate("product");
     res.status(200).json(carts);
   } catch (error) {
     req.json(error);
