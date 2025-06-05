@@ -64,7 +64,8 @@ function update(userId) {
       </div>
     </div>
   </div>
-  <div v-else>
-    <button class="min-w-24 save-button" @click="router.push('/login')">Login</button>
+  <div v-else class="flex justify-center gap-2 py-2">
+    <button class="min-w-24 close-button grow" @click="router.push('/register')">Sign Up</button>
+    <button class="min-w-24 save-button grow" @click="router.push('/login')">Sign In</button>
   </div>
 </template>

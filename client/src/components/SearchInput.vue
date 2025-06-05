@@ -22,7 +22,7 @@ const closeSearch = () => {
     <input
       v-model="productsStore.searchQuery"
       placeholder="Type a search term..."
-      class="px-8 py-2 bg-teal-100 rounded-md w-64 md:w-96 outline-none"
+      class="px-8 py-2 bg-teal-100 rounded-md w-64 md:w-80 outline-none"
     />
     <Icon
       v-if="productsStore.searchQuery"
@@ -49,7 +49,7 @@ const closeSearch = () => {
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
-      <div v-if="showSearch" class="w-full py-2 h-fit fixed top-0 inset-0 bg-teal-700">
+      <div v-if="showSearch" class="w-full h-14 py-1.5 fixed top-0 inset-0 bg-teal-700">
         <Icon
           icon="mdi:magnify"
           class="absolute left-2 top-1/2 -translate-y-1/2 shrink-0 text-white cursor-auto"
@@ -58,13 +58,13 @@ const closeSearch = () => {
         />
         <input
           v-model="productsStore.searchQuery"
-          class="w-full py-2 mx-12 pl-2 pr-24 border-b-2 border-teal-100 outline-none text-lg text-teal-100 placeholder:text-teal-100/80"
+          class="w-full h-full mx-12 pl-2 pr-24 border-b-2 border-teal-100 outline-none text-lg text-teal-100 placeholder:text-teal-100/80"
           placeholder="Type search term..."
         />
         <Icon
           icon="streamline:delete-1-solid"
-          width="20"
-          height="20"
+          width="18"
+          height="18"
           class="absolute right-3 top-1/2 -translate-y-1/2 shrink-0 text-white"
           @click="closeSearch"
         />

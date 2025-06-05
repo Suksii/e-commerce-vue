@@ -87,4 +87,11 @@ th {
   padding: 16px 12px;
   border: 1px solid #e5e7eb;
 }
+@media screen and (max-width: 768px) {
+  td,
+  th {
+    font-size: 12px;
+    padding: 12px 8px;
+  }
+}
 </style>

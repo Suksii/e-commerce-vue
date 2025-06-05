@@ -13,6 +13,7 @@ export const addCart = async (req, res) => {
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userData = await User.findById(decoded.id);
+
     const productData = await Product.findById(req.params.id);
 
     const discountedPrice = productData.discount
@@ -35,13 +36,15 @@ export const addCart = async (req, res) => {
       newCart = await cartExists.save();
     } else {
       newCart = await Cart.create({
-        user: userData,
-        product: productData,
+        user: userData._id,
+        product: productData._id,
         quantity: quantity || 1,
         price: discountedPrice,
         totalPrice: totalPrice,
       });
     }
+    console.log(newCart);
+
     res.json({
       cart: newCart,
       message: "Product successfully added to cart",

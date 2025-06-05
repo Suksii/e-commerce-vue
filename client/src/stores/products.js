@@ -163,8 +163,6 @@ export const useProductsStore = defineStore('products', () => {
       newSortBy,
       newOrder,
     ]) => {
-      if (route.name !== 'allProducts') return
-
       const hasSearch = newSearch && newSearch.length >= 2
       const hasFilters =
         (newBrands && newBrands.length > 0) ||
