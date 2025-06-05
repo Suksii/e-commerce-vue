@@ -41,7 +41,7 @@ const zoomIn = () => {
 </script>
 
 <template>
-  <div class="fixed inset-0 bg-white z-50 flex justify-center items-center">
+  <div class="fixed inset-0 min-h-screen bg-white z-50 flex justify-center items-center">
     <div class="relative inset-0 flex w-full overflow-x-hidden">
       <div
         v-for="(image, index) of props.data"

@@ -30,7 +30,7 @@ const cartStore = useCartStore()
       <h2 class="text-nowrap font-medium">{{ cart.product?.name }}</h2>
       <p class="line-clamp-2 text-sm text-gray-600">{{ cart.product?.description }}</p>
     </div>
-    <div class="flex items-center gap-2 mx-2 md:mx-8">
+    <div class="flex flex-col-reverse md:flex-row items-center gap-2 mx-2 md:mx-8">
       <button @click="cartStore.updateQuantity(cart._id, 'decrease')">
         <Icon icon="lucide:minus" width="20" height="20" class="cursor-pointer" />
       </button>

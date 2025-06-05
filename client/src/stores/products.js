@@ -164,22 +164,25 @@ export const useProductsStore = defineStore('products', () => {
       newOrder,
     ]) => {
       const hasSearch = newSearch && newSearch.length >= 2
+
+      if (!hasSearch && route.name !== 'allProducts') return
+
       const hasFilters =
         (newBrands && newBrands.length > 0) ||
         (newCategories && newCategories.length > 0) ||
-        newMinPrice !== minPrice.value ||
-        newMaxPrice !== maxPrice.value ||
+        (newMinPrice && newMinPrice !== minPrice.value) ||
+        (newMaxPrice && newMaxPrice !== maxPrice.value) ||
         (newSeason && newSeason.length > 0) ||
         (newGender && newGender.length > 0) ||
-        newSortBy ||
-        newOrder
+        newSortBy !== 'name' ||
+        newOrder !== 'desc'
       if (hasSearch || hasFilters) {
         const query = {
           ...(hasSearch ? { name: newSearch } : {}),
           ...(newBrands ? { brand: newBrands.map((b) => b.name) } : {}),
           ...(newCategories ? { category: newCategories.map((c) => c.name) } : {}),
-          ...(newMinPrice !== minPrice.value ? { minPrice: newMinPrice } : {}),
-          ...(newMaxPrice !== maxPrice.value ? { maxPrice: newMaxPrice } : {}),
+          ...(newMinPrice && newMinPrice !== minPrice.value ? { minPrice: newMinPrice } : {}),
+          ...(newMaxPrice && newMaxPrice !== maxPrice.value ? { maxPrice: newMaxPrice } : {}),
           ...(newSeason ? { season: newSeason } : {}),
           ...(newGender ? { gender: newGender } : {}),
           ...(newSortBy ? { sortBy: newSortBy } : {}),

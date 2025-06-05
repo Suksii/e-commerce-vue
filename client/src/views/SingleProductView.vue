@@ -69,7 +69,7 @@ function decreaseQuantity() {
             :key="productStore.selectedImage"
             :src="productStore.selectedImage"
             :alt="productStore.selectedImage"
-            class="h-[400px] object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300 cursor-pointer"
+            class="h-[400px] object-contain group-hover:scale-105 transition ease-in-out duration-300 cursor-pointer"
             @click="showFullScreen = true"
           />
         </Transition>
@@ -89,7 +89,7 @@ function decreaseQuantity() {
             :src="image"
             :alt="image"
             @click="productStore.selectedImage = image"
-            class="w-full object-cover scale-75 group-hover:scale-90 transition ease-in-out duration-300"
+            class="w-full object-contain group-hover:scale-105 transition ease-in-out duration-300"
           />
         </div>
       </div>

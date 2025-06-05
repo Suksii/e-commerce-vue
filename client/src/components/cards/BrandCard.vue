@@ -21,7 +21,7 @@ const { displayedAction, showActions, hideActions } = useHoverActions()
   <div
     @mouseenter="showActions(brand._id)"
     @mouseleave="hideActions"
-    class="relative flex flex-col items-center justify-center gap-2 py-2 w-[300px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
+    class="relative flex flex-col items-center justify-center gap-2 py-2 w-[250px] md:w-[300px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
   >
     <img
       :src="brand.image"

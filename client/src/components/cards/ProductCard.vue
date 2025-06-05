@@ -11,7 +11,7 @@ const cartStore = useCartStore()
 
 <template>
   <div
-    class="flex flex-col min-w-[350px] w-[350px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
+    class="flex flex-col md:min-w-[350px] w-[350px] bg-white rounded-md overflow-hidden hover:ring-2 hover:ring-teal-600 transition group"
   >
     <RouterLink :to="`/product/${product._id}`" class="flex justify-center w-full">
       <img
