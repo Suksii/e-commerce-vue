@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-export const genderOptions = ["Male", "Female", "Kids", "Unisex"];
+export const genderOptions = ["Men", "Women", "Kids", "Unisex"];
 export const seasonOptions = ["Summer", "Winter", "Autumn", "Spring"];
 
 const ProductSchema = new mongoose.Schema({

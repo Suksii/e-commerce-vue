@@ -30,7 +30,7 @@ const notificationStore = useNotificationStore()
           height="32"
           :class="notificationStore.isError ? 'text-red-700' : 'text-green-700'"
         />
-        <p class="text-xl">{{ message }}</p>
+        <p class="text-xl text-center">{{ message }}</p>
       </div>
     </div>
   </Transition>

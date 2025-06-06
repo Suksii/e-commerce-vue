@@ -30,6 +30,15 @@
 label {
   @apply text-base font-medium;
 }
+.bg-primary {
+  @apply bg-teal-600;
+}
+.text-primary {
+  @apply text-teal-600;
+}
+.border-primary {
+  @apply border-teal-600;
+}
 
 .input-range {
   -webkit-appearance: none;

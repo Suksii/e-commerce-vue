@@ -94,6 +94,7 @@ export const useProfile = defineStore('profile', () => {
     fetchUsers,
     currentUser,
     isAuthenticated,
+    isAdmin,
     username,
     usersData,
     loading,
